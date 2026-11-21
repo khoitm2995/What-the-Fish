@@ -131,7 +131,7 @@
         <span>🌊</span> 1. Bể Cá
       </button>
       <button id="navTab-shop" onclick="switchTab('shop')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>🛒</span> 2. Cửa Hàng Cá <span class="px-1.5 py-0.2 bg-sky-500/20 text-sky-300 rounded text-[10px]">50</span>
+        <span>🛒</span> 2. Cửa Hàng Cá <span class="px-1.5 py-0.2 bg-sky-500/20 text-sky-300 rounded text-[10px]">80</span>
       </button>
       <button id="navTab-food" onclick="switchTab('food')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
         <span>🦐</span> 3. Thức Ăn <span id="navFoodBadge" class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[10px]">12</span>
@@ -443,28 +443,28 @@
           </div>
         </div>
       </div>
-
-      <!-- TAB 2: CỬA HÀNG 50 LOÀI CÁ CẢNH NƯỚC NGỌT -->
+      <!-- TAB 2: CỬA HÀNG 80 LOÀI CÁ CẢNH -->
       <div id="tabPanel-shop" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
         <div class="pb-2 border-b border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-sm font-extrabold text-cyan-300 uppercase">🛒 Cửa Hàng Giống Cá Cảnh (50 Loài)</h2>
+              <h2 class="text-sm font-extrabold text-cyan-300 uppercase">🛒 Cửa Hàng Giống Cá Cảnh (80 Loài)</h2>
               <p class="text-[11px] text-slate-400">Cá mua về là Cá Trưởng Thành (50% SK) • Hãy cho ăn đạt 100% SK để bắt đầu giao phối</p>
             </div>
           </div>
           <!-- Bộ lọc nhóm cá & tìm kiếm -->
           <div class="flex flex-wrap items-center gap-1.5">
-            <input id="shopSearchInput" type="text" oninput="renderFishShop()" placeholder="Tìm tên cá (VD: Guppy, Neon, Đĩa, Betta...)" class="flex-1 min-w-[140px] bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-white focus:outline-none focus:border-cyan-400" />
+            <input id="shopSearchInput" type="text" oninput="renderFishShop()" placeholder="Tìm tên cá (VD: Guppy, Nemo, Dory, Thành Cát Tư Hãn...)" class="flex-1 min-w-[140px] bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-white focus:outline-none focus:border-cyan-400" />
             <select id="shopCategoryFilter" onchange="renderFishShop()" class="bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-xs text-slate-200">
-              <option value="all">Tất cả (50 loài)</option>
+              <option value="all">Tất cả (80 loài)</option>
+              <option value="marine">20 Loài Cá Biển Cảnh</option>
               <option value="size_small">Cá Size Nhỏ (Bể Lv.1+)</option>
               <option value="size_medium">Cá Size Trung (Bể Vừa Lv.2–3+)</option>
               <option value="size_large">Cá Size Lớn (Bể Lớn Lv.4–5)</option>
               <option value="livebearer">Nhóm Cá Đẻ Con</option>
               <option value="egglayer">Nhóm Cá Đẻ Trứng</option>
-              <option value="special">Nhóm Cá Đặc Biệt</option>
-              <option value="cleaners">Tép & Ốc Dọn Rêu (2)</option>
+              <option value="special">Nhóm Cá Đặc Biệt / Thủy Quái</option>
+              <option value="cleaners">Sinh Vật Chức Năng & Ngọc Trai (5)</option>
               <option value="unlocked">Đã mở khóa</option>
             </select>
           </div>
@@ -1051,6 +1051,250 @@
         minClean: 84, difficulty: 5, commercialTier: 'Size Lớn (Bể 500L) - Thủy quái Amazon vảy viền đỏ',
         shape: 'arowana_dragon', primaryColor: '#334155', secondaryColor: '#dc2626', finColor: '#ef4444',
         swimZone: 'mid_top', specialNote: 'Loài cá nước ngọt khổng lồ huyền thoại với phần đuôi ánh vảy đỏ rực.'
+      },
+
+      // --- 10 LOÀI CÁ ĐẶC BIỆT / THỦY QUÁI MỞ RỘNG (51 - 60) ---
+      {
+        id: 'genghis_shark', code: 51, nameVi: 'Cá Mập Nước Ngọt (Thành Cát Tư Hãn)', nameEn: 'Iridescent Shark', group: 'special',
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 4, buyPrice: 340, sellPrice: 221, maxSizeCm: 42.0, lifespanDays: 95, matureDays: 8.5,
+        diet: 'Cám viên, Hạt chìm, Trùn huyết', avgOffspring: 16, tempRange: [24, 28], phRange: [6.5, 7.5],
+        minClean: 78, difficulty: 3, commercialTier: 'Size Lớn (Bể 350L+) - Dáng cá mập lưng gù uy lực',
+        shape: 'genghis_shark', primaryColor: '#475569', secondaryColor: '#e2e8f0', finColor: '#334155',
+        swimZone: 'mid', specialNote: 'Bơi tuần tra liên tục như cá mập đại dương, lưng xám thép vây tam giác cao.'
+      },
+      {
+        id: 'bala_shark', code: 52, nameVi: 'Cá Mập Bạc (Bala Shark)', nameEn: 'Bala Shark', group: 'egglayer',
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 3, buyPrice: 125, sellPrice: 81, maxSizeCm: 20.0, lifespanDays: 72, matureDays: 6.8,
+        diet: 'Cám viên, Flakes, Artemia', avgOffspring: 18, tempRange: [23, 28], phRange: [6.5, 7.5],
+        minClean: 76, difficulty: 3, commercialTier: 'Size Trung (Bể 180L+) - Thân bạc gương vây viền đen',
+        shape: 'bala_shark', primaryColor: '#cbd5e1', secondaryColor: '#0f172a', finColor: '#e2e8f0',
+        swimZone: 'mid', specialNote: 'Thân thoi ánh bạc sáng bóng với đường viền đen tuyền ở mọi chiếc vây.'
+      },
+      {
+        id: 'redtail_shark', code: 53, nameVi: 'Cá Mập Đuôi Đỏ', nameEn: 'Red-tailed Black Shark', group: 'special',
+        sizeClass: 'medium', minTankLevel: 2, unlockLevel: 2, buyPrice: 88, sellPrice: 57, maxSizeCm: 14.0, lifespanDays: 64, matureDays: 6.0,
+        diet: 'Hạt chìm, Tảo, Trùn huyết', avgOffspring: 14, tempRange: [23, 27], phRange: [6.5, 7.5],
+        minClean: 75, difficulty: 3, commercialTier: 'Size Trung (Bể 90L+) - Đen nhung đuôi đỏ rực',
+        shape: 'redtail_shark', primaryColor: '#0f172a', secondaryColor: '#1e293b', finColor: '#ef4444',
+        swimZone: 'mid_bottom', specialNote: 'Toàn thân đen nhung tương phản mạnh với chiếc đuôi đỏ rực rỡ.'
+      },
+      {
+        id: 'rainbow_shark', code: 54, nameVi: 'Cá Mập Cầu Vồng', nameEn: 'Rainbow Shark', group: 'special',
+        sizeClass: 'medium', minTankLevel: 2, unlockLevel: 2, buyPrice: 92, sellPrice: 60, maxSizeCm: 14.0, lifespanDays: 64, matureDays: 6.0,
+        diet: 'Hạt chìm, Cám viên, Trùng chỉ', avgOffspring: 14, tempRange: [23, 27], phRange: [6.5, 7.5],
+        minClean: 75, difficulty: 3, commercialTier: 'Size Trung (Bể 90L+) - Toàn bộ vây đỏ cam rực rỡ',
+        shape: 'rainbow_shark', primaryColor: '#0284c7', secondaryColor: '#38bdf8', finColor: '#f97316',
+        swimZone: 'mid_bottom', specialNote: 'Thân xanh thép kết hợp toàn bộ vây lưng, vây ngực, vây bụng và đuôi đỏ cam.'
+      },
+      {
+        id: 'alligator_gar', code: 55, nameVi: 'Cá Sấu Hỏa Tiễn', nameEn: 'Alligator Gar', group: 'special',
+        sizeClass: 'large', minTankLevel: 5, unlockLevel: 5, buyPrice: 540, sellPrice: 351, maxSizeCm: 48.0, lifespanDays: 110, matureDays: 9.2,
+        diet: 'Trùn huyết, Artemia, Cám cao cấp', avgOffspring: 12, tempRange: [22, 28], phRange: [6.5, 7.8],
+        minClean: 78, difficulty: 4, commercialTier: 'Size Lớn (Bể 500L) - Thủy quái mõm cá sấu cổ đại',
+        shape: 'alligator_gar', primaryColor: '#10b981', secondaryColor: '#78716c', finColor: '#059669',
+        swimZone: 'top', specialNote: 'Mõm dài răng nhọn săn mồi tầng mặt, lớp vảy láng đốm rêu độc đáo.'
+      },
+      {
+        id: 'bichir', code: 56, nameVi: 'Cá Cửu Sừng Hoàng Đế', nameEn: 'Ornate Bichir', group: 'special',
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 4, buyPrice: 360, sellPrice: 234, maxSizeCm: 36.0, lifespanDays: 98, matureDays: 8.4,
+        diet: 'Hạt chìm, Trùn huyết, Trùng chỉ', avgOffspring: 14, tempRange: [24, 28], phRange: [6.5, 7.6],
+        minClean: 80, difficulty: 4, commercialTier: 'Size Lớn (Bể 350L+) - Rồng đất hàng gai lưng',
+        shape: 'bichir', primaryColor: '#eab308', secondaryColor: '#0f172a', finColor: '#ca8a04',
+        swimZone: 'bottom', specialNote: 'Loài cá cổ đại có hàng vây gai nhỏ dựng dọc lưng và hoa văn da báo.'
+      },
+      {
+        id: 'butterfly_koi', code: 57, nameVi: 'Cá Chép Phụng Vây Dài', nameEn: 'Butterfly Koi', group: 'egglayer',
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 4, buyPrice: 310, sellPrice: 202, maxSizeCm: 40.0, lifespanDays: 100, matureDays: 8.2,
+        diet: 'Cám viên, Hạt chìm, Trùn huyết', avgOffspring: 20, tempRange: [20, 26], phRange: [7.0, 8.0],
+        minClean: 78, difficulty: 3, commercialTier: 'Size Lớn (Bể 350L+) - Vây voan vàng kim thướt tha',
+        shape: 'butterfly_koi', primaryColor: '#eab308', secondaryColor: '#f8fafc', finColor: '#fef08a',
+        swimZone: 'mid_top', specialNote: 'Bộ vây ngực và đuôi voan dài uyển chuyển như dải lụa vàng trong nước.'
+      },
+      {
+        id: 'goliath_tiger', code: 58, nameVi: 'Cá Hổ Goliath Châu Phi', nameEn: 'Goliath Tigerfish', group: 'special',
+        sizeClass: 'large', minTankLevel: 5, unlockLevel: 5, buyPrice: 610, sellPrice: 397, maxSizeCm: 48.0, lifespanDays: 105, matureDays: 9.4,
+        diet: 'Trùn huyết, Artemia, Cám cao cấp', avgOffspring: 12, tempRange: [24, 28], phRange: [6.5, 7.5],
+        minClean: 82, difficulty: 5, commercialTier: 'Size Lớn (Bể 500L) - Sát thủ sông Congo đuôi đỏ',
+        shape: 'goliath_tiger', primaryColor: '#cbd5e1', secondaryColor: '#0f172a', finColor: '#ef4444',
+        swimZone: 'mid', specialNote: 'Thân ánh bạc sọc ngang sắc lẹm và chiếc đuôi chẻ viền đỏ rực đầy uy lực.'
+      },
+      {
+        id: 'frontosa', code: 59, nameVi: 'Cá Kim Cương Đầu Búa', nameEn: 'Frontosa Cichlid', group: 'special',
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 4, buyPrice: 175, sellPrice: 114, maxSizeCm: 22.0, lifespanDays: 78, matureDays: 7.4,
+        diet: 'Cám chuyên dụng, Hạt chìm, Trùn huyết', avgOffspring: 14, tempRange: [24, 28], phRange: [7.5, 8.5],
+        minClean: 80, difficulty: 4, commercialTier: 'Size Trung (Bể 180L+) - Đầu gù vằn xanh ngọc',
+        shape: 'frontosa', primaryColor: '#0284c7', secondaryColor: '#0f172a', finColor: '#38bdf8',
+        swimZone: 'mid_bottom', specialNote: 'Đầu gù uy nghi cùng 6 dải sọc đen bản lớn trên nền xanh dương ngọc trai.'
+      },
+      {
+        id: 'albino_pangasius', code: 60, nameVi: 'Thành Cát Tư Hãn Bạch Tạng', nameEn: 'Albino Iridescent Shark', group: 'special',
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 5, buyPrice: 430, sellPrice: 280, maxSizeCm: 42.0, lifespanDays: 95, matureDays: 8.6,
+        diet: 'Cám viên, Hạt chìm, Artemia', avgOffspring: 14, tempRange: [24, 28], phRange: [6.5, 7.5],
+        minClean: 80, difficulty: 4, commercialTier: 'Size Lớn (Bể 350L+) - Cá mập bạch tạng mắt đỏ',
+        shape: 'genghis_shark', primaryColor: '#fbcfe8', secondaryColor: '#f8fafc', finColor: '#fda4af',
+        swimZone: 'mid', specialNote: 'Biến thể bạch tạng trắng hồng mắt đỏ ruby cực kỳ sang trọng của dòng Pangasius.'
+      },
+
+      // --- 20 LOÀI CÁ BIỂN NUÔI CẢNH (61 - 80: YÊU CẦU LEVEL CAO HƠN & CÂN BẰNG SIZE) ---
+      {
+        id: 'clownfish', code: 61, nameVi: 'Cá Hề Nemo (Clownfish)', nameEn: 'Amphiprion ocellaris', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 3, buyPrice: 65, sellPrice: 42, maxSizeCm: 7.5, lifespanDays: 55, matureDays: 5.2,
+        diet: 'Artemia, Flakes, Bo bo', avgOffspring: 16, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 82, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 3) - Biểu tượng rạn san hô',
+        shape: 'clownfish', primaryColor: '#f97316', secondaryColor: '#ffffff', finColor: '#ea580c',
+        swimZone: 'mid', specialNote: 'Cá biển nuôi hồ nước mặn riêng; thân cam rực 3 sọc trắng viền đen.'
+      },
+      {
+        id: 'blue_damselfish', code: 62, nameVi: 'Cá Thia Xanh (Blue Damselfish)', nameEn: 'Chrysiptera cyanea', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 3, buyPrice: 55, sellPrice: 36, maxSizeCm: 6.5, lifespanDays: 50, matureDays: 4.8,
+        diet: 'Flakes, Cám viên, Bo bo', avgOffspring: 16, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 80, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 3) - Xanh coban điện quang',
+        shape: 'damsel', primaryColor: '#0284c7', secondaryColor: '#38bdf8', finColor: '#facc15',
+        swimZone: 'mid', specialNote: 'Loài cá biển khởi đầu rạn san hô với sắc xanh coban và đuôi vàng.'
+      },
+      {
+        id: 'banggai_cardinal', code: 63, nameVi: 'Cá Hồng Y Banggai', nameEn: 'Banggai Cardinalfish', group: 'special', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 3, buyPrice: 75, sellPrice: 49, maxSizeCm: 7.0, lifespanDays: 56, matureDays: 5.5,
+        diet: 'Artemia, Trùn huyết, Bo bo', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 82, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 3) - Cá đực ấp trứng bằng miệng',
+        shape: 'cardinal_marine', primaryColor: '#e2e8f0', secondaryColor: '#0f172a', finColor: '#cbd5e1',
+        swimZone: 'mid', specialNote: 'Vây chia đôi cao vút với 2 sọc đen và các chấm trắng ngọc trai lấp lánh.'
+      },
+      {
+        id: 'firefish_goby', code: 64, nameVi: 'Cá Bống Lửa (Firefish)', nameEn: 'Nemateleotris magnifica', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 4, buyPrice: 82, sellPrice: 53, maxSizeCm: 6.5, lifespanDays: 52, matureDays: 5.2,
+        diet: 'Artemia, Bo bo, Cám mịn', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 4) - Ăng-ten vây lưng & đuôi lửa',
+        shape: 'firefish', primaryColor: '#f8fafc', secondaryColor: '#ef4444', finColor: '#f97316',
+        swimZone: 'mid_bottom', specialNote: 'Tia vây lưng dựng thẳng đứng như chiếc ăng-ten, nửa thân sau đỏ cam rực.'
+      },
+      {
+        id: 'mandarin_fish', code: 65, nameVi: 'Cá Trạng Nguyên (Mandarin)', nameEn: 'Synchiropus splendidus', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 4, buyPrice: 120, sellPrice: 78, maxSizeCm: 6.0, lifespanDays: 58, matureDays: 6.0,
+        diet: 'Vi sinh, Bo bo, Artemia', avgOffspring: 12, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 4, commercialTier: 'Cá Biển Size Nhỏ (Cấp 4) - Hoa văn ngọc bích & cam',
+        shape: 'mandarin', primaryColor: '#14b8a6', secondaryColor: '#f97316', finColor: '#0284c7',
+        swimZone: 'bottom', specialNote: 'Được mệnh danh là loài cá có hoa văn rực rỡ nhất rạn san hô.'
+      },
+      {
+        id: 'royal_gramma', code: 66, nameVi: 'Cá Sơn Đá Hoàng Gia', nameEn: 'Royal Gramma', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 4, buyPrice: 88, sellPrice: 57, maxSizeCm: 7.0, lifespanDays: 54, matureDays: 5.4,
+        diet: 'Artemia, Flakes, Bo bo', avgOffspring: 15, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 82, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 4) - Tím hoàng gia chuyển vàng',
+        shape: 'gramma', primaryColor: '#9333ea', secondaryColor: '#facc15', finColor: '#eab308',
+        swimZone: 'mid', specialNote: 'Nửa đầu tím hoàng gia chuyển màu mượt mà sang nửa đuôi vàng tươi.'
+      },
+      {
+        id: 'sixline_wrasse', code: 67, nameVi: 'Cá Bàng Chài Sáu Sọc', nameEn: 'Six Line Wrasse', group: 'egglayer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 3, buyPrice: 72, sellPrice: 47, maxSizeCm: 6.5, lifespanDays: 54, matureDays: 5.2,
+        diet: 'Bo bo, Artemia, Cám viên', avgOffspring: 15, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 82, difficulty: 3, commercialTier: 'Cá Biển Size Nhỏ (Cấp 3) - 6 sọc cam trên nền xanh tím',
+        shape: 'wrasse_six', primaryColor: '#0284c7', secondaryColor: '#f97316', finColor: '#38bdf8',
+        swimZone: 'mid', specialNote: 'Bơi len lỏi qua các kẽ san hô săn sinh vật hại bảo vệ bể.'
+      },
+      {
+        id: 'blue_tang', code: 68, nameVi: 'Cá Đuôi Gai Xanh (Dory)', nameEn: 'Blue Tang', group: 'egglayer', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 4, buyPrice: 185, sellPrice: 120, maxSizeCm: 18.0, lifespanDays: 72, matureDays: 7.0,
+        diet: 'Flakes, Cám viên, Tảo biển', avgOffspring: 18, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Trung (Cấp 4 • Hồ Lv.3+) - Ngôi sao đại dương',
+        shape: 'blue_tang', primaryColor: '#0284c7', secondaryColor: '#0f172a', finColor: '#facc15',
+        swimZone: 'mid', specialNote: 'Sắc xanh dương đậm cùng mảng họa tiết đen và đuôi vàng tam giác kinh điển.'
+      },
+      {
+        id: 'yellow_tang', code: 69, nameVi: 'Cá Đuôi Gai Vàng (Yellow Tang)', nameEn: 'Yellow Tang', group: 'egglayer', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 4, buyPrice: 195, sellPrice: 127, maxSizeCm: 17.0, lifespanDays: 72, matureDays: 7.0,
+        diet: 'Flakes, Tảo, Cám chuyên dụng', avgOffspring: 16, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Trung (Cấp 4 • Hồ Lv.3+) - Đĩa vàng chanh rực',
+        shape: 'yellow_tang', primaryColor: '#facc15', secondaryColor: '#fef08a', finColor: '#eab308',
+        swimZone: 'mid', specialNote: 'Dáng đĩa tròn dẹt mõm nhọn, màu vàng chanh sáng rực nổi bật toàn bể.'
+      },
+      {
+        id: 'copperband_butterfly', code: 70, nameVi: 'Cá Bướm Mỏ Nhọn', nameEn: 'Copperband Butterflyfish', group: 'egglayer', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 5, buyPrice: 220, sellPrice: 143, maxSizeCm: 16.0, lifespanDays: 70, matureDays: 7.2,
+        diet: 'Artemia, Trùn huyết, Trùng chỉ', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 4, commercialTier: 'Cá Biển Size Trung (Cấp 5 • Hồ Lv.3+) - Sọc đồng & đốm mắt',
+        shape: 'butterfly', primaryColor: '#f8fafc', secondaryColor: '#f97316', finColor: '#fb923c',
+        swimZone: 'mid', specialNote: 'Mõm ống dài thanh thoát với các sọc cam đồng và đốm mắt giả đánh lừa kẻ thù.'
+      },
+      {
+        id: 'flame_angelfish', code: 71, nameVi: 'Cá Thần Tiên Lửa', nameEn: 'Flame Angelfish', group: 'egglayer', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 2, unlockLevel: 4, buyPrice: 210, sellPrice: 137, maxSizeCm: 13.0, lifespanDays: 68, matureDays: 6.8,
+        diet: 'Artemia, Flakes, Cám chuyên dụng', avgOffspring: 15, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Trung (Cấp 4 • Hồ Lv.2+) - Đỏ lửa viền xanh',
+        shape: 'flame_angel', primaryColor: '#ef4444', secondaryColor: '#0f172a', finColor: '#0284c7',
+        swimZone: 'mid', specialNote: 'Màu đỏ cam rực cháy với các vạch đen đứng và viền vây xanh coban.'
+      },
+      {
+        id: 'emperor_angelfish', code: 72, nameVi: 'Cá Thần Tiên Hoàng Đế', nameEn: 'Emperor Angelfish', group: 'egglayer', isMarine: true,
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 5, buyPrice: 440, sellPrice: 286, maxSizeCm: 32.0, lifespanDays: 94, matureDays: 8.4,
+        diet: 'Cám chuyên dụng, Artemia, Trùn huyết', avgOffspring: 16, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 5, commercialTier: 'Cá Biển Size Lớn (Cấp 5 • Hồ Lv.4+) - Đế vương rạn san hô',
+        shape: 'emperor_angel', primaryColor: '#0284c7', secondaryColor: '#facc15', finColor: '#fde047',
+        swimZone: 'mid', specialNote: 'Các đường sọc vàng ngang trên nền xanh thẫm cùng chiếc mặt nạ đen quyền uy.'
+      },
+      {
+        id: 'yellow_boxfish', code: 73, nameVi: 'Cá Nóc Hộp Vàng Chấm Bi', nameEn: 'Yellow Boxfish', group: 'special', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 2, unlockLevel: 4, buyPrice: 165, sellPrice: 107, maxSizeCm: 14.0, lifespanDays: 66, matureDays: 6.4,
+        diet: 'Artemia, Trùng chỉ, Cám viên', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Trung (Cấp 4 • Hồ Lv.2+) - Khối vuông chấm bi',
+        shape: 'boxfish', primaryColor: '#facc15', secondaryColor: '#0f172a', finColor: '#eab308',
+        swimZone: 'mid', specialNote: 'Thân hình khối hộp vuông vắn đáng yêu màu vàng nghệ điểm chấm bi đen.'
+      },
+      {
+        id: 'lionfish', code: 74, nameVi: 'Cá Mao Tiên (Lionfish)', nameEn: 'Pterois volitans', group: 'special', isMarine: true,
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 5, buyPrice: 460, sellPrice: 299, maxSizeCm: 34.0, lifespanDays: 92, matureDays: 8.2,
+        diet: 'Trùn huyết, Artemia, Cám cao cấp', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 5, commercialTier: 'Cá Biển Size Lớn (Cấp 5 • Hồ Lv.4+) - Tia vây xòe lông công',
+        shape: 'lionfish', primaryColor: '#ef4444', secondaryColor: '#f8fafc', finColor: '#dc2626',
+        swimZone: 'mid', specialNote: 'Bộ vây xòe rộng như những dải lụa sọc đỏ trắng bồng bềnh đầy kiêu hãnh.'
+      },
+      {
+        id: 'picasso_triggerfish', code: 75, nameVi: 'Cá Bò Picasso', nameEn: 'Picasso Triggerfish', group: 'special', isMarine: true,
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 5, buyPrice: 410, sellPrice: 267, maxSizeCm: 28.0, lifespanDays: 90, matureDays: 8.0,
+        diet: 'Cám viên, Hạt chìm, Trùn huyết', avgOffspring: 15, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Lớn (Cấp 5 • Hồ Lv.4+) - Nghệ thuật lập thể',
+        shape: 'triggerfish', primaryColor: '#e2e8f0', secondaryColor: '#0f172a', finColor: '#facc15',
+        swimZone: 'mid', specialNote: 'Thân hình thoi góc cạnh với các mảng màu phối hợp độc đáo như tranh Picasso.'
+      },
+      {
+        id: 'moorish_idol', code: 76, nameVi: 'Cá Mó Thần Tiên', nameEn: 'Moorish Idol', group: 'egglayer', isMarine: true,
+        sizeClass: 'medium', minTankLevel: 3, unlockLevel: 5, buyPrice: 260, sellPrice: 169, maxSizeCm: 18.0, lifespanDays: 74, matureDays: 7.5,
+        diet: 'Artemia, Flakes, Cám cao cấp', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 5, commercialTier: 'Cá Biển Size Trung (Cấp 5 • Hồ Lv.3+) - Vây lưng dải lụa',
+        shape: 'moorish_idol', primaryColor: '#f8fafc', secondaryColor: '#0f172a', finColor: '#facc15',
+        swimZone: 'mid', specialNote: 'Ba mảng màu trắng – đen – vàng tương phản với tia vây lưng vút cao.'
+      },
+      {
+        id: 'seahorse', code: 77, nameVi: 'Cá Ngựa Vàng (Seahorse)', nameEn: 'Hippocampus kuda', group: 'livebearer', isMarine: true,
+        sizeClass: 'small', minTankLevel: 1, unlockLevel: 4, buyPrice: 135, sellPrice: 88, maxSizeCm: 8.5, lifespanDays: 60, matureDays: 6.2,
+        diet: 'Bo bo, Artemia, Vi sinh', avgOffspring: 14, tempRange: [23, 27], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 4, commercialTier: 'Cá Biển Size Nhỏ (Cấp 4) - Bơi thẳng đứng & cá đực mang thai',
+        shape: 'seahorse', primaryColor: '#eab308', secondaryColor: '#f97316', finColor: '#fde047',
+        swimZone: 'mid', specialNote: 'Dáng bơi thẳng đứng độc nhất vô nhị, đuôi cuộn tròn và cá bố ấp con trong túi bụng.'
+      },
+      {
+        id: 'porcupine_puffer', code: 78, nameVi: 'Cá Nóc Nhím (Puffer)', nameEn: 'Porcupine Puffer', group: 'special', isMarine: true,
+        sizeClass: 'large', minTankLevel: 4, unlockLevel: 5, buyPrice: 480, sellPrice: 312, maxSizeCm: 35.0, lifespanDays: 95, matureDays: 8.4,
+        diet: 'Trùn huyết, Hạt chìm, Artemia', avgOffspring: 14, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 84, difficulty: 4, commercialTier: 'Cá Biển Size Lớn (Cấp 5 • Hồ Lv.4+) - Mắt to tròn biểu cảm',
+        shape: 'puffer', primaryColor: '#78716c', secondaryColor: '#f8fafc', finColor: '#a8a29e',
+        swimZone: 'mid', specialNote: 'Đôi mắt tròn xoe biểu cảm và thân hình mũm mĩm lấm tấm đốm trên lưng.'
+      },
+      {
+        id: 'naso_tang', code: 79, nameVi: 'Cá Nẻo Đuôi Cờ (Naso Tang)', nameEn: 'Naso lituratus', group: 'egglayer', isMarine: true,
+        sizeClass: 'large', minTankLevel: 5, unlockLevel: 6, buyPrice: 560, sellPrice: 364, maxSizeCm: 38.0, lifespanDays: 98, matureDays: 8.8,
+        diet: 'Flakes, Cám cao cấp, Tảo biển', avgOffspring: 16, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 86, difficulty: 5, commercialTier: 'Cá Biển Size Lớn (Cấp 6 • Hồ Lv.5) - Môi cam & đuôi 2 sợi chỉ',
+        shape: 'naso_tang', primaryColor: '#475569', secondaryColor: '#f97316', finColor: '#facc15',
+        swimZone: 'mid', specialNote: 'Thân xám xanh lịch lãm, đôi môi cam nổi bật và hai tia đuôi kéo dài.'
+      },
+      {
+        id: 'bluespot_ray', code: 80, nameVi: 'Cá Đuối Đốm Xanh San Hô', nameEn: 'Blue-spotted Ribbontail Ray', group: 'livebearer', isMarine: true,
+        sizeClass: 'large', minTankLevel: 5, unlockLevel: 6, buyPrice: 720, sellPrice: 468, maxSizeCm: 42.0, lifespanDays: 105, matureDays: 9.2,
+        diet: 'Trùn huyết, Artemia, Hạt chìm', avgOffspring: 6, tempRange: [24, 28], phRange: [7.8, 8.4],
+        minClean: 88, difficulty: 5, commercialTier: 'Cá Biển Size Lớn (Cấp 6 • Hồ Lv.5) - Đĩa vàng đốm xanh điện quang',
+        shape: 'bluespot_ray', primaryColor: '#eab308', secondaryColor: '#0284c7', finColor: '#38bdf8',
+        swimZone: 'bottom', specialNote: 'Lướt êm trên nền cát với đĩa lưng vàng cát phủ đốm tròn xanh điện quang.'
       }
     ];
 
@@ -1175,16 +1419,16 @@
 
     const FILTER_LEVELS = [
       { level: 1, name: 'Lọc Cơ Bản (Bông mút)', cost: 0, cleanPower: 1.0, oxyBonus: 5, eggProtect: 0.0, desc: 'Lọc vi sinh mút xốp cơ bản đi kèm bể khởi nghiệp.' },
-      { level: 2, name: 'Lọc Treo Thác Nước (HOB)', cost: 140, cleanPower: 1.8, oxyBonus: 12, eggProtect: 0.05, desc: 'Tạo dòng chảy mặt nước giàu oxy và lọc cặn lơ lửng.' },
-      { level: 3, name: 'Lọc Thùng Áp Lực (Canister)', cost: 380, cleanPower: 3.0, oxyBonus: 18, eggProtect: 0.12, desc: 'Hệ thống lọc kín chứa nhiều vật liệu lọc Matrix giữ nước trong vắt.' },
-      { level: 4, name: 'Lọc Tràn Đa Ngăn (Sump)', cost: 820, cleanPower: 4.5, oxyBonus: 25, eggProtect: 0.18, desc: 'Xử lý amoniac & nitrit cực mạnh cho mật độ cá dày đặc.' },
-      { level: 5, name: 'Hệ Thống Lọc Sinh Học Chuyên Nghiệp', cost: 1650, cleanPower: 6.8, oxyBonus: 35, eggProtect: 0.25, desc: 'Tự động khử khuẩn UV & cân bằng vi sinh, giảm tối đa tỷ lệ hỏng trứng.' }
+      { level: 2, name: 'Lọc Thác (Hiệu ứng thác nước)', cost: 140, cleanPower: 1.8, oxyBonus: 12, eggProtect: 0.05, desc: 'Tạo dòng thác nước chảy từ trên xuống mặt hồ, bổ sung oxy tự nhiên.' },
+      { level: 3, name: 'Lọc Treo (Tạo dòng & oxy theo dòng)', cost: 380, cleanPower: 3.0, oxyBonus: 18, eggProtect: 0.12, desc: 'Thổi luồng dòng chảy ngang mang theo hàng trăm hạt oxy li ti khắp bể.' },
+      { level: 4, name: 'Lọc Tràn Đa Ngăn (Dàn mưa nhiều dòng)', cost: 820, cleanPower: 4.5, oxyBonus: 25, eggProtect: 0.18, desc: 'Hệ thống dàn mưa nhiều tia nước chảy đều từ trên xuống mặt hồ.' },
+      { level: 5, name: 'Hệ Thống Lọc Chuyên Nghiệp (UV & Plasma Oxy)', cost: 1650, cleanPower: 6.8, oxyBonus: 35, eggProtect: 0.25, desc: 'Tia UV khử khuẩn kết hợp xoáy phản ứng sinh học & cột sủi oxy pha lê siêu mịn.' }
     ];
 
     const LIGHT_LEVELS = [
-      { level: 1, name: 'Đèn LED Cơ Bản', cost: 0, plantBonus: 1.0, colorRate: 1.0, mutationBonus: 0.0, desc: 'Ánh sáng trắng 6500K cơ bản chiếu sáng bể cá.' },
-      { level: 2, name: 'Đèn LED Chuyên Dụng Thủy Sinh (WRGB)', cost: 220, plantBonus: 1.6, colorRate: 1.5, mutationBonus: 0.04, desc: 'Quang phổ chuyên sâu giúp cây thủy sinh nhả bọt oxy và cá lên màu đậm.' },
-      { level: 3, name: 'Đèn RGB Quang Phổ Cao Cấp Studio', cost: 640, plantBonus: 2.3, colorRate: 2.2, mutationBonus: 0.09, desc: 'Tôn vinh sắc tố ánh kim, tăng giá bán cá và tăng xác suất đột biến gen hiếm.' }
+      { level: 1, name: 'Đèn LED Cơ Bản (Tia sáng thẳng)', cost: 0, plantBonus: 1.0, colorRate: 1.0, mutationBonus: 0.0, desc: 'Chiếu các dải tia sáng trắng song song cơ bản từ mặt nước.' },
+      { level: 2, name: 'Đèn WRGB Thủy Sinh (Tia rẽ quạt rộng)', cost: 220, plantBonus: 1.6, colorRate: 1.5, mutationBonus: 0.04, desc: 'Tia sáng rẽ quạt lan tỏa hình nón vàng ấm giúp cây quang hợp & cá lên màu đậm.' },
+      { level: 3, name: 'Đèn RGB Studio Cao Cấp (Lăng kính cầu vồng)', cost: 640, plantBonus: 2.3, colorRate: 2.2, mutationBonus: 0.09, desc: 'Chùm tia lăng kính đa sắc (hồng, ngọc, vàng) giao thoa tăng xác suất đột biến hiếm.' }
     ];
 
     const PLAYER_RANKS = [
@@ -1212,7 +1456,9 @@
       { id: 'sub_sand', name: 'Nền Cát Muối Tiêu Phú Quốc', category: 'Cát nền', price: 45, oxyBoost: 0, cleanBoost: 6, breedScore: 8, layer: 'substrate', renderType: 'substrate_sand', color: '#d6d3d1', desc: 'Mịn màng bảo vệ râu Cá Chuột Corydoras và Chạch Rắn Kuhli.' },
       { id: 'sub_ada_gravel', name: 'Sỏi Suối & Phân Nền Vi Sinh ADA', category: 'Sỏi', price: 75, oxyBoost: 4, cleanBoost: 10, breedScore: 12, layer: 'substrate', renderType: 'substrate_dark', color: '#292524', desc: 'Nuôi dưỡng hệ vi sinh đáy bể và giúp màu sắc cá nổi bật trên nền tối.' },
       { id: 'cave_ceramic', name: 'Hang Gốm Sinh Sản Chuyên Dụng', category: 'Hang trú ẩn', price: 68, oxyBoost: 0, cleanBoost: 2, breedScore: 20, layer: 'fg', renderType: 'cave', color: '#b45309', desc: 'Tăng mạnh khả năng đẻ trứng và tỷ lệ nở cho Tỳ Bà Sao (Pleco), Apistogramma và Cá Chạch.' },
-      { id: 'extra_bubbler', name: 'Đá Sủi Oxy Núi Lửa Phun Bọt', category: 'Các vật trang trí khác', price: 60, oxyBoost: 18, cleanBoost: 3, breedScore: 8, layer: 'fg', renderType: 'bubbler', color: '#0284c7', desc: 'Tạo cột bong bóng khí liên tục, tăng mạnh nồng độ Oxy hòa tan cho cả bể.' }
+      { id: 'extra_bubbler', name: 'Đá Sủi Oxy Núi Lửa Phun Bọt', category: 'Các vật trang trí khác', price: 60, oxyBoost: 18, cleanBoost: 3, breedScore: 8, layer: 'fg', renderType: 'bubbler', color: '#0284c7', desc: 'Tạo cột bong bóng khí liên tục, tăng mạnh nồng độ Oxy hòa tan cho cả bể.' },
+      { id: 'bg_ruby_purple', name: 'Cây Ruby Tím (Purple Ruby)', category: 'Cây thủy sinh hậu cảnh', price: 78, oxyBoost: 10, cleanBoost: 7, breedScore: 14, layer: 'bg', renderType: 'stem_ruby', color: '#a21caf', desc: 'Cây thủy sinh lá tím hồng rực rỡ, tăng mạnh oxy và làm nơi trú ẩn lý tưởng cho cá.' },
+      { id: 'mg_coral_reef', name: 'San Hô Gạc Nai & San Hô Não', category: 'Rạn san hô biển', price: 110, oxyBoost: 8, cleanBoost: 6, breedScore: 18, layer: 'mg', renderType: 'coral', color: '#ec4899', desc: 'Rạn san hô rực rỡ sắc hồng cam, tạo môi trường sinh sản lý tưởng cho 20 loài cá biển.' }
     ];
 
     const CLEANER_DB = [
@@ -1225,6 +1471,21 @@
         id: 'nerite_snail', nameVi: 'Ốc Nerita Dọn Kính', nameEn: 'Nerite Snail',
         price: 22, targetAlgae: 'wall', cleanRatePerDay: 14, color: '#eab308',
         desc: 'Chuyên bò trên mặt kính gặm sạch Rêu Bám Tường (xuất hiện khi nước < 50%), giữ tầm nhìn trong vắt.'
+      },
+      {
+        id: 'trumpet_snail', nameVi: 'Ốc Tháp Sục Cát Lọc Nước', nameEn: 'Malaysian Trumpet Snail',
+        price: 28, targetAlgae: 'water_slow', cleanRatePerDay: 12, color: '#a16207',
+        desc: 'Sống 1 thời gian (~10 ngày): Sục cát đáy & lọc sinh học làm chậm tốc độ giảm chất lượng nước.'
+      },
+      {
+        id: 'pearl_oyster', nameVi: 'Trai Ngọc Trai (Sinh Ngọc $20)', nameEn: 'Pearl Oyster / Clam',
+        price: 65, targetAlgae: 'pearl', cleanRatePerDay: 10, color: '#9333ea',
+        desc: 'Sống 1 thời gian (~10 ngày): Ngẫu nhiên mở vỏ sinh các viên Ngọc Trai — bấm trực tiếp vào ngọc để bán $20!'
+      },
+      {
+        id: 'chili_crab', nameVi: 'Cua Ớt Đỏ Dọn Thức Ăn Thừa', nameEn: 'Red Devil / Thai Crab',
+        price: 35, targetAlgae: 'excess_food', cleanRatePerDay: 16, color: '#ef4444',
+        desc: 'Sống 1 thời gian (~10 ngày): Chuyên dọn sạch thức ăn thừa rơi đáy bể, giảm mạnh tỷ lệ mọc Rêu Tóc.'
       }
     ];
 
@@ -1247,7 +1508,7 @@
     let foodParticles = [];
     let bubbleParticles = [];
     let floatingTexts = [];
-
+    let pearlItems = [];
     function createInitialTank(id, name, isStarter) {
       return {
         id: id,
@@ -1424,8 +1685,18 @@
       return null;
     }
 
+    function getTankWaterHabitat(tank) {
+      if (tank.fishes && tank.fishes.length > 0) {
+        return getSpeciesById(tank.fishes[0].speciesId).isMarine ? 'marine' : 'freshwater';
+      }
+      if (tank.eggClutches && tank.eggClutches.length > 0) {
+        return getSpeciesById(tank.eggClutches[0].speciesId).isMarine ? 'marine' : 'freshwater';
+      }
+      return null;
+    }
+
     const SIZE_CLASS_LABELS = {
-      small: 'Cá Thủy Sinh (Size Nhỏ)',
+      small: 'Cá Size Nhỏ',
       medium: 'Cá Size Trung',
       large: 'Cá Size Lớn'
     };
@@ -1758,12 +2029,20 @@
       const fishLoad = tank.fishes.length;
       const overCap = Math.max(0, fishLoad - tankMeta.maxFish);
       const wallAlgaePenalty = (tank.wallAlgae / 100) * 1.4;
-      const wasteRate = (fishLoad * 0.16) + (overCap * 0.65) + wallAlgaePenalty;
+      const trumpetCount = (tank.cleaners || []).filter(c => c.type === 'trumpet_snail').length;
+      const trumpetWaterSlowFactor = Math.max(0.45, 1 - trumpetCount * 0.14);
+      const wasteRate = ((fishLoad * 0.16) + (overCap * 0.65) + wallAlgaePenalty) * trumpetWaterSlowFactor;
       const filterRecovery = (filterMeta.cleanPower * 0.22) + (habitat.cleanBoost * 0.025);
       tank.cleanliness = Math.max(5, Math.min(100, tank.cleanliness + (filterRecovery - wasteRate) * dayDelta * 6));
 
+      const chiliCrabCount = (tank.cleaners || []).filter(c => c.type === 'chili_crab').length;
+      if (chiliCrabCount > 0 && tank.excessFoodLoad > 0) {
+        tank.excessFoodLoad = Math.max(0, tank.excessFoodLoad - chiliCrabCount * 1.6 * dayDelta);
+      }
+
       if (tank.excessFoodLoad > 1.5) {
-        const growth = Math.min(18, tank.excessFoodLoad * 1.8) * dayDelta;
+        const crabAlgaeMitigation = Math.max(0.3, 1 - chiliCrabCount * 0.22);
+        const growth = Math.min(18, tank.excessFoodLoad * 1.8) * crabAlgaeMitigation * dayDelta;
         tank.hairAlgae = Math.min(100, tank.hairAlgae + growth);
         tank.excessFoodLoad = Math.max(0, tank.excessFoodLoad - dayDelta * 1.2);
       }
@@ -1784,10 +2063,44 @@
           tank.hairAlgae = Math.max(0, tank.hairAlgae - rate);
         } else if (cl.type === 'nerite_snail' && tank.wallAlgae > 0) {
           tank.wallAlgae = Math.max(0, tank.wallAlgae - rate);
+        } else if (cl.type === 'chili_crab') {
+          // Cua ớt dọn cả hạt thức ăn đang nằm trên cát
+          const sandFoodIdx = foodParticles.findIndex(fp => fp.tankId === tank.id && fp.settled && Math.abs(fp.x - cl.x) < 0.14);
+          if (sandFoodIdx !== -1) {
+            foodParticles.splice(sandFoodIdx, 1);
+            tank.excessFoodLoad = Math.max(0, (tank.excessFoodLoad || 0) - 0.5);
+          }
+        } else if (cl.type === 'pearl_oyster') {
+          // Trai ngọc trai ngẫu nhiên mở vỏ sinh 1-2 viên ngọc trai (bấm vào bán được $20)
+          if (typeof cl.openTimer !== 'number') cl.openTimer = 0;
+          if (cl.openTimer > 0) cl.openTimer = Math.max(0, cl.openTimer - dtSec);
+          const pearlsInTank = pearlItems.filter(p => p.tankId === tank.id).length;
+          if (pearlsInTank < 6 && Math.random() < dayDelta * 1.6) {
+            cl.openTimer = 3.5;
+            const spawnCount = Math.random() < 0.35 ? 2 : 1;
+            for (let pk = 0; pk < spawnCount; pk++) {
+              pearlItems.push({
+                id: 'pearl-' + Date.now() + '-' + Math.random(),
+                tankId: tank.id,
+                x: Math.max(0.08, Math.min(0.92, cl.x + (Math.random() * 0.12 - 0.06))),
+                y: 0.84 + Math.random() * 0.03,
+                value: 20,
+                sparkle: Math.random() * 6
+              });
+            }
+            addFloatingText(cl.x, Math.max(0.2, cl.y - 0.05), `🦪 +${spawnCount} Ngọc Trai ($20)!`, '#f0abfc');
+          }
         }
 
         if (cl.ageDays >= cl.lifespanDays) {
-          const isShrimp = cl.type === 'amano_shrimp';
+          const nameMap = {
+            amano_shrimp: 'Tép Amano',
+            nerite_snail: 'Ốc Nerita',
+            trumpet_snail: 'Ốc Tháp',
+            pearl_oyster: 'Trai Ngọc Trai',
+            chili_crab: 'Cua Ớt Đỏ'
+          };
+          const clName = nameMap[cl.type] || 'Sinh vật đáy';
           tank.cleaners.splice(i, 1);
           for (let k = 0; k < 3; k++) {
             foodParticles.push({
@@ -1798,15 +2111,15 @@
               y: Math.min(0.82, cl.y - 0.02),
               vy: 0.02,
               radius: 3.6,
-              color: isShrimp ? '#fb923c' : '#eab308',
+              color: '#fb923c',
               pollution: 0.5,
               settled: false,
               sandTimer: 3.0,
               seed: Math.random() * 10
             });
           }
-          addFloatingText(cl.x, Math.max(0.15, cl.y - 0.04), isShrimp ? '🦐→🍖' : '🐌→🍖', '#fbbf24');
-          logEvent(`${isShrimp ? 'Tép Amano' : 'Ốc Nerita'} đã hết vòng đời (~10 ngày) và trở thành thức ăn tươi cho cá.`, 'info');
+          addFloatingText(cl.x, Math.max(0.15, cl.y - 0.04), '🐚→🍖', '#fbbf24');
+          logEvent(`${clName} đã hết vòng đời (~10 ngày) và trở thành thức ăn tươi cho cá.`, 'info');
         }
       }
 
@@ -2140,7 +2453,7 @@
     }
 
     // =========================================================================
-    // 12. ENGINE ĐỒ HỌA PIXEL ART 16-BIT (50 LOÀI CÁ + TÉP/ỐC + 8 THỦY SINH)
+    // 12. ENGINE ĐỒ HỌA PIXEL ART 16-BIT (80 LOÀI CÁ + 5 SINH VẬT + 15 THỦY SINH)
     // =========================================================================
     const canvas = document.getElementById('aquariumCanvas');
     const ctx = canvas.getContext('2d');
@@ -2225,7 +2538,37 @@
       redtail_catfish:   { body: 'redtail', pal: 'obsidian', secPal: 'silver', finPal: 'red_crimson' },
       peacock_bass:      { body: 'bass', pal: 'amber_gold', secPal: 'emerald' },
       clown_loach:       { body: 'clown_loach', pal: 'gold_orange', secPal: 'obsidian', finPal: 'red_crimson' },
-      arapaima:          { body: 'arapaima', pal: 'obsidian', secPal: 'red_crimson' }
+      arapaima:          { body: 'arapaima', pal: 'obsidian', secPal: 'red_crimson' },
+      genghis_shark:     { body: 'genghis_shark', pal: 'obsidian', secPal: 'silver' },
+      bala_shark:        { body: 'bala_shark', pal: 'silver', secPal: 'obsidian' },
+      redtail_shark:     { body: 'redtail_shark', pal: 'obsidian', finPal: 'red_crimson' },
+      rainbow_shark:     { body: 'rainbow_shark', pal: 'neon_blue', finPal: 'gold_orange' },
+      alligator_gar:     { body: 'alligator_gar', pal: 'emerald', secPal: 'brown_earth' },
+      bichir:            { body: 'bichir', pal: 'amber_gold', secPal: 'obsidian' },
+      butterfly_koi:     { body: 'butterfly_koi', pal: 'amber_gold', secPal: 'silver' },
+      goliath_tiger:     { body: 'goliath_tiger', pal: 'silver', secPal: 'obsidian', finPal: 'red_crimson' },
+      frontosa:          { body: 'frontosa', pal: 'neon_blue', secPal: 'obsidian' },
+      albino_pangasius:  { body: 'genghis_shark', pal: 'pink_rose', secPal: 'silver' },
+      clownfish:         { body: 'clownfish', pal: 'gold_orange', secPal: 'silver' },
+      blue_damselfish:   { body: 'damsel', pal: 'neon_blue', finPal: 'amber_gold' },
+      banggai_cardinal:  { body: 'cardinal_marine', pal: 'silver', secPal: 'obsidian' },
+      firefish_goby:     { body: 'firefish', pal: 'silver', secPal: 'red_crimson' },
+      mandarin_fish:     { body: 'mandarin', pal: 'teal_cyan', secPal: 'gold_orange', finPal: 'neon_blue' },
+      royal_gramma:      { body: 'gramma', pal: 'royal_purple', secPal: 'amber_gold' },
+      sixline_wrasse:    { body: 'wrasse_six', pal: 'neon_blue', secPal: 'gold_orange' },
+      blue_tang:         { body: 'blue_tang', pal: 'neon_blue', secPal: 'obsidian', finPal: 'amber_gold' },
+      yellow_tang:       { body: 'yellow_tang', pal: 'amber_gold', finPal: 'amber_gold' },
+      copperband_butterfly:{ body: 'butterfly', pal: 'silver', secPal: 'gold_orange' },
+      flame_angelfish:   { body: 'flame_angel', pal: 'red_crimson', secPal: 'obsidian', finPal: 'neon_blue' },
+      emperor_angelfish: { body: 'emperor_angel', pal: 'neon_blue', secPal: 'amber_gold' },
+      yellow_boxfish:    { body: 'boxfish', pal: 'amber_gold', secPal: 'obsidian' },
+      lionfish:          { body: 'lionfish', pal: 'red_crimson', secPal: 'silver' },
+      picasso_triggerfish:{ body: 'triggerfish', pal: 'silver', secPal: 'obsidian', finPal: 'amber_gold' },
+      moorish_idol:      { body: 'moorish_idol', pal: 'silver', secPal: 'obsidian', finPal: 'amber_gold' },
+      seahorse:          { body: 'seahorse', pal: 'amber_gold', finPal: 'gold_orange' },
+      porcupine_puffer:  { body: 'puffer', pal: 'brown_earth', secPal: 'silver' },
+      naso_tang:         { body: 'naso_tang', pal: 'obsidian', secPal: 'gold_orange', finPal: 'amber_gold' },
+      bluespot_ray:      { body: 'bluespot_ray', pal: 'amber_gold', secPal: 'neon_blue' }
     };
 
     const PIXEL_MORPHS = {
@@ -2273,7 +2616,34 @@
       datnioid:        { headX: 38, tailBaseX: 15, topH: 9, botH: 7, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 5, spikyDorsal: true, ventralH: 4 },
       flagtail:        { headX: 39, tailBaseX: 14, topH: 6, botH: 6, tailLen: 10, tailSpread: 8,  tailStyle: 'fork', dorsalH: 5, ventralH: 4 },
       bass:            { headX: 41, tailBaseX: 13, topH: 6, botH: 6, tailLen: 8,  tailSpread: 7,  tailStyle: 'fan', dorsalH: 5, ventralH: 4 },
-      clown_loach:     { headX: 39, tailBaseX: 14, topH: 7, botH: 3, tailLen: 9,  tailSpread: 8,  tailStyle: 'fork', dorsalH: 6, ventralH: 3, flatBelly: true }
+      clown_loach:     { headX: 39, tailBaseX: 14, topH: 7, botH: 3, tailLen: 9,  tailSpread: 8,  tailStyle: 'fork', dorsalH: 6, ventralH: 3, flatBelly: true },
+      genghis_shark:   { headX: 42, tailBaseX: 12, topH: 6, botH: 3, tailLen: 9,  tailSpread: 8,  tailStyle: 'fork', dorsalH: 8, sharkFin: true, ventralH: 3, flatBelly: true },
+      bala_shark:      { headX: 41, tailBaseX: 13, topH: 6, botH: 5, tailLen: 9,  tailSpread: 8,  tailStyle: 'fork', dorsalH: 7, sharkFin: true, ventralH: 4 },
+      redtail_shark:   { headX: 40, tailBaseX: 14, topH: 5, botH: 3, tailLen: 8,  tailSpread: 7,  tailStyle: 'fork', dorsalH: 6, sharkFin: true, ventralH: 3, flatBelly: true },
+      rainbow_shark:   { headX: 40, tailBaseX: 14, topH: 5, botH: 3, tailLen: 8,  tailSpread: 7,  tailStyle: 'fork', dorsalH: 6, sharkFin: true, ventralH: 3, flatBelly: true },
+      alligator_gar:   { headX: 44, tailBaseX: 10, topH: 4, botH: 4, tailLen: 6,  tailSpread: 5,  tailStyle: 'fan', dorsalH: 3, dorsalBack: true, ventralH: 3 },
+      bichir:          { headX: 42, tailBaseX: 11, topH: 4, botH: 4, tailLen: 6,  tailSpread: 5,  tailStyle: 'fan', dorsalH: 4, spikyDorsal: true, longDorsal: true, ventralH: 2 },
+      butterfly_koi:   { headX: 40, tailBaseX: 16, topH: 6, botH: 6, tailLen: 14, tailSpread: 12, tailStyle: 'fan', dorsalH: 7, ventralH: 6 },
+      goliath_tiger:   { headX: 42, tailBaseX: 12, topH: 6, botH: 5, tailLen: 9,  tailSpread: 8,  tailStyle: 'fork', dorsalH: 5, ventralH: 4 },
+      frontosa:        { headX: 38, tailBaseX: 15, topH: 8, botH: 7, tailLen: 8,  tailSpread: 7,  tailStyle: 'fan', dorsalH: 5, ventralH: 5, hump: 'kok' },
+      clownfish:       { headX: 37, tailBaseX: 16, topH: 6, botH: 6, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 4, ventralH: 3 },
+      damsel:          { headX: 38, tailBaseX: 16, topH: 5, botH: 5, tailLen: 8,  tailSpread: 6,  tailStyle: 'fork', dorsalH: 4, ventralH: 3 },
+      cardinal_marine: { headX: 36, tailBaseX: 17, topH: 6, botH: 6, tailLen: 10, tailSpread: 8,  tailStyle: 'fork', dorsalH: 8, ventralH: 8, tallSail: true },
+      firefish:        { headX: 40, tailBaseX: 14, topH: 4, botH: 4, tailLen: 9,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 9, ventralH: 3 },
+      mandarin:        { headX: 38, tailBaseX: 16, topH: 5, botH: 4, tailLen: 8,  tailSpread: 7,  tailStyle: 'fan', dorsalH: 6, ventralH: 4 },
+      gramma:          { headX: 39, tailBaseX: 15, topH: 5, botH: 5, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 4, ventralH: 3 },
+      wrasse_six:      { headX: 40, tailBaseX: 14, topH: 5, botH: 5, tailLen: 7,  tailSpread: 5,  tailStyle: 'fan', dorsalH: 3, ventralH: 3 },
+      blue_tang:       { headX: 37, tailBaseX: 15, topH: 8, botH: 8, tailLen: 8,  tailSpread: 7,  tailStyle: 'fan', dorsalH: 4, ventralH: 4, roundDisc: true },
+      yellow_tang:     { headX: 39, tailBaseX: 16, topH: 9, botH: 9, tailLen: 7,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 5, ventralH: 5, roundDisc: true },
+      butterfly:       { headX: 40, tailBaseX: 16, topH: 9, botH: 9, tailLen: 7,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 5, ventralH: 5, roundDisc: true },
+      flame_angel:     { headX: 37, tailBaseX: 16, topH: 8, botH: 8, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 4, ventralH: 4, roundDisc: true },
+      emperor_angel:   { headX: 38, tailBaseX: 15, topH: 8, botH: 8, tailLen: 8,  tailSpread: 7,  tailStyle: 'fan', dorsalH: 5, ventralH: 5 },
+      boxfish:         { headX: 36, tailBaseX: 16, topH: 7, botH: 7, tailLen: 7,  tailSpread: 5,  tailStyle: 'fan', dorsalH: 3, ventralH: 3, boxy: true },
+      lionfish:        { headX: 37, tailBaseX: 16, topH: 6, botH: 6, tailLen: 9,  tailSpread: 8,  tailStyle: 'fan', dorsalH: 9, spikyDorsal: true, ventralH: 7 },
+      triggerfish:     { headX: 39, tailBaseX: 15, topH: 7, botH: 7, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 5, dorsalBack: true, ventralH: 4 },
+      moorish_idol:    { headX: 38, tailBaseX: 17, topH: 9, botH: 9, tailLen: 8,  tailSpread: 6,  tailStyle: 'fan', dorsalH: 11, tallSail: true, ventralH: 6 },
+      puffer:          { headX: 37, tailBaseX: 15, topH: 8, botH: 8, tailLen: 7,  tailSpread: 5,  tailStyle: 'fan', dorsalH: 3, ventralH: 3, roundDisc: true },
+      naso_tang:       { headX: 40, tailBaseX: 14, topH: 6, botH: 6, tailLen: 9,  tailSpread: 7,  tailStyle: 'lyre', dorsalH: 4, ventralH: 3 }
     };
 
     function finalizePixelGrid(grid, outlineCol, PW = 48, PH = 32) {
@@ -2347,20 +2717,34 @@
 
       const wag = [0, -1, 0, 1][frameIdx % 4];
       const b = cfg.body;
-      const eyeColor = variant === 'albino' ? '#e11d48' : '#090d16';
+      const eyeColor = (variant === 'albino' || sp.id === 'albino_pangasius') ? '#e11d48' : '#090d16';
 
-      if (b === 'stingray') {
+      if (b === 'seahorse') {
+        for (let y = 5; y <= 10; y++) {
+          for (let x = 21; x <= 28; x++) shadePx(x, y, (y - 5) / 5, pal);
+        }
+        for (let x = 29; x <= 33; x++) { setPx(x, 7, pal.mid); setPx(x, 8, pal.sh); }
+        for (let y = 11; y <= 23; y++) {
+          const curve = Math.round(Math.sin((y - 11) * 0.4) * 2);
+          const halfW = y < 18 ? 3 : 2;
+          for (let x = 23 - halfW - curve; x <= 23 + halfW - curve; x++) shadePx(x, y, (x - (23 - halfW - curve)) / (halfW * 2), pal);
+        }
+        setPx(24, 24, pal.mid); setPx(26, 25, pal.mid); setPx(27, 24, pal.sh); setPx(26, 23, pal.sh);
+        setPx(19, 14 + wag, fin.hi); setPx(18, 15 + wag, fin.mid); setPx(19, 16 + wag, fin.mid);
+        setPx(26, 7, '#ffffff'); setPx(27, 7, eyeColor);
+      } else if (b === 'stingray' || b === 'bluespot_ray') {
         for (let x = 14; x <= 38; x++) {
           const nx = (x - 26) / 12;
           const ry = Math.round(9 * Math.sqrt(Math.max(0, 1 - nx * nx)));
           for (let y = 16 - ry; y <= 16 + ry; y++) {
             const rel = (y - (16 - ry)) / Math.max(1, ry * 2);
             shadePx(x, y, rel, pal);
-            if ((x % 5 === 0) && (y % 4 === 0)) setPx(x, y, sec.mid);
+            if ((x % 4 === 0) && (y % 4 === 0)) setPx(x, y, b === 'bluespot_ray' ? sec.hi : sec.mid);
           }
         }
         for (let tx = 4; tx < 15; tx++) {
           setPx(tx, 16 + Math.round(Math.sin(tx * 0.6 + wag) * 1.2), pal.sh);
+          if (b === 'bluespot_ray') setPx(tx, 15 + Math.round(Math.sin(tx * 0.6 + wag) * 1.2), sec.mid);
         }
         setPx(33, 13, '#ffffff'); setPx(34, 13, eyeColor);
         setPx(33, 19, '#ffffff'); setPx(34, 19, eyeColor);
@@ -2398,6 +2782,8 @@
             const py = 16 + dy + yOff;
             if (b === 'rummy' || b === 'flagtail') {
               setPx(x, py, (Math.abs(dy) % 3 === 0) ? '#0f172a' : fin.mid);
+            } else if ((b === 'bala_shark' || b === 'clownfish') && (i >= tailLen - 2 || Math.abs(dy) >= spread - 1)) {
+              setPx(x, py, '#090d16');
             } else {
               setPx(x, py, ((x + py) % 2 === 0) ? fin.hi : fin.mid);
             }
@@ -2416,10 +2802,11 @@
         for (let x = dStart; x <= dEnd; x++) {
           const f = (x - dStart) / Math.max(1, dEnd - dStart);
           let h = m.tallSail ? Math.round((1 - f * 0.65) * dorsalH) : (Math.round(Math.sin(f * Math.PI) * dorsalH) + 1);
+          if (m.sharkFin) h = Math.round((1 - Math.abs(f - 0.6) * 1.5) * dorsalH) + 1;
           if (m.spikyDorsal && x % 2 === 0) h += 2;
           for (let dy = 0; dy < h; dy++) {
             const py = 16 - topH - dy + 1;
-            const col = (b === 'yellow_lab' && dy >= h - 1) ? '#090d16' : (((x + py) % 2 === 0) ? fin.hi : fin.mid);
+            const col = ((b === 'yellow_lab' || b === 'bala_shark') && dy >= h - 1) ? '#090d16' : (((x + py) % 2 === 0) ? fin.hi : fin.mid);
             setPx(x, py, col);
           }
         }
@@ -2441,21 +2828,39 @@
         const rx = (headX - tailBaseX) / 2;
         for (let x = tailBaseX; x <= headX; x++) {
           const nx = (x - midX) / rx;
-          const profile = m.roundDisc
-            ? Math.sqrt(Math.max(0, 1 - nx * nx))
-            : Math.sqrt(Math.max(0, 1 - nx * nx * 0.92));
+          const profile = m.boxy
+            ? (Math.abs(nx) > 0.8 ? 0.65 : 0.95)
+            : (m.roundDisc ? Math.sqrt(Math.max(0, 1 - nx * nx)) : Math.sqrt(Math.max(0, 1 - nx * nx * 0.92)));
           const topY = Math.round(16 - topH * profile);
           const botY = m.flatBelly ? Math.round(16 + botH) : Math.round(16 + botH * profile);
 
           for (let y = topY; y <= botY; y++) {
             const relY = (y - topY) / Math.max(1, botY - topY);
-            if (b === 'rainbow' && x < midX) {
+            if (b === 'clownfish' && (x === 18 || x === 19 || x === 25 || x === 26 || x === 32 || x === 33)) {
+              setPx(x, y, '#ffffff');
+            } else if ((b === 'cardinal_marine' || b === 'butterfly' || b === 'moorish_idol') && (x === 21 || x === 22 || x === 29 || x === 30)) {
+              setPx(x, y, sec.mid);
+            } else if (b === 'gramma' && x < midX) {
               shadePx(x, y, relY, sec);
-            } else if (b === 'koi' && ((x > 25 && x < 33 && y < 17) || (x > 16 && x < 21 && y < 16))) {
+            } else if (b === 'firefish' && x < midX + 2) {
+              shadePx(x, y, relY, sec);
+            } else if (b === 'blue_tang' && y < 16 && x > 18 && x < 31) {
+              setPx(x, y, sec.mid);
+            } else if ((b === 'flame_angel' || b === 'lionfish') && (x % 4 === 0)) {
+              setPx(x, y, sec.mid);
+            } else if ((b === 'emperor_angel' || b === 'wrasse_six' || b === 'goliath_tiger') && (y % 3 === 0)) {
+              setPx(x, y, sec.mid);
+            } else if ((b === 'boxfish' || b === 'puffer' || b === 'alligator_gar') && (x % 3 === 0) && (y % 3 === 0)) {
+              setPx(x, y, sec.mid);
+            } else if (b === 'genghis_shark' && y > 16) {
+              shadePx(x, y, 0.2, sec);
+            } else if (b === 'rainbow' && x < midX) {
+              shadePx(x, y, relY, sec);
+            } else if ((b === 'koi' || b === 'butterfly_koi') && ((x > 25 && x < 33 && y < 17) || (x > 16 && x < 21 && y < 16))) {
               shadePx(x, y, relY, sec);
             } else if (b === 'redtail' && y > 17) {
               shadePx(x, y, 0.2, sec);
-            } else if ((b === 'tiger' || b === 'datnioid' || b === 'clown_loach') && (x === 19 || x === 20 || x === 25 || x === 26 || x === 31 || x === 32)) {
+            } else if ((b === 'tiger' || b === 'datnioid' || b === 'clown_loach' || b === 'frontosa') && (x === 19 || x === 20 || x === 25 || x === 26 || x === 31 || x === 32)) {
               setPx(x, y, sec.mid);
             } else if (b === 'rasbora' && x >= 16 && x <= 25 && Math.abs(y - 16) <= Math.round((x - 15) * 0.45)) {
               setPx(x, y, sec.mid);
@@ -2533,11 +2938,28 @@
       };
 
       const isRed = itemId === 'bg_rotala_red';
+      const isRuby = itemId === 'bg_ruby_purple';
+      const isCoral = itemId === 'mg_coral_reef';
       const isWood = itemId === 'wood_bonsai';
+      const isRock = itemId === 'rock_seiryu';
+      const isSand = itemId === 'sub_sand';
+      const isAda = itemId === 'sub_ada_gravel';
+      const isCave = itemId === 'cave_ceramic';
+      const isBubbler = itemId === 'extra_bubbler';
       const isDeep = itemId === 'mg_anubias' || itemId === 'mg_java_fern' || itemId === 'moss_java';
-      const pal = isWood ? PIXEL_PALETTES.wood_bark : (isRed ? PIXEL_PALETTES.red_plant : (isDeep ? PIXEL_PALETTES.deep_fern : PIXEL_PALETTES.lime_plant));
-      const sec = PIXEL_PALETTES.lime_plant;
-
+      const pal = isWood ? PIXEL_PALETTES.wood_bark
+        : (isRuby ? PIXEL_PALETTES.royal_purple
+        : (isCoral ? PIXEL_PALETTES.pink_rose
+        : (isRed ? PIXEL_PALETTES.red_plant
+        : (isRock ? PIXEL_PALETTES.silver
+        : (isSand ? PIXEL_PALETTES.brown_earth
+        : (isAda ? PIXEL_PALETTES.obsidian
+        : (isCave ? PIXEL_PALETTES.wood_bark
+        : (isBubbler ? PIXEL_PALETTES.obsidian
+        : (isDeep ? PIXEL_PALETTES.deep_fern : PIXEL_PALETTES.lime_plant)))))))));
+      const sec = isBubbler ? PIXEL_PALETTES.neon_blue
+        : (isRuby ? PIXEL_PALETTES.pink_rose
+        : (isCoral ? PIXEL_PALETTES.gold_orange : PIXEL_PALETTES.lime_plant));
       const shadePx = (x, y, ratioY, palette = pal) => {
         const checker = ((x + y) % 2 === 0);
         if (ratioY < 0.25) setPx(x, y, palette.hi);
@@ -2627,7 +3049,7 @@
             }
           }
         });
-      } else if (itemId === 'bg_rotala_red') {
+      } else if (itemId === 'bg_rotala_red' || itemId === 'bg_ruby_purple') {
         [-7, 1, 8].forEach((sx, idx) => {
           const topY = idx === 1 ? 6 : 10;
           for (let y = topY; y <= 28; y++) {
@@ -2636,13 +3058,41 @@
             if ((y - topY) % 4 === 2 && y < 26) {
               for (let step = 1; step <= 4; step++) {
                 shadePx(24 + sx - step + sway, y - Math.floor(step / 2), 0.2, pal);
-                shadePx(24 + sx - step + sway, y - Math.floor(step / 2) + 1, 0.6, pal);
+                shadePx(24 + sx - step + sway, y - Math.floor(step / 2) + 1, 0.6, itemId === 'bg_ruby_purple' ? sec : pal);
                 shadePx(24 + sx + step + sway, y - Math.floor(step / 2), 0.2, pal);
-                shadePx(24 + sx + step + sway, y - Math.floor(step / 2) + 1, 0.6, pal);
+                shadePx(24 + sx + step + sway, y - Math.floor(step / 2) + 1, 0.6, itemId === 'bg_ruby_purple' ? sec : pal);
               }
             }
           }
         });
+      } else if (itemId === 'mg_coral_reef') {
+        for (let y = 23; y <= 28; y++) {
+          for (let x = 10; x <= 38; x++) shadePx(x, y, (y - 23) / 5, PIXEL_PALETTES.brown_earth);
+        }
+        const branches = [
+          { x0: 16, y0: 23, x1: 11, y1: 11 },
+          { x0: 15, y0: 17, x1: 18, y1: 10 },
+          { x0: 24, y0: 23, x1: 24, y1: 7 },
+          { x0: 24, y0: 14, x1: 20, y1: 9 },
+          { x0: 24, y0: 13, x1: 29, y1: 8 }
+        ];
+        branches.forEach(br => {
+          const steps = br.y0 - br.y1;
+          for (let i = 0; i <= steps; i++) {
+            const f = i / steps;
+            const cx = Math.round(br.x0 + (br.x1 - br.x0) * f);
+            const cy = br.y0 - i;
+            shadePx(cx, cy, 0.2, pal);
+            shadePx(cx + 1, cy, 0.5, pal);
+            if (i === steps) setPx(cx, cy - 1, pal.hi);
+          }
+        });
+        for (let y = 16; y <= 23; y++) {
+          for (let x = 30; x <= 39; x++) {
+            const dx = (x - 34.5) / 4.5, dy = (y - 19.5) / 3.5;
+            if (dx * dx + dy * dy <= 1.0) shadePx(x, y, (x + y) % 2 === 0 ? 0.15 : 0.6, sec);
+          }
+        }
       } else if (itemId === 'wood_bonsai') {
         for (let y = 17; y <= 28; y++) {
           const bend = Math.round(Math.sin((28 - y) * 0.25) * 2);
@@ -2666,6 +3116,89 @@
             }
           }
         });
+      } else if (itemId === 'rock_seiryu') {
+        // Đá Tai Mèo Seiryu / Đá Suối 16-bit Pixel Art
+        for (let y = 10; y <= 28; y++) {
+          const frac = (y - 10) / 18;
+          const halfW = Math.round(4 + frac * 12);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            const rel = (y - 10) / 18;
+            shadePx(x, y, (x + y) % 5 === 0 ? Math.min(1, rel + 0.3) : rel, pal);
+          }
+        }
+        // Khối đá phụ bên trái
+        for (let y = 17; y <= 28; y++) {
+          const halfW = Math.round(3 + ((y - 17) / 11) * 5);
+          for (let x = 14 - halfW; x <= 14 + halfW; x++) {
+            shadePx(x, y, (y - 17) / 11, pal);
+          }
+        }
+      } else if (itemId === 'sub_sand') {
+        // Nền Cát Muối Tiêu Phú Quốc 16-bit Pixel Art
+        for (let x = 6; x <= 42; x++) {
+          const topY = 17 + Math.round(Math.sin(x * 0.25) * 1.5);
+          for (let y = topY; y <= 28; y++) {
+            const rel = (y - topY) / Math.max(1, 28 - topY);
+            shadePx(x, y, rel, pal);
+            if ((x * 7 + y * 13) % 11 === 0) setPx(x, y, '#1c1917');
+            else if ((x * 5 + y * 3) % 13 === 0) setPx(x, y, '#fafaf9');
+          }
+        }
+      } else if (itemId === 'sub_ada_gravel') {
+        // Sỏi Suối & Phân Nền Vi Sinh ADA 16-bit Pixel Art
+        for (let x = 6; x <= 42; x++) {
+          const topY = 17 + Math.round(Math.cos(x * 0.3) * 1.5);
+          for (let y = topY; y <= 28; y++) {
+            const rel = (y - topY) / Math.max(1, 28 - topY);
+            shadePx(x, y, rel, pal);
+          }
+        }
+        // Các viên sỏi tròn & hạt phân nền ADA nổi khối
+        const pebbles = [
+          { cx: 12, cy: 18, rx: 3, ry: 2 },
+          { cx: 20, cy: 19, rx: 4, ry: 2 },
+          { cx: 29, cy: 18, rx: 3, ry: 2 },
+          { cx: 36, cy: 19, rx: 3, ry: 2 },
+          { cx: 16, cy: 23, rx: 3, ry: 2 },
+          { cx: 25, cy: 24, rx: 4, ry: 2 },
+          { cx: 34, cy: 23, rx: 3, ry: 2 }
+        ];
+        pebbles.forEach(pb => {
+          for (let y = pb.cy - pb.ry; y <= pb.cy + pb.ry; y++) {
+            for (let x = pb.cx - pb.rx; x <= pb.cx + pb.rx; x++) {
+              const dx = (x - pb.cx) / pb.rx, dy = (y - pb.cy) / pb.ry;
+              if (dx * dx + dy * dy <= 1.0) {
+                shadePx(x, y, (y - (pb.cy - pb.ry)) / (pb.ry * 2), PIXEL_PALETTES.silver);
+              }
+            }
+          }
+        });
+      } else if (itemId === 'cave_ceramic') {
+        for (let y = 13; y <= 28; y++) {
+          const frac = (y - 13) / 15;
+          const halfW = Math.round(7 + Math.sin(frac * Math.PI * 0.65) * 6);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            shadePx(x, y, frac, pal);
+          }
+        }
+        for (let y = 19; y <= 28; y++) {
+          const doorW = y < 22 ? 4 : 5;
+          for (let x = 24 - doorW; x <= 24 + doorW; x++) {
+            setPx(x, y, '#0c0a09');
+          }
+        }
+      } else if (itemId === 'extra_bubbler') {
+        for (let y = 16; y <= 28; y++) {
+          const frac = (y - 16) / 12;
+          const halfW = Math.round(4 + frac * 10);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            shadePx(x, y, frac, pal);
+          }
+        }
+        for (let x = 21; x <= 27; x++) setPx(x, 15, sec.hi);
+        const bOff = frameIdx % 4;
+        setPx(23, 12 - bOff, '#ffffff'); setPx(24, 12 - bOff, sec.hi);
+        setPx(25, 8 - bOff, '#ffffff'); setPx(22, 5 - (bOff % 3), sec.hi);
       }
 
       const off = finalizePixelGrid(grid, pal.out, PW, PH);
@@ -2683,8 +3216,14 @@
         const ix = Math.round(x), iy = Math.round(y);
         if (ix >= 1 && ix < PW - 1 && iy >= 1 && iy < PH - 1) grid[iy][ix] = color;
       };
-      const pal = cleanerType === 'amano_shrimp' ? PIXEL_PALETTES.pink_rose : PIXEL_PALETTES.gold_orange;
-      const sec = cleanerType === 'amano_shrimp' ? PIXEL_PALETTES.silver : PIXEL_PALETTES.obsidian;
+      const pal = cleanerType === 'amano_shrimp' ? PIXEL_PALETTES.pink_rose
+        : (cleanerType === 'trumpet_snail' ? PIXEL_PALETTES.brown_earth
+        : (cleanerType === 'pearl_oyster' ? PIXEL_PALETTES.royal_purple
+        : (cleanerType === 'chili_crab' ? PIXEL_PALETTES.red_crimson : PIXEL_PALETTES.gold_orange)));
+      const sec = cleanerType === 'amano_shrimp' ? PIXEL_PALETTES.silver
+        : (cleanerType === 'trumpet_snail' ? PIXEL_PALETTES.amber_gold
+        : (cleanerType === 'pearl_oyster' ? PIXEL_PALETTES.silver
+        : (cleanerType === 'chili_crab' ? PIXEL_PALETTES.gold_orange : PIXEL_PALETTES.obsidian)));
       const shadePx = (x, y, ratioY, palette = pal) => {
         const checker = ((x + y) % 2 === 0);
         if (ratioY < 0.25) setPx(x, y, palette.hi);
@@ -2710,6 +3249,54 @@
         for (let rx = 37; rx <= 44; rx++) {
           setPx(rx, 15 - Math.floor((rx - 37) / 3), sec.hi);
         }
+      } else if (cleanerType === 'trumpet_snail') {
+        for (let x = 28; x <= 39; x++) { setPx(x, 24, '#cbd5e1'); setPx(x, 25, '#94a3b8'); }
+        setPx(38, 22, '#cbd5e1'); setPx(39, 21, '#94a3b8');
+        for (let x = 8; x <= 31; x++) {
+          const frac = (x - 8) / 23;
+          const halfH = Math.max(1, Math.round(frac * 6));
+          const cy = 20 + Math.round((1 - frac) * 2);
+          for (let y = cy - halfH; y <= cy + halfH; y++) {
+            shadePx(x, y, (y - (cy - halfH)) / Math.max(1, halfH * 2), (x % 4 === 0) ? sec : pal);
+          }
+        }
+      } else if (cleanerType === 'pearl_oyster') {
+        const isOpen = (frameIdx % 4 === 1 || frameIdx % 4 === 2);
+        for (let y = 19; y <= 26; y++) {
+          const halfW = 13 - (y - 19);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) shadePx(x, y, (y - 19) / 7, pal);
+        }
+        const lift = isOpen ? 5 : 1;
+        for (let y = 12 - lift; y <= 18 - lift; y++) {
+          const halfW = 13 - Math.abs(y - (16 - lift));
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) shadePx(x, y, (y - (12 - lift)) / 6, pal);
+        }
+        if (isOpen) {
+          for (let y = 15; y <= 19; y++) {
+            for (let x = 22; x <= 26; x++) {
+              const dx = x - 24, dy = y - 17;
+              if (dx * dx + dy * dy <= 4) setPx(x, y, (dx <= 0 && dy <= 0) ? '#ffffff' : '#e2e8f0');
+            }
+          }
+        }
+      } else if (cleanerType === 'chili_crab') {
+        for (let y = 14; y <= 21; y++) {
+          for (let x = 16; x <= 32; x++) {
+            const dx = (x - 24) / 8, dy = (y - 17.5) / 3.5;
+            if (dx * dx + dy * dy <= 1.0) shadePx(x, y, (y - 14) / 7, pal);
+          }
+        }
+        for (let y = 11; y <= 15; y++) {
+          for (let x = 12; x <= 16; x++) shadePx(x, y, 0.2, sec);
+          for (let x = 32; x <= 36; x++) shadePx(x, y, 0.2, sec);
+        }
+        [17, 20, 23].forEach((ly, idx) => {
+          const off = (idx % 2 === 0) ? wag : -wag;
+          setPx(14, ly, pal.sh); setPx(12, ly + 2 + off, pal.mid); setPx(11, ly + 4 + off, pal.sh);
+          setPx(34, ly, pal.sh); setPx(36, ly + 2 - off, pal.mid); setPx(37, ly + 4 - off, pal.sh);
+        });
+        setPx(20, 12, '#ffffff'); setPx(20, 13, '#090d16');
+        setPx(28, 12, '#ffffff'); setPx(28, 13, '#090d16');
       } else {
         for (let x = 12; x <= 36; x++) {
           setPx(x, 24, '#cbd5e1');
@@ -2819,7 +3406,7 @@
         ctx.fillRect(0, bandTop + idx * bandH, W, bandH + 1);
       });
 
-      // Sóng mặt nước Pixel
+      // Sóng mặt nước Pixel bậc thang gợn nhẹ
       ctx.save();
       for (let wx = 0; wx < W; wx += pxUnit * 2) {
         const wy = snap(H * 0.055 + Math.sin(wx * 0.02 + timeSec * 2.5) * pxUnit * 1.4);
@@ -2834,21 +3421,45 @@
         ctx.fillRect(0, bandTop, W, H - bandTop);
       }
 
-      // 2. Tia sáng Pixel
+      // 2. Tia sáng Pixel phân biệt rõ theo từng cấp nâng cấp đèn (Cấp 1: Thẳng, Cấp 2: Rẽ quạt rộng, Cấp 3: Lăng kính đa sắc)
       if (lightOn) {
         ctx.save();
-        const beamColor = tank.lightLevel === 3 ? 'rgba(240, 171, 252, 0.09)' : 'rgba(186, 230, 253, 0.09)';
-        ctx.fillStyle = beamColor;
-        for (let i = 0; i < 5; i++) {
-          const bx = snap(W * (0.12 + i * 0.19) + Math.sin(timeSec * 0.6 + i) * pxUnit * 4);
-          for (let row = 0; row < 14; row++) {
-            const ry = bandTop + row * (pxUnit * 6);
-            if (ry > H * 0.82) break;
-            ctx.fillRect(bx + row * pxUnit, ry, pxUnit * (5 + row), pxUnit * 6);
+        if (tank.lightLevel === 1) {
+          ctx.fillStyle = 'rgba(186, 230, 253, 0.08)';
+          for (let i = 0; i < 4; i++) {
+            const bx = snap(W * (0.16 + i * 0.21) + Math.sin(timeSec * 0.5 + i) * pxUnit * 2);
+            for (let row = 0; row < 12; row++) {
+              const ry = bandTop + row * (pxUnit * 6);
+              if (ry > H * 0.78) break;
+              ctx.fillRect(bx, ry, pxUnit * 6, pxUnit * 6);
+            }
+          }
+        } else if (tank.lightLevel === 2) {
+          for (let i = 0; i < 5; i++) {
+            const bx = snap(W * (0.14 + i * 0.18) + Math.sin(timeSec * 0.7 + i) * pxUnit * 3);
+            for (let row = 0; row < 14; row++) {
+              const ry = bandTop + row * (pxUnit * 6);
+              if (ry > H * 0.82) break;
+              ctx.fillStyle = row % 2 === 0 ? 'rgba(254, 240, 138, 0.08)' : 'rgba(125, 211, 252, 0.08)';
+              const spread = row * pxUnit;
+              ctx.fillRect(bx - spread, ry, pxUnit * 5 + spread * 2, pxUnit * 6);
+            }
+          }
+        } else {
+          const prismColors = ['rgba(244, 114, 182, 0.10)', 'rgba(56, 189, 248, 0.10)', 'rgba(250, 204, 21, 0.09)', 'rgba(167, 139, 250, 0.10)'];
+          for (let i = 0; i < 6; i++) {
+            const bx = snap(W * (0.10 + i * 0.16) + Math.sin(timeSec * 0.9 + i * 1.2) * pxUnit * 4);
+            const dir = i % 2 === 0 ? 1 : -1;
+            ctx.fillStyle = prismColors[i % prismColors.length];
+            for (let row = 0; row < 15; row++) {
+              const ry = bandTop + row * (pxUnit * 5);
+              if (ry > H * 0.83) break;
+              ctx.fillRect(bx + dir * row * pxUnit, ry, pxUnit * (6 + Math.floor(row * 1.3)), pxUnit * 5);
+            }
           }
         }
-        ctx.fillStyle = 'rgba(224, 242, 254, 0.35)';
-        for (let p = 0; p < 16; p++) {
+        ctx.fillStyle = tank.lightLevel === 3 ? 'rgba(245, 208, 254, 0.45)' : 'rgba(224, 242, 254, 0.35)';
+        for (let p = 0; p < (12 + tank.lightLevel * 5); p++) {
           const px = snap(((Math.sin(timeSec * 0.2 + p * 1.7) * 0.5 + 0.5) * 0.9 + 0.05) * W);
           const py = snap(((Math.cos(timeSec * 0.15 + p * 2.3) * 0.5 + 0.5) * 0.7 + 0.1) * H);
           ctx.fillRect(px, py, pxUnit, pxUnit);
@@ -2921,32 +3532,152 @@
     function drawFilterDevice(tank, W, H, timeSec) {
       const p = Math.max(3, Math.round(W / 190));
       const snap = v => Math.round(v / p) * p;
+      const flv = tank.filterLevel || 1;
+      const speed = gameState.gameSpeed || 1;
       ctx.save();
-      const fx = snap(W * 0.02);
-      const fy = snap(H * 0.08);
-      const fw = snap(W * 0.045);
-      const fh = snap(H * 0.28);
 
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(fx - p, fy - p, fw + p * 2, fh + p * 2);
-      ctx.fillStyle = '#334155';
-      ctx.fillRect(fx, fy, fw, fh);
-      ctx.fillStyle = '#475569';
-      ctx.fillRect(fx, fy, p * 2, fh);
+      if (flv === 1) {
+        // Cấp 1: Lọc Cơ Bản (Bông mút góc trái bình thường)
+        const fx = snap(W * 0.02);
+        const fy = snap(H * 0.08);
+        const fw = snap(W * 0.045);
+        const fh = snap(H * 0.28);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(fx - p, fy - p, fw + p * 2, fh + p * 2);
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(fx, fy, p * 2, fh);
+        ctx.fillStyle = '#0ea5e9';
+        for (let k = 0; k < 5; k++) {
+          ctx.fillRect(fx + p, fy + p * 4 + k * p * 3, fw - p * 2, p);
+        }
+        if (Math.random() < 0.18 * speed) {
+          bubbleParticles.push({ x: 0.055 + Math.random() * 0.02, y: 0.12, r: 2, vx: 0.015, vy: -0.05 });
+        }
+      } else if (flv === 2) {
+        // Cấp 2: Lọc Thác -> Hiệu ứng thác nước chảy từ trên xuống mặt hồ
+        const fx = snap(W * 0.03);
+        const fy = snap(H * 0.02);
+        const fw = snap(W * 0.11);
+        const fh = snap(H * 0.06);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(fx - p, fy, fw + p * 2, fh + p);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(fx + p * 2, fy + fh - p, fw - p * 3, p * 2);
 
-      ctx.fillStyle = '#0ea5e9';
-      for (let k = 0; k < 5; k++) {
-        ctx.fillRect(fx + p, fy + p * 4 + k * p * 3, fw - p * 2, p);
-      }
+        // Thác nước chảy từ trên xuống
+        const fallX = fx + fw - p * 5;
+        const fallW = p * 5;
+        const fallTop = fy + fh;
+        const fallH = snap(H * 0.16);
+        const phase = Math.floor(timeSec * 14 * speed) % 2;
+        for (let wy = 0; wy < fallH; wy += p) {
+          const dither = ((wy / p) + phase) % 2 === 0;
+          ctx.fillStyle = dither ? 'rgba(186, 230, 253, 0.85)' : 'rgba(56, 189, 248, 0.65)';
+          ctx.fillRect(fallX, fallTop + wy, fallW, p);
+        }
+        // Bọt trắng sủi dưới chân thác nước
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(fallX - p * 2 + phase * p, fallTop + fallH - p, fallW + p * 3, p * 2);
+        if (Math.random() < 0.35 * speed) {
+          bubbleParticles.push({
+            x: (fallX + Math.random() * fallW) / W,
+            y: (fallTop + fallH) / H,
+            r: 2.2,
+            vx: 0.02 + Math.random() * 0.02,
+            vy: -0.04 - Math.random() * 0.03
+          });
+        }
+      } else if (flv === 3) {
+        // Cấp 3: Lọc Treo -> Hiệu ứng tạo dòng chảy ngang và oxy theo dòng
+        const fx = snap(W * 0.02);
+        const fy = snap(H * 0.08);
+        const fw = snap(W * 0.055);
+        const fh = snap(H * 0.30);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(fx - p, fy - p, fw + p * 2, fh + p * 2);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(fx, fy, fw, fh);
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(fx + fw, fy + p * 4, p * 3, p * 3);
 
-      if (Math.random() < 0.22 * (gameState.gameSpeed || 1)) {
-        bubbleParticles.push({
-          x: 0.055 + Math.random() * 0.03,
-          y: 0.12 + Math.random() * 0.04,
-          r: 1.5 + Math.random() * 2.5,
-          vx: 0.03 + Math.random() * 0.02,
-          vy: -0.05 - Math.random() * 0.04
-        });
+        // Các vệt dòng chảy ngang lượn sóng trên bể
+        ctx.fillStyle = 'rgba(186, 230, 253, 0.45)';
+        for (let lane = 0; lane < 3; lane++) {
+          const ly = snap(H * (0.13 + lane * 0.05));
+          const flowX = snap(((timeSec * 140 * speed + lane * 90) % (W * 0.55)) + fx + fw + p * 3);
+          ctx.fillRect(flowX, ly, p * 6, p);
+        }
+        // Bắn hạt oxy theo dòng chảy ngang
+        if (Math.random() < 0.45 * speed) {
+          bubbleParticles.push({
+            x: (fx + fw + p * 3) / W,
+            y: 0.13 + Math.random() * 0.04,
+            r: 2.0 + Math.random() * 1.5,
+            vx: 0.11 + Math.random() * 0.05,
+            vy: -0.015 - Math.random() * 0.02
+          });
+        }
+      } else if (flv === 4) {
+        // Cấp 4: Lọc Tràn Đa Ngăn -> Hiệu ứng dàn mưa nhiều dòng nước chảy xuống
+        const barX = snap(W * 0.04);
+        const barY = snap(H * 0.03);
+        const barW = snap(W * 0.38);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(barX - p, barY - p, barW + p * 2, p * 4);
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(barX, barY, barW, p * 2);
+
+        const phase = Math.floor(timeSec * 16 * speed) % 3;
+        const streamCount = 8;
+        for (let s = 0; s < streamCount; s++) {
+          const sx = snap(barX + p * 3 + s * ((barW - p * 6) / (streamCount - 1)));
+          const streamH = snap(H * 0.14);
+          for (let wy = 0; wy < streamH; wy += p * 2) {
+            const dropY = barY + p * 3 + wy + ((phase + s) % 2) * p;
+            ctx.fillStyle = (s + wy / p) % 2 === 0 ? 'rgba(186, 230, 253, 0.85)' : 'rgba(56, 189, 248, 0.75)';
+            ctx.fillRect(sx, dropY, p, p);
+          }
+          if (Math.random() < 0.09 * speed) {
+            bubbleParticles.push({ x: sx / W, y: (barY + p * 3 + streamH) / H, r: 2, vx: 0.01, vy: -0.04 });
+          }
+        }
+      } else {
+        // Cấp 5: Hệ Thống Lọc Chuyên Nghiệp -> Tháp lọc UV & Lò phản ứng sủi cột oxy pha lê mịn
+        const fx = snap(W * 0.02);
+        const fy = snap(H * 0.08);
+        const fw = snap(W * 0.055);
+        const fh = snap(H * 0.34);
+        ctx.fillStyle = '#090d16';
+        ctx.fillRect(fx - p, fy - p, fw + p * 2, fh + p * 2);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(fx, fy, fw, fh);
+        // Lõi đèn UV tím xanh & màn hình LED chỉ số
+        const uvPulse = Math.sin(timeSec * 5) > 0;
+        ctx.fillStyle = uvPulse ? '#a855f7' : '#38bdf8';
+        ctx.fillRect(fx + p * 2, fy + p * 3, fw - p * 4, fh - p * 8);
+        ctx.fillStyle = '#34d399';
+        ctx.fillRect(fx + p, fy + fh - p * 3, fw - p * 2, p);
+
+        // Hiệu ứng xoáy dòng chảy bề mặt + cột sủi oxy pha lê siêu mịn từ đáy
+        ctx.fillStyle = 'rgba(165, 243, 252, 0.45)';
+        for (let lane = 0; lane < 3; lane++) {
+          const ly = snap(H * (0.11 + lane * 0.04));
+          const flowX = snap(((timeSec * 165 * speed + lane * 110) % (W * 0.75)) + fx + fw + p * 2);
+          ctx.fillRect(flowX, ly, p * 7, p);
+        }
+        if (Math.random() < 0.65 * speed) {
+          bubbleParticles.push({
+            x: 0.08 + Math.random() * 0.025,
+            y: 0.82,
+            r: 1.8 + Math.random() * 1.5,
+            vx: 0.035 + Math.random() * 0.03,
+            vy: -0.09 - Math.random() * 0.05
+          });
+        }
       }
       ctx.restore();
     }
@@ -3003,6 +3734,7 @@
       const snap = v => Math.round(v / p) * p;
       const cx = snap(inst.x * W);
       const cy = snap(inst.y * H);
+      const swayStep = Math.round(Math.sin(timeSec * 1.8 + inst.x * 10) * 2) * p;
 
       ctx.save();
       if (decorEditMode) {
@@ -3013,47 +3745,23 @@
         ctx.setLineDash([]);
       }
 
-      const drawPxBlock = (x, y, w, h, col, outline = '#052e16') => {
-        ctx.fillStyle = outline;
-        ctx.fillRect(x - p, y - p, w + p * 2, h + p * 2);
-        ctx.fillStyle = col;
-        ctx.fillRect(x, y, w, h);
-      };
+      const frameIdx = Math.floor((timeSec * 2.2 + inst.x * 8) % 4);
+      const sprite = getPlantPixelSprite(item.id, Math.abs(frameIdx));
+      const drawW = Math.round(48 * 1.35 * (W / 900) * (inst.scale || 1));
+      const drawH = Math.round(32 * 1.35 * (W / 900) * (inst.scale || 1));
 
-      const plantIds = [
-        'fg_monte_carlo', 'fg_dwarf_hair', 'mg_anubias', 'mg_java_fern',
-        'bg_hornwort', 'bg_rotala_red', 'moss_java', 'wood_bonsai'
-      ];
+      ctx.translate(cx + swayStep * 0.35, cy);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(sprite, -drawW / 2, -drawH + p * 2, drawW, drawH);
 
-      if (plantIds.includes(item.id)) {
-        const frameIdx = Math.floor((timeSec * 2.5 + inst.x * 8) % 4);
-        const sprite = getPlantPixelSprite(item.id, Math.abs(frameIdx));
-        const scaleMult = (item.layer === 'bg' ? 2.4 : (item.id === 'wood_bonsai' ? 2.5 : 1.9)) * (inst.scale || 1.0);
-        const drawW = Math.round(48 * scaleMult * (W / 900));
-        const drawH = Math.round(32 * scaleMult * (W / 900));
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(sprite, Math.round(cx - drawW / 2), Math.round(cy - drawH + p * 2), drawW, drawH);
-      } else if (item.renderType === 'rock') {
-        drawPxBlock(cx - p * 7, cy - p * 6, p * 14, p * 6, '#475569', '#0f172a');
-        drawPxBlock(cx - p * 5, cy - p * 11, p * 9, p * 6, '#64748b', '#0f172a');
-        drawPxBlock(cx - p * 3, cy - p * 14, p * 5, p * 4, '#94a3b8', '#0f172a');
-      } else if (item.renderType === 'cave') {
-        drawPxBlock(cx - p * 6, cy - p * 7, p * 12, p * 7, '#b45309', '#451a03');
-        drawPxBlock(cx - p * 4, cy - p * 9, p * 8, p * 3, '#d97706', '#451a03');
-        ctx.fillStyle = '#1c1917';
-        ctx.fillRect(cx - p * 3, cy - p * 5, p * 6, p * 5);
-      } else if (item.renderType === 'bubbler') {
-        drawPxBlock(cx - p * 4, cy - p * 4, p * 8, p * 4, '#334155', '#0f172a');
-        drawPxBlock(cx - p * 2, cy - p * 6, p * 4, p * 2, '#38bdf8', '#0f172a');
-        if (Math.random() < 0.45 * (gameState.gameSpeed || 1)) {
-          bubbleParticles.push({
-            x: inst.x + (Math.random() * 0.02 - 0.01),
-            y: inst.y - 0.04,
-            r: 2 + Math.random() * 2.5,
-            vx: (Math.random() - 0.5) * 0.01,
-            vy: -0.09 - Math.random() * 0.05
-          });
-        }
+      if (item.renderType === 'bubbler' && Math.random() < 0.45 * (gameState.gameSpeed || 1)) {
+        bubbleParticles.push({
+          x: inst.x + (Math.random() * 0.02 - 0.01),
+          y: inst.y - 0.04,
+          r: 2 + Math.random() * 2.5,
+          vx: (Math.random() - 0.5) * 0.01,
+          vy: -0.09 - Math.random() * 0.05
+        });
       }
       ctx.restore();
     }
@@ -3366,7 +4074,7 @@
       if (!Array.isArray(tank.cleaners)) return;
       const effDt = dt * (gameState.gameSpeed || 1);
       tank.cleaners.forEach(cl => {
-        if (gameState.gameSpeed > 0) {
+        if (gameState.gameSpeed > 0 && cl.type !== 'pearl_oyster') {
           cl.x += cl.vx * effDt;
           if (cl.x < 0.06) { cl.x = 0.06; cl.vx = Math.abs(cl.vx); }
           if (cl.x > 0.94) { cl.x = 0.94; cl.vx = -Math.abs(cl.vx); }
@@ -3380,14 +4088,32 @@
         const cy = snap(cl.y * H);
         ctx.save();
         ctx.translate(cx, cy);
-        if (cl.vx < 0) ctx.scale(-1, 1);
+        if (cl.type !== 'pearl_oyster' && cl.type !== 'chili_crab' && cl.vx < 0) ctx.scale(-1, 1);
 
-        const frameIdx = Math.floor((timeSec * 3.5 + cl.x * 10) % 4);
+        const frameIdx = cl.type === 'pearl_oyster'
+          ? (cl.openTimer > 0 ? 1 : 0)
+          : Math.floor((timeSec * 3.5 + cl.x * 10) % 4);
         const sprite = getCleanerPixelSprite(cl.type, Math.abs(frameIdx));
-        const drawW = Math.round(48 * 0.85 * (W / 900));
-        const drawH = Math.round(32 * 0.85 * (W / 900));
+        const drawW = Math.round(48 * 0.95 * (W / 900));
+        const drawH = Math.round(32 * 0.95 * (W / 900));
         ctx.imageSmoothingEnabled = false;
         ctx.drawImage(sprite, -drawW / 2, -drawH / 2, drawW, drawH);
+        ctx.restore();
+      });
+
+      // Vẽ các viên Ngọc Trai rơi ra từ Trai Ngọc Trai (bấm vào bán ngay $20!)
+      pearlItems.forEach(pr => {
+        if (pr.tankId !== tank.id) return;
+        const px = snap(pr.x * W);
+        const py = snap(pr.y * H);
+        const pulse = Math.sin(timeSec * 6 + pr.sparkle) > 0;
+        ctx.save();
+        ctx.fillStyle = '#3b0764';
+        ctx.fillRect(px - p * 2 - 1, py - p * 2 - 1, p * 4 + 2, p * 4 + 2);
+        ctx.fillStyle = pulse ? '#ffffff' : '#f1f5f9';
+        ctx.fillRect(px - p * 2, py - p * 2, p * 4, p * 4);
+        ctx.fillStyle = '#f0abfc';
+        ctx.fillRect(px - p, py - p, p * 2, p * 2);
         ctx.restore();
       });
     }
@@ -3454,6 +4180,23 @@
       initAudio();
       const tank = getCurrentTank();
       const { xNorm, yNorm } = screenToTankCoords(e.clientX, e.clientY);
+
+      // 0. Kiểm tra bấm nhặt & bán Ngọc Trai ($20/viên)
+      for (let i = pearlItems.length - 1; i >= 0; i--) {
+        const pr = pearlItems[i];
+        if (pr.tankId !== tank.id) continue;
+        if (Math.hypot(pr.x - xNorm, pr.y - yNorm) < 0.055) {
+          pearlItems.splice(i, 1);
+          gameState.money += pr.value;
+          gameState.stats.totalRevenue += pr.value;
+          playSfx('cash');
+          addPlayerXp(4);
+          addFloatingText(pr.x, pr.y - 0.03, `🦪 +$${pr.value} Ngọc Trai!`, '#f0abfc');
+          showToast(`🦪 Đã bán 1 viên Ngọc Trai thu về $${pr.value}!`, 'success');
+          updateHeaderUI();
+          return;
+        }
+      }
 
       if (decorEditMode) {
         let bestDecor = null;
@@ -3573,10 +4316,11 @@
         type: cl.id,
         ageDays: 0,
         lifespanDays: Number((9.5 + Math.random() * 1.5).toFixed(1)),
+        openTimer: 0,
         x: 0.15 + Math.random() * 0.7,
-        y: cl.id === 'amano_shrimp' ? 0.85 : (0.25 + Math.random() * 0.5),
-        vx: (Math.random() < 0.5 ? 1 : -1) * (cl.id === 'amano_shrimp' ? 0.025 : 0.012),
-        vy: cl.id === 'amano_shrimp' ? 0 : (Math.random() < 0.5 ? 1 : -1) * 0.009
+        y: cl.id === 'nerite_snail' ? (0.25 + Math.random() * 0.5) : 0.85,
+        vx: cl.id === 'pearl_oyster' ? 0 : (Math.random() < 0.5 ? 1 : -1) * (cl.id === 'amano_shrimp' ? 0.025 : 0.014),
+        vy: cl.id === 'nerite_snail' ? (Math.random() < 0.5 ? 1 : -1) * 0.009 : 0
       });
       playSfx('cash');
       addPlayerXp(8);
@@ -3599,6 +4343,14 @@
 
       const tank = getCurrentTank();
       const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
+      const tankHab = getTankWaterHabitat(tank);
+      const spHab = sp.isMarine ? 'marine' : 'freshwater';
+      if (tankHab && tankHab !== spHab) {
+        const habLabel = tankHab === 'marine' ? 'Cá Biển (Nước Mặn)' : 'Cá Nước Ngọt';
+        const spHabLabel = spHab === 'marine' ? 'Cá Biển (Nước Mặn)' : 'Cá Nước Ngọt';
+        showToast(`🌊 ${tank.name} đang nuôi ${habLabel}! Không thể nuôi chung với ${spHabLabel} — hãy mua thêm hồ riêng (Tab 5) hoặc chọn hồ trống!`, 'warn');
+        return;
+      }
       const tankClass = getTankActiveSizeClass(tank);
       const spClass = getSpeciesSizeClass(sp);
       if (tankClass && tankClass !== spClass) {
@@ -4397,6 +5149,12 @@
       const fIdx = srcTank.fishes.findIndex(f => f.id === selectedFishId);
       if (fIdx === -1) return;
       const spCheck = getSpeciesById(srcTank.fishes[fIdx].speciesId);
+      const destHab = getTankWaterHabitat(destTank);
+      const spHab = spCheck.isMarine ? 'marine' : 'freshwater';
+      if (destHab && destHab !== spHab) {
+        showToast(`🌊 ${destTank.name} đang nuôi ${destHab === 'marine' ? 'Cá Biển' : 'Cá Nước Ngọt'}, không thể ở chung với ${spHab === 'marine' ? 'Cá Biển' : 'Cá Nước Ngọt'}!`, 'warn');
+        return;
+      }
       const destClass = getTankActiveSizeClass(destTank);
       const spClass = getSpeciesSizeClass(spCheck);
       if (destClass && destClass !== spClass) {
@@ -4546,6 +5304,7 @@
       const getMinTankLv = (sp) => sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
 
       const filtered = SPECIES_DB.filter(sp => {
+        if (cat === 'marine' && !sp.isMarine) return false;
         if (cat === 'size_small' && getSizeClass(sp) !== 'small') return false;
         if (cat === 'size_medium' && getSizeClass(sp) !== 'medium') return false;
         if (cat === 'size_large' && getSizeClass(sp) !== 'large') return false;
@@ -4574,6 +5333,9 @@
         const locked = sp.unlockLevel > gameState.playerLevel;
         const szClass = getSizeClass(sp);
         const minTankLv = getMinTankLv(sp);
+        const tankHab = getTankWaterHabitat(tank);
+        const spHab = sp.isMarine ? 'marine' : 'freshwater';
+        const wrongHabitat = tankHab && tankHab !== spHab;
         const tankClass = getTankActiveSizeClass(tank);
         const wrongSizeGroup = tankClass && tankClass !== szClass;
         const tankTooSmall = tank.tankLevel < minTankLv;
@@ -4598,6 +5360,7 @@
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-xs font-extrabold text-white">#${sp.code}. ${sp.nameVi}</span>
                     <span class="text-[11px] text-cyan-300 font-semibold">(${sp.nameEn})</span>
+                    ${sp.isMarine ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/25 text-blue-200 border border-blue-400/30 font-bold">🌊 Cá Biển</span>` : ''}
                     <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">${groupLabelMap[sp.group]}</span>
                     <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300">${zoneLabelMap[sp.swimZone] || 'Tầng Giữa'}</span>
                     ${sizeBadge}
@@ -4626,6 +5389,10 @@
                 <span class="px-3 py-1 rounded-lg bg-slate-800 text-amber-300 text-xs font-bold border border-amber-500/30">
                   🔒 Mở khóa ở Cấp ${sp.unlockLevel}
                 </span>
+              ` : (wrongHabitat ? `
+                <span class="px-2.5 py-1 rounded-lg bg-blue-950/80 text-blue-200 text-[11px] font-bold border border-blue-400/40">
+                  🌊 Cá biển phải nuôi hồ riêng — Cần mua thêm hồ!
+                </span>
               ` : (wrongSizeGroup ? `
                 <span class="px-2.5 py-1 rounded-lg bg-amber-950/70 text-amber-300 text-[11px] font-bold border border-amber-500/40">
                   🚫 Không ở chung được — Cần mua thêm hồ riêng!
@@ -4643,7 +5410,7 @@
                     💑 Mua Cặp ♂♀ ($${pairPrice})
                   </button>
                 </div>
-              `))}
+              `)))}
             </div>
           </div>
         `;
@@ -4726,7 +5493,8 @@
 
       const plantIds = [
         'fg_monte_carlo', 'fg_dwarf_hair', 'mg_anubias', 'mg_java_fern',
-        'bg_hornwort', 'bg_rotala_red', 'moss_java', 'wood_bonsai'
+        'bg_hornwort', 'bg_rotala_red', 'bg_ruby_purple', 'mg_coral_reef',
+        'moss_java', 'wood_bonsai', 'rock_seiryu', 'sub_sand', 'sub_ada_gravel', 'cave_ceramic', 'extra_bubbler'
       ];
 
       html += DECOR_DB.map(item => `
