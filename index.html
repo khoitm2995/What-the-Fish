@@ -522,11 +522,11 @@
               <option value="fry">Cá Bột (Mới sinh)</option>
               <option value="rare">Biến Thể Hiếm</option>
             </select>
-            <button onclick="sellBreedingPairsCurrentTank()" class="px-2.5 py-1 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-400/40 text-purple-200 text-xs font-bold">
-              💑 Bán Cặp Giống (+35%)
+            <button onclick="toggleSelectAllFilteredFish()" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-bold">
+              ☑️ Chọn Tất Cả
             </button>
-            <button onclick="batchSellAdultUnlocked()" class="px-2.5 py-1 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-400/40 text-emerald-200 text-xs font-bold">
-              💰 Bán Hàng Loạt Cá Lớn
+            <button id="btnSellSelectedBatch" onclick="sellSelectedBatchFish()" class="px-2.5 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow">
+              💰 Bán Cá Đã Chọn (0)
             </button>
             <button id="btnAutoSellOvercrowdedFry" onclick="autoSellOvercrowdedFry()" class="px-2.5 py-1 rounded-xl bg-amber-600/30 hover:bg-amber-600/50 border border-amber-400/40 text-amber-200 text-xs font-bold">
               🐟 Tự Bán Cá Con Quá Tải
@@ -875,6 +875,7 @@
     let gameState = null;
     let activeTab = 'tank';
     let selectedFishId = null;
+    let selectedManageFishIds = new Set();
     let followFishMode = false;
     let decorEditMode = false;
     let draggingDecorInstance = null;
@@ -4033,23 +4034,73 @@
       saveGameToStorage();
     }
 
-    function batchSellAdultUnlocked() {
+    function toggleManageFishSelection(fishId) {
+      if (selectedManageFishIds.has(fishId)) {
+        selectedManageFishIds.delete(fishId);
+      } else {
+        selectedManageFishIds.add(fishId);
+      }
+      renderFishManager();
+    }
+
+    function getFilteredManagerFishes() {
       const tank = getCurrentTank();
-      const sellable = tank.fishes.filter(f => (f.stage === 'adult' || f.stage === 'juvenile') && !f.locked && !f.isPregnant);
-      if (sellable.length === 0) {
-        showToast('⚠️ Không có cá thương phẩm nào chưa khóa!', 'warn');
+      const filterStage = document.getElementById('manageFilterStage')?.value || 'all';
+      return tank.fishes.filter(f => {
+        if (filterStage === 'adult' && f.stage !== 'adult') return false;
+        if (filterStage === 'juvenile' && f.stage !== 'juvenile') return false;
+        if (filterStage === 'fry' && f.stage !== 'fry') return false;
+        if (filterStage === 'rare' && f.variant === 'normal') return false;
+        return true;
+      });
+    }
+
+    function toggleSelectAllFilteredFish() {
+      const list = getFilteredManagerFishes().filter(f => !f.locked);
+      if (list.length === 0) {
+        showToast('⚠️ Không có cá chưa khóa nào trong danh sách này!', 'warn');
         return;
       }
+      const allSelected = list.every(f => selectedManageFishIds.has(f.id));
+      if (allSelected) {
+        list.forEach(f => selectedManageFishIds.delete(f.id));
+      } else {
+        list.forEach(f => selectedManageFishIds.add(f.id));
+      }
+      renderFishManager();
+    }
+
+    function sellSelectedBatchFish() {
+      const tank = getCurrentTank();
+      const validIds = new Set(tank.fishes.map(f => f.id));
+      for (const id of Array.from(selectedManageFishIds)) {
+        if (!validIds.has(id)) selectedManageFishIds.delete(id);
+      }
+
+      const sellable = tank.fishes.filter(f => selectedManageFishIds.has(f.id) && !f.locked);
+      if (sellable.length === 0) {
+        showToast('⚠️ Hãy tích chọn ít nhất 1 cá thể (chưa khóa) để bán!', 'warn');
+        return;
+      }
+
       let earned = 0;
       const removeSet = new Set();
-      sellable.forEach(f => { earned += calculateFishValue(f); removeSet.add(f.id); });
+      sellable.forEach(f => {
+        earned += calculateFishValue(f);
+        removeSet.add(f.id);
+        applyMarketSaturation(f.speciesId, 1);
+      });
+
       tank.fishes = tank.fishes.filter(f => !removeSet.has(f.id));
+      removeSet.forEach(id => selectedManageFishIds.delete(id));
       if (removeSet.has(selectedFishId)) selectedFishId = null;
+
       gameState.money += earned;
       gameState.stats.totalRevenue += earned;
       gameState.stats.totalFishSold += sellable.length;
       playSfx('cash');
-      showToast(`💰 Đã bán hàng loạt ${sellable.length} cá thu về $${earned}!`, 'success');
+      addPlayerXp(sellable.length * 4);
+      showToast(`💰 Đã bán ${sellable.length} cá đã chọn thu về $${earned}!`, 'success');
       renderAllPanels();
       saveGameToStorage();
     }
@@ -5046,6 +5097,13 @@
       const tankHab = getTankActiveHabitat(tank);
       const tankCls = getTankActiveSizeClass(tank);
 
+      const ownedBySpecies = {};
+      gameState.tanks.forEach(t => {
+        t.fishes.forEach(f => {
+          ownedBySpecies[f.speciesId] = (ownedBySpecies[f.speciesId] || 0) + 1;
+        });
+      });
+
       container.innerHTML = cleanersHtml + filtered.map(sp => {
         const locked = sp.unlockLevel > gameState.playerLevel;
         const spHab = getSpeciesHabitat(sp);
@@ -5055,6 +5113,7 @@
         const wrongSizeGroup = tankCls && tankCls !== szClass;
         const tankTooSmall = tank.tankLevel < minTankLv;
         const pairPrice = Math.round(sp.buyPrice * 2.2);
+        const ownedCount = ownedBySpecies[sp.id] || 0;
 
         const habBadge = spHab === 'marine'
           ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/25 text-cyan-200 font-bold">🌊 Cá Biển</span>`
@@ -5064,6 +5123,7 @@
           : (szClass === 'medium'
             ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">Size Trung • Hồ Lv.${minTankLv}+</span>`
             : `<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">Size Nhỏ</span>`);
+        const ownedBadge = `<span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${ownedCount > 0 ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-500/40' : 'bg-slate-800/90 text-slate-400'}">Đang nuôi: ${ownedCount}</span>`;
 
         return `
           <div class="fish-card rounded-xl p-2.5 bg-slate-900/85 border ${locked ? 'border-slate-800 opacity-65' : 'border-slate-700/80'} transition flex flex-col gap-2">
@@ -5077,6 +5137,7 @@
                     <span class="text-xs font-extrabold text-white">#${sp.code}. ${sp.nameVi}</span>
                     ${habBadge}
                     ${sizeBadge}
+                    ${ownedBadge}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">
                     Cỡ: <b>${sp.maxSizeCm}cm</b> • Trưởng thành: <b>${sp.matureDays} ngày</b> • Sinh sản: <b>~${sp.avgOffspring} con</b>
@@ -5319,15 +5380,22 @@
       const container = document.getElementById('fishManagerList');
       if (!container) return;
       const tank = getCurrentTank();
-      const filterStage = document.getElementById('manageFilterStage')?.value || 'all';
 
-      const list = tank.fishes.filter(f => {
-        if (filterStage === 'adult' && f.stage !== 'adult') return false;
-        if (filterStage === 'juvenile' && f.stage !== 'juvenile') return false;
-        if (filterStage === 'fry' && f.stage !== 'fry') return false;
-        if (filterStage === 'rare' && f.variant === 'normal') return false;
-        return true;
-      });
+      const validIds = new Set(tank.fishes.map(f => f.id));
+      for (const id of Array.from(selectedManageFishIds)) {
+        if (!validIds.has(id)) selectedManageFishIds.delete(id);
+      }
+
+      const selectedFishes = tank.fishes.filter(f => selectedManageFishIds.has(f.id) && !f.locked);
+      const selectedTotalVal = selectedFishes.reduce((sum, f) => sum + calculateFishValue(f), 0);
+      const sellSelBtn = document.getElementById('btnSellSelectedBatch');
+      if (sellSelBtn) {
+        sellSelBtn.textContent = selectedFishes.length > 0
+          ? `💰 Bán Cá Đã Chọn (${selectedFishes.length} • $${selectedTotalVal})`
+          : '💰 Bán Cá Đã Chọn (0)';
+      }
+
+      const list = getFilteredManagerFishes();
 
       if (list.length === 0) {
         container.innerHTML = `<div class="text-center text-slate-500 text-xs py-8">Không có cá thể nào trong mục lọc này tại ${tank.name}.</div>`;
@@ -5339,9 +5407,11 @@
         const varInfo = GENETIC_VARIANTS[fish.variant] || GENETIC_VARIANTS.normal;
         const val = calculateFishValue(fish);
         const stageName = fish.stage === 'fry' ? 'Cá Bột' : (fish.stage === 'juvenile' ? 'Cá Nhỡ' : 'Trưởng Thành');
+        const isChecked = selectedManageFishIds.has(fish.id) && !fish.locked;
         return `
-          <div onclick="selectedFishId='${fish.id}'; updateSelectedFishInspector();" class="p-2 rounded-xl bg-slate-900/85 border ${selectedFishId === fish.id ? 'border-cyan-400' : 'border-slate-800'} flex items-center justify-between gap-2 cursor-pointer hover:border-slate-700">
+          <div onclick="selectedFishId='${fish.id}'; updateSelectedFishInspector();" class="p-2 rounded-xl bg-slate-900/85 border ${isChecked ? 'border-emerald-400/80 bg-emerald-950/20' : (selectedFishId === fish.id ? 'border-cyan-400' : 'border-slate-800')} flex items-center justify-between gap-2 cursor-pointer hover:border-slate-700">
             <div class="flex items-center gap-2">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} ${fish.locked ? 'disabled' : ''} onclick="event.stopPropagation(); toggleManageFishSelection('${fish.id}')" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer shrink-0" title="${fish.locked ? 'Cá đang khóa không thể chọn bán' : 'Tích chọn để bán'}" />
               <div class="w-12 h-8 rounded-lg bg-slate-950 flex items-center justify-center shrink-0">
                 ${generateFishSvgMarkup(sp, fish.variant, 44, 28)}
               </div>
