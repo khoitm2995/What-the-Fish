@@ -196,19 +196,19 @@
       <div class="relative w-full rounded-2xl overflow-hidden border-2 border-sky-500/40 shadow-2xl shadow-sky-950/80 bg-slate-950" style="aspect-ratio: 16 / 10; min-height: 330px;">
         <canvas id="aquariumCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
 
-        <!-- Overlay: Thao tác nhanh ngay trên bể -->
-        <div class="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5 pointer-events-auto">
-          <button id="btnQuickFeed" onclick="quickFeedCurrentTank()" class="px-2.5 py-1.5 rounded-xl bg-emerald-600/85 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1 transition">
-            <span>🦐</span> Rải Thức Ăn (<span id="quickFeedName">Cám viên</span>)
+        <!-- Overlay: Thao tác nhanh ngay trên bể (Gọn 2 dòng trên điện thoại) -->
+        <div class="absolute top-2 left-2 right-2 sm:right-auto grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1 sm:gap-1.5 pointer-events-auto">
+          <button id="btnQuickFeed" onclick="quickFeedCurrentTank()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-emerald-600/85 hover:bg-emerald-500 text-white text-[11px] sm:text-xs font-bold shadow-lg backdrop-blur flex items-center justify-center sm:justify-start gap-1 truncate transition">
+            <span>🦐</span> <span class="truncate"><span class="hidden sm:inline">Rải Thức Ăn </span>(<span id="quickFeedName">Cám: 30</span>)</span>
           </button>
-          <button id="btnQuickClean" onclick="cleanWaterCurrentTank()" class="px-2.5 py-1.5 rounded-xl bg-sky-600/85 hover:bg-sky-500 text-white text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1 transition">
-            <span>🧹</span> Thay Nước / Hút Cặn ($5)
+          <button id="btnQuickClean" onclick="cleanWaterCurrentTank()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-sky-600/85 hover:bg-sky-500 text-white text-[11px] sm:text-xs font-bold shadow-lg backdrop-blur flex items-center justify-center sm:justify-start gap-1 truncate transition">
+            <span>🧹</span> <span class="truncate">Thay Nước ($5)</span>
           </button>
-          <button id="btnQuickMedicine" onclick="treatTankMedicine()" class="px-2.5 py-1.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1 transition">
-            <span>💊</span> Châm Vi Sinh ($10)
+          <button id="btnQuickMedicine" onclick="treatTankMedicine()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white text-[11px] sm:text-xs font-bold shadow-lg backdrop-blur flex items-center justify-center sm:justify-start gap-1 truncate transition">
+            <span>💊</span> <span class="truncate">Vi Sinh ($10)</span>
           </button>
-          <button id="btnDragDecorMode" onclick="toggleDecorEditMode()" class="px-2.5 py-1.5 rounded-xl bg-slate-900/85 hover:bg-slate-800 border border-amber-400/40 text-amber-300 text-xs font-bold shadow-lg backdrop-blur flex items-center gap-1 transition">
-            <span>✋</span> <span id="dragDecorLabel">Bố Trí Cây/Đá: TẮT</span>
+          <button id="btnDragDecorMode" onclick="toggleDecorEditMode()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-900/85 hover:bg-slate-800 border border-amber-400/40 text-amber-300 text-[11px] sm:text-xs font-bold shadow-lg backdrop-blur flex items-center justify-center sm:justify-start gap-1 truncate transition">
+            <span>✋</span> <span id="dragDecorLabel" class="truncate">Bố Trí: TẮT</span>
           </button>
         </div>
 
@@ -246,7 +246,7 @@
         <div id="inspectorEmptyState" class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
           <div class="flex items-center gap-2">
             <span class="text-lg">🔍</span>
-            <span>Nhấn trực tiếp vào <b>cá</b> để xem thông số, hoặc bấm vào <b>Trai Ngọc Trai</b> khi mở vỏ (trong 3 giây) để thu hoạch <b>$20</b>!</span>
+            <span>Nhấn trực tiếp vào <b>cá</b> để xem thông số, hoặc bấm vào <b>Trai Ngọc Trai</b> khi mở vỏ (trong 3 giây) để thu hoạch <b>$10</b>!</span>
           </div>
           <div class="flex items-center gap-2">
             <button id="btnAutoFeedToggle" onclick="toggleAutoFeeder()" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-600 text-slate-300 text-xs font-bold hover:border-cyan-400 transition">
@@ -646,9 +646,9 @@
           • Trong mỗi môi trường nước, cá cũng được phân tách theo nhóm kích cỡ: <b>Size Nhỏ</b>, <b>Size Trung</b> và <b>Size Lớn</b>.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-bold text-emerald-300 mb-1">2. Sinh Vật Chức Năng & Trai Ngọc Trai ($20)</div>
+          <div class="font-bold text-emerald-300 mb-1">2. Sinh Vật Chức Năng & Trai Ngọc Trai ($10)</div>
           <p>• <b>Ốc Tháp:</b> Sục cát đáy và lọc sinh học làm chậm tốc độ giảm chất lượng nước.<br/>
-          • <b>Trai Ngọc Trai:</b> Tự động mở vỏ tại chỗ trong <b>3 giây</b>; hãy bấm trực tiếp vào Trai Ngọc Trai khi đang mở để thu hoạch ngay <b>$20</b> trước khi vỏ đóng lại!<br/>
+          • <b>Trai Ngọc Trai:</b> Tự động mở vỏ tại chỗ trong <b>3 giây</b>; hãy bấm trực tiếp vào Trai Ngọc Trai khi đang mở để thu hoạch ngay <b>$10</b> trước khi vỏ đóng lại!<br/>
           • <b>Cua Ớt Đỏ:</b> Dọn thức ăn thừa tầng đáy, giảm mạnh tỷ lệ xuất hiện Rêu Tóc.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
@@ -865,7 +865,7 @@
       { id: 'amano_shrimp', nameVi: 'Tép Amano / Tép Cảnh', nameEn: 'Amano Shrimp', price: 25, color: '#fb923c', desc: 'Sống ~10 ngày: Chuyên bò tầng đáy cắt dọn Rêu Tóc.' },
       { id: 'nerite_snail', nameVi: 'Ốc Nerita Dọn Kính', nameEn: 'Nerite Snail', price: 22, color: '#eab308', desc: 'Sống ~10 ngày: Bò trên mặt kính gặm sạch Rêu Bám Kính.' },
       { id: 'trumpet_snail', nameVi: 'Ốc Tháp (Malaysian Trumpet Snail)', nameEn: 'Melanoides tuberculata', price: 28, color: '#a8a29e', desc: 'Sống ~10 ngày: Sục cát đáy & lọc sinh học giúp làm chậm tốc độ giảm chất lượng nước.' },
-      { id: 'pearl_oyster', nameVi: 'Trai Ngọc Trai (Mở Ra Sinh Ngọc $20)', nameEn: 'Pearl Oyster / Clam', price: 55, color: '#c084fc', desc: 'Sống ~10 ngày: Ngẫu nhiên mở vỏ tại chỗ trong 3 giây — bấm kịp vào trai để thu hoạch Ngọc Trai bán ngay $20!' },
+      { id: 'pearl_oyster', nameVi: 'Trai Ngọc Trai (Mở Ra Sinh Ngọc $10)', nameEn: 'Pearl Oyster / Clam', price: 55, color: '#c084fc', desc: 'Sống ~10 ngày: Ngẫu nhiên mở vỏ tại chỗ trong 3 giây — bấm kịp vào trai để thu hoạch Ngọc Trai bán ngay $10!' },
       { id: 'chili_crab', nameVi: 'Cua Ớt Đỏ (Red Devil Crab)', nameEn: 'Geosesarma / Thai Crab', price: 32, color: '#ef4444', desc: 'Sống ~10 ngày: Dọn sạch thức ăn thừa rơi đáy bể, giảm mạnh tỷ lệ xuất hiện Rêu Tóc.' }
     ];
 
@@ -2094,109 +2094,147 @@
         for (let y = 11; y <= 23; y++) {
           const curve = Math.round(Math.sin((y - 11) * 0.4) * 2);
           const halfW = y < 18 ? 3 : 2;
-          for (let x = 23 - halfW - curve; x <= 23 + halfW - curve; x++) setPx(x, y, x < 23 ? pal.highlight : pal.mid);
+          for (let x = 23 - halfW - curve; x <= 23 + halfW - curve; x++) {
+            setPx(x, y, x < 23 - curve ? pal.highlight : pal.mid);
+          }
         }
         setPx(24, 24, pal.mid); setPx(26, 25, pal.mid); setPx(27, 24, pal.shadow); setPx(26, 23, pal.shadow);
-        setPx(19, 14 + wagOffset, pal.fin); setPx(18, 15 + wagOffset, pal.fin);
+        setPx(19, 14 + wagOffset, pal.fin); setPx(18, 15 + wagOffset, pal.finDark); setPx(19, 16 + wagOffset, pal.fin);
         setPx(26, 7, '#ffffff'); setPx(27, 7, '#0f172a');
       } else if (s === 'stingray_disc' || s === 'bluespot_ray') {
         for (let x = 14; x <= 38; x++) {
           const nx = (x - 26) / 12;
           const ry = Math.round(9 * Math.sqrt(Math.max(0, 1 - nx * nx)));
           for (let y = 16 - ry; y <= 16 + ry; y++) {
-            setPx(x, y, y < 13 ? pal.highlight : (y > 19 ? pal.shadow : pal.mid));
-            if ((x % 4 === 0) && (y % 4 === 0)) setPx(x, y, pal.sec);
-          }
-        }
-        for (let tx = 4; tx < 15; tx++) {
-          setPx(tx, 16 + Math.round(Math.sin(tx * 0.6 + wagOffset) * 1.2), pal.shadow);
-        }
-        setPx(33, 13, '#ffffff'); setPx(34, 13, '#0f172a');
-        setPx(33, 19, '#ffffff'); setPx(34, 19, '#0f172a');
-      } else if (s === 'eel_banded' || s === 'knifefish_blade') {
-        for (let x = 6; x <= 41; x++) {
-          const wave = Math.round(Math.sin(x * 0.35 + frameIdx * 1.5) * 2);
-          const halfH = x > 36 ? 2 : (x < 11 ? 1 : 3);
-          for (let y = 16 + wave - halfH; y <= 16 + wave + halfH; y++) {
-            let col = (s === 'eel_banded' && Math.floor(x / 4) % 2 === 0) ? pal.sec : pal.mid;
-            if (y === 16 + wave + halfH) col = pal.shadow;
+            const dither = (x + y) % 2 === 0;
+            let col = pal.mid;
+            if (y < 13) col = pal.highlight;
+            else if (y > 19) col = pal.shadow;
+            else if (dither) col = pal.highlight;
+            if ((x % 4 === 0) && (y % 4 === 0)) col = pal.sec;
             setPx(x, y, col);
           }
         }
+        for (let tx = 4; tx < 15; tx++) {
+          const ty = 16 + Math.round(Math.sin(tx * 0.6 + frameIdx) * wagOffset);
+          setPx(tx, ty, pal.shadow);
+          if (s === 'bluespot_ray') setPx(tx, ty - 1, pal.sec);
+        }
+        setPx(33, 13, '#fef3c7'); setPx(34, 13, '#0f172a');
+        setPx(33, 19, '#fef3c7'); setPx(34, 19, '#0f172a');
+      } else if (s === 'eel_banded' || s === 'knifefish_blade') {
+        for (let x = 5; x <= 42; x++) {
+          const waveY = Math.round(Math.sin(x * 0.32 + frameIdx * 1.4) * 1.6);
+          const halfH = s === 'knifefish_blade' ? (x < 12 ? 2 : 5) : 3;
+          for (let y = 16 - halfH + waveY; y <= 16 + halfH + waveY; y++) {
+            let col = (s === 'eel_banded' && Math.floor(x / 4) % 2 === 0 && y < 17 + waveY) ? pal.sec : pal.mid;
+            if (y === 16 + halfH + waveY) col = pal.shadow;
+            setPx(x, y, col);
+          }
+          if (s === 'knifefish_blade' && x >= 10 && x <= 36) {
+            setPx(x, 16 + halfH + 1 + waveY, ((x + wagOffset) % 2 === 0) ? '#475569' : '#94a3b8');
+          }
+        }
+        if (s === 'knifefish_blade') { setPx(9, 16, '#ffffff'); setPx(13, 16, '#ffffff'); }
         setPx(39, 15, '#ffffff'); setPx(40, 15, '#0f172a');
       } else {
         const isArowana = s === 'arowana_dragon' || s === 'alligator_gar' || s === 'bichir';
-        const isShark = s === 'genghis_shark' || s === 'bala_shark' || s === 'redtail_shark' || s === 'rainbow_shark';
-        const isDisc = s === 'disc_royal' || s === 'angel_diamond' || s === 'blue_tang' || s === 'yellow_tang' || s === 'butterfly' || s === 'flame_angel' || s === 'moorish_idol';
+        const isDisc = s === 'disc_royal' || s === 'angel_diamond' || s === 'blue_tang' || s === 'yellow_tang' || s === 'butterfly' || s === 'flame_angel' || s === 'moorish_idol' || s === 'puffer';
         const isVeil = s === 'betta_veil' || s === 'fan_tail' || s === 'butterfly_koi';
+        const isHump = s === 'flowerhorn_hump' || s === 'frontosa';
+        const isShark = s === 'genghis_shark' || s === 'bala_shark' || s === 'redtail_shark' || s === 'rainbow_shark';
+        const isBoxy = s === 'boxfish';
 
-        const tailStart = isArowana ? 11 : 14;
+        const tailStart = isArowana ? 11 : (isShark ? 13 : 15);
         const tailEnd = isVeil ? 2 : (isArowana ? 4 : 5);
-        const tailSpread = isVeil ? 10 : (isDisc ? 7 : 6);
+        const tailSpread = isVeil ? 11 : (isDisc ? 7 : (isShark ? 8 : 6));
+        const isFork = !isVeil && !isArowana && !isDisc && s !== 'clownfish' && s !== 'boxfish' && s !== 'lionfish' && s !== 'triggerfish';
+
         for (let x = tailEnd; x <= tailStart; x++) {
           const frac = (tailStart - x) / Math.max(1, tailStart - tailEnd);
           const span = Math.round(2 + frac * tailSpread);
           for (let dy = -span; dy <= span; dy++) {
-            const y = 16 + dy + Math.round(wagOffset * frac * 1.5);
-            if (!isVeil && !isArowana && frac > 0.45 && Math.abs(dy) < Math.round(frac * 3.5)) continue;
+            const y = 16 + dy + Math.round(wagOffset * frac * 1.4);
+            if (isFork && frac > 0.44 && Math.abs(dy) < Math.round(frac * 3.5)) continue;
             let fCol = (Math.abs(dy) % 2 === 0) ? pal.fin : pal.finDark;
-            if ((s === 'bala_shark' || s === 'clownfish') && (x <= tailEnd + 1 || Math.abs(dy) >= span - 1)) fCol = '#0f172a';
+            if (sp.id === 'flagtail' && (dy === -2 || dy === 2 || dy === 0)) fCol = '#0f172a';
+            if ((sp.id === 'rummy_nose' || sp.id === 'bala_shark' || sp.id === 'clownfish') && (x <= tailEnd + 1 || Math.abs(dy) >= span - 1)) fCol = '#0f172a';
             setPx(x, y, fCol);
           }
         }
 
         if (s === 'sword_tail') {
-          for (let x = 2; x <= 14; x++) setPx(x, 20 + Math.round((14 - x) * 0.25) + wagOffset, pal.sec);
-        }
-
-        const dorsalTop = isDisc ? 3 : (isShark ? 4 : (isVeil ? 4 : 7));
-        const dorsalStart = isArowana ? 12 : 17;
-        const dorsalEnd = isArowana ? 26 : 30;
-        for (let x = dorsalStart; x <= dorsalEnd; x++) {
-          const h = Math.round((1 - Math.abs(x - (dorsalStart + dorsalEnd) / 2) / ((dorsalEnd - dorsalStart) / 2 + 1)) * (14 - dorsalTop));
-          for (let y = 12 - h; y <= 12; y++) {
-            setPx(x, y, (s === 'bala_shark' && y <= 12 - h + 1) ? '#0f172a' : ((x + y) % 2 === 0 ? pal.fin : pal.finDark));
+          for (let x = 2; x <= 15; x++) {
+            setPx(x, 20 + Math.round((15 - x) * 0.25) + wagOffset, pal.sec);
           }
         }
-        for (let x = 16; x <= 25; x++) {
-          const h = isDisc ? 7 : (isVeil ? 6 : 4);
-          for (let y = 20; y <= 20 + h; y++) setPx(x, y, (x + y) % 2 === 0 ? pal.fin : pal.finDark);
+
+        const dorsalTop = isDisc ? 3 : (isVeil ? 4 : (isShark ? 4 : 7));
+        const dorsalStart = isArowana ? 12 : 17;
+        const dorsalEnd = isArowana ? 30 : 30;
+        for (let x = dorsalStart; x <= dorsalEnd; x++) {
+          const frac = (x - dorsalStart) / Math.max(1, dorsalEnd - dorsalStart);
+          let h = isShark
+            ? Math.round((1 - Math.abs(frac - 0.55) * 1.6) * (14 - dorsalTop)) + 1
+            : Math.round((1 - Math.abs(frac - 0.5) * 1.8) * (14 - dorsalTop));
+          if (s === 'lionfish' && x % 2 === 0) h += 3;
+          for (let y = 12 - h; y <= 12; y++) {
+            const col = ((sp.id === 'electric_yellow' || sp.id === 'bala_shark') && y <= 12 - h + 1) ? '#0f172a' : ((x + y) % 2 === 0 ? pal.fin : pal.finDark);
+            setPx(x, y, col);
+          }
         }
 
-        const bodyLeft = isArowana ? 11 : 14;
-        const bodyRight = isArowana ? 42 : 39;
+        for (let x = 16; x <= 25; x++) {
+          const h = isDisc ? 7 : (isVeil ? 6 : 4);
+          for (let y = 20; y <= 20 + h; y++) {
+            setPx(x, y, (x + y) % 2 === 0 ? pal.fin : pal.finDark);
+          }
+        }
+
+        const bodyLeft = isArowana ? 11 : (isShark ? 13 : 15);
+        const bodyRight = isArowana ? 42 : (isShark ? 41 : 39);
         const midX = (bodyLeft + bodyRight) / 2;
         const rx = (bodyRight - bodyLeft) / 2;
-        const maxRy = isArowana ? 4.8 : (isDisc ? 9.5 : 6.8);
+        const maxRy = isArowana ? 4.5 : (isDisc ? 9.5 : (isShark ? 5.8 : 6.8));
 
         for (let x = bodyLeft; x <= bodyRight; x++) {
           const nx = (x - midX) / rx;
-          const taper = nx < 0 ? 0.55 + 0.45 * (1 + nx) : Math.sqrt(Math.max(0, 1 - nx * nx));
+          const taper = isBoxy
+            ? (Math.abs(nx) > 0.82 ? 0.65 : 0.95)
+            : (nx < 0 ? 0.55 + 0.45 * (1 + nx) : Math.sqrt(Math.max(0, 1 - nx * nx)));
           const halfH = Math.max(1, Math.round(maxRy * taper));
           const topY = 16 - halfH;
-          const botY = 16 + halfH;
+          const botY = isShark ? 19 : 16 + halfH;
 
           for (let y = topY; y <= botY; y++) {
             const relY = (y - topY) / Math.max(1, botY - topY);
             const dither = (x + y) % 2 === 0;
-            let col = relY < 0.35 ? (dither ? pal.highlight : pal.mid) : (relY > 0.72 ? pal.shadow : (dither ? pal.mid : pal.highlight));
+            let col = pal.mid;
+            if (relY < 0.25) col = dither ? pal.highlight : pal.mid;
+            else if (relY < 0.45) col = pal.highlight;
+            else if (relY > 0.78) col = pal.shadow;
+            else if (relY > 0.62) col = dither ? pal.shadow : pal.mid;
+            else col = dither ? pal.mid : pal.highlight;
 
             if ((s === 'tetra_stripe' || s === 'striped_torpedo' || s === 'torpedo_line') && Math.abs(y - 16) <= 1 && x < bodyRight - 4) col = pal.sec;
-            else if (s === 'clownfish' && (x === 18 || x === 19 || x === 25 || x === 26 || x === 32 || x === 33)) col = '#ffffff';
-            else if ((s === 'tiger_stripes' || s === 'frontosa' || s === 'cardinal_marine' || s === 'butterfly' || s === 'moorish_idol') && (x === 19 || x === 20 || x === 25 || x === 26 || x === 31 || x === 32)) col = pal.sec;
-            else if (s === 'gramma' && x < midX) col = pal.sec;
-            else if (s === 'firefish' && x < midX + 2) col = pal.sec;
+            else if ((s === 'tiger_stripes' || s === 'frontosa') && (x === 19 || x === 20 || x === 25 || x === 26 || x === 31 || x === 32)) col = pal.sec;
+            else if (s === 'clownfish' && (x === 19 || x === 20 || x === 26 || x === 27 || x === 33 || x === 34)) col = '#ffffff';
+            else if ((s === 'cardinal_marine' || s === 'butterfly' || s === 'moorish_idol') && (x === 21 || x === 22 || x === 29 || x === 30)) col = pal.sec;
+            else if ((s === 'gramma' || s === 'firefish' || s === 'rainbow_deep') && x < midX) col = pal.sec;
             else if (s === 'blue_tang' && y < 16 && x > 18 && x < 31) col = pal.sec;
+            else if ((s === 'flame_angel' || s === 'lionfish') && x % 4 === 0) col = pal.sec;
             else if ((s === 'emperor_angel' || s === 'wrasse_six' || s === 'goliath_tiger') && y % 3 === 0) col = pal.sec;
-            else if ((s === 'boxfish' || s === 'puffer') && x % 3 === 0 && y % 3 === 0) col = pal.sec;
-            else if (s === 'genghis_shark' && y > 16) col = pal.sec;
+            else if ((s === 'boxfish' || s === 'puffer' || s === 'alligator_gar' || s === 'spotted_danio') && x % 3 === 0 && y % 3 === 0) col = pal.sec;
+            else if ((s === 'genghis_shark' || s === 'redtail_catfish') && y > 16) col = pal.sec;
+            else if (sp.id === 'rummy_nose' && x >= bodyRight - 6) col = pal.sec;
             else if ((s === 'koi_carp' || s === 'butterfly_koi') && ((x >= 24 && x <= 32 && y <= 17) || (x >= 16 && x <= 20 && y <= 16))) col = pal.sec;
+            else if (sp.id === 'peacock_bass' && x >= 15 && x <= 17 && y >= 15 && y <= 17) col = '#0f172a';
 
             setPx(x, y, col);
           }
         }
 
-        if (s === 'flowerhorn_hump' || s === 'frontosa') {
+        if (isHump) {
           for (let x = 31; x <= 37; x++) {
             for (let y = 7; y <= 11; y++) setPx(x, y, y < 9 ? pal.highlight : pal.mid);
           }
@@ -2204,13 +2242,20 @@
 
         setPx(27, 17, pal.highlight); setPx(28, 17, pal.highlight);
         setPx(26, 18, pal.fin); setPx(27, 18, pal.fin);
-        setPx(32, 14, pal.shadow); setPx(32, 15, pal.shadow); setPx(32, 16, pal.shadow);
+
+        if (isArowana || s === 'bottom_catfish' || s === 'pleco_armored' || s === 'koi_carp' || s === 'butterfly_koi') {
+          setPx(bodyRight + 1, 16, pal.fin);
+          setPx(bodyRight + 2, 17, pal.fin);
+        }
+
+        setPx(32, 14, pal.shadow); setPx(32, 15, pal.shadow); setPx(32, 16, pal.shadow); setPx(32, 17, pal.shadow);
 
         const ex = bodyRight - 4;
         const ey = 14;
+        const isAlbinoEye = (variant === 'albino' || sp.id === 'albino_pangasius' || sp.id === 'giant_gourami');
         setPx(ex, ey, '#ffffff'); setPx(ex + 1, ey, '#ffffff');
-        setPx(ex, ey + 1, variant === 'albino' ? '#e11d48' : '#0f172a');
-        setPx(ex + 1, ey + 1, variant === 'albino' ? '#e11d48' : '#0f172a');
+        setPx(ex, ey + 1, isAlbinoEye ? '#e11d48' : '#0f172a');
+        setPx(ex + 1, ey + 1, isAlbinoEye ? '#e11d48' : '#0f172a');
       }
 
       const outlined = Array.from({ length: PH }, (_, y) =>
@@ -2249,9 +2294,9 @@
       return `<img src="${dataUrl}" alt="${sp.nameVi}" width="${width}" height="${height}" style="image-rendering: pixelated; width: ${width}px; height: ${height}px; object-fit: contain;" />`;
     }
 
-    // Dựng Sprite Pixel Art 16-bit cho Cây thủy sinh, San hô & Sinh vật chức năng (đồng bộ Cửa hàng & Bể cá)
+    // Dựng Sprite Pixel Art 16-bit 4 sắc độ Dithered Shading cho Cây thủy sinh, San hô & Trang trí
     function getDecorPixelSprite(itemId) {
-      const key = `dec_${itemId}`;
+      const key = `dec_hd_${itemId}`;
       if (PIXEL_SPRITE_CACHE.has(key)) return PIXEL_SPRITE_CACHE.get(key);
       const item = getDecorById(itemId);
       const PW = 48, PH = 36;
@@ -2265,118 +2310,205 @@
         const ix = Math.round(x), iy = Math.round(y);
         if (ix >= 1 && ix < PW - 1 && iy >= 1 && iy < PH - 1) grid[iy][ix] = col;
       };
+      const shadePx = (x, y, ratio, pal) => {
+        const checker = ((Math.round(x) + Math.round(y)) % 2 === 0);
+        if (ratio < 0.25) setPx(x, y, pal.hi);
+        else if (ratio < 0.48) setPx(x, y, checker ? pal.hi : pal.mid);
+        else if (ratio < 0.75) setPx(x, y, checker ? pal.mid : pal.sh);
+        else setPx(x, y, pal.sh);
+      };
 
       const rt = item ? item.renderType : 'stem_green';
       let outCol = '#052e16';
 
+      const P_GREEN  = { hi: '#bbf7d0', mid: '#22c55e', sh: '#15803d', out: '#052e16' };
+      const P_FERN   = { hi: '#86efac', mid: '#16a34a', sh: '#14532d', out: '#052e16' };
+      const P_RED    = { hi: '#fecdd3', mid: '#e11d48', sh: '#881337', out: '#4c0519' };
+      const P_RUBY   = { hi: '#f5d0fe', mid: '#a21caf', sh: '#701a75', out: '#3b0764' };
+      const P_CORAL  = { hi: '#fbcfe8', mid: '#ec4899', sh: '#9d174d', out: '#500724' };
+      const P_ORANGE = { hi: '#fed7aa', mid: '#f97316', sh: '#c2410c', out: '#431407' };
+      const P_WOOD   = { hi: '#d97706', mid: '#92400e', sh: '#451a03', out: '#1c0a00' };
+      const P_STONE  = { hi: '#cbd5e1', mid: '#64748b', sh: '#334155', out: '#0f172a' };
+      const P_CLAY   = { hi: '#fdba74', mid: '#d97706', sh: '#92400e', out: '#451a03' };
+
       if (rt === 'substrate_sand' || rt === 'substrate_dark') {
         const isDark = rt === 'substrate_dark';
-        outCol = isDark ? '#18181b' : '#57534e';
-        for (let y = 14; y <= 30; y++) {
-          for (let x = 6; x <= 42; x++) {
-            const dither = (x + y) % 2 === 0;
-            let c = isDark ? (y < 18 ? '#52525b' : (dither ? '#3f3f46' : '#27272a')) : (y < 18 ? '#f5f5f4' : (dither ? '#d6d3d1' : '#a8a29e'));
-            if ((x * 7 + y * 13) % 19 === 0) c = isDark ? '#facc15' : '#44403c';
-            setPx(x, y, c);
+        outCol = isDark ? '#090d16' : '#57534e';
+        const subPal = isDark
+          ? { hi: '#71717a', mid: '#3f3f46', sh: '#18181b' }
+          : { hi: '#fafaf9', mid: '#d6d3d1', sh: '#a8a29e' };
+        for (let y = 14; y <= 31; y++) {
+          const wave = Math.round(Math.sin(y * 0.5) * 1);
+          for (let x = 5 + wave; x <= 43 - wave; x++) {
+            shadePx(x, y, (y - 14) / 17, subPal);
+            if ((x * 7 + y * 13) % 17 === 0) setPx(x, y, isDark ? '#facc15' : '#44403c');
+            if ((x * 11 + y * 5) % 23 === 0) setPx(x, y, isDark ? '#38bdf8' : '#ffffff');
           }
         }
       } else if (rt === 'stem_green' || rt === 'stem_red' || rt === 'stem_ruby') {
-        const isRuby = rt === 'stem_ruby';
-        const isRed = rt === 'stem_red';
-        outCol = isRuby ? '#3b0764' : (isRed ? '#4c0519' : '#052e16');
-        const mainC = isRuby ? '#a21caf' : (isRed ? '#e11d48' : '#16a34a');
-        const hiC = isRuby ? '#f0abfc' : (isRed ? '#fda4af' : '#4ade80');
-        const shC = isRuby ? '#701a75' : (isRed ? '#9f1239' : '#14532d');
-        [-9, 0, 9].forEach((sx, idx) => {
-          const topY = idx === 1 ? 4 : 8;
-          for (let y = topY; y <= 32; y++) {
-            setPx(24 + sx, y, shC);
-            if (y % 3 === 0 && y < 30) {
-              for (let d = 1; d <= 4; d++) {
-                setPx(24 + sx - d, y - Math.floor(d / 2), d <= 2 ? hiC : mainC);
-                setPx(24 + sx + d, y - Math.floor(d / 2), d <= 2 ? hiC : mainC);
+        const pal = rt === 'stem_ruby' ? P_RUBY : (rt === 'stem_red' ? P_RED : P_GREEN);
+        outCol = pal.out;
+        [-10, 0, 10].forEach((sx, idx) => {
+          const topY = idx === 1 ? 3 : 7;
+          for (let y = topY; y <= 33; y++) {
+            const curve = Math.round(Math.sin((33 - y) * 0.22 + idx) * 1.2);
+            setPx(24 + sx + curve, y, pal.sh);
+            setPx(25 + sx + curve, y, pal.mid);
+            if ((y - topY) % 3 === 1 && y < 31) {
+              for (let d = 1; d <= 5; d++) {
+                const lift = Math.floor(d / 2);
+                shadePx(24 + sx + curve - d, y - lift, d / 6, pal);
+                shadePx(24 + sx + curve - d, y - lift + 1, 0.75, pal);
+                shadePx(25 + sx + curve + d, y - lift, d / 6, pal);
+                shadePx(25 + sx + curve + d, y - lift + 1, 0.75, pal);
               }
             }
           }
+          setPx(24 + sx, topY - 1, pal.hi);
+          setPx(25 + sx, topY - 1, pal.hi);
         });
       } else if (rt === 'coral_reef') {
-        outCol = '#500724';
-        for (let y = 27; y <= 32; y++) {
-          for (let x = 9; x <= 39; x++) setPx(x, y, y < 29 ? '#78716c' : '#44403c');
+        outCol = P_CORAL.out;
+        for (let y = 26; y <= 33; y++) {
+          const hw = 17 - Math.floor((y - 26) * 0.5);
+          for (let x = 24 - hw; x <= 24 + hw; x++) shadePx(x, y, (y - 26) / 7, P_STONE);
         }
-        [{ x0: 16, y0: 26, x1: 10, y1: 12 }, { x0: 15, y0: 19, x1: 19, y1: 11 }, { x0: 24, y0: 26, x1: 24, y1: 7 }, { x0: 24, y0: 16, x1: 19, y1: 10 }, { x0: 24, y0: 15, x1: 29, y1: 9 }].forEach(br => {
+        const branches = [
+          { x0: 15, y0: 26, x1: 9,  y1: 11 },
+          { x0: 13, y0: 19, x1: 17, y1: 10 },
+          { x0: 23, y0: 26, x1: 23, y1: 5 },
+          { x0: 23, y0: 16, x1: 18, y1: 9 },
+          { x0: 24, y0: 14, x1: 29, y1: 8 }
+        ];
+        branches.forEach(br => {
           const st = br.y0 - br.y1;
           for (let i = 0; i <= st; i++) {
             const cx = Math.round(br.x0 + (br.x1 - br.x0) * (i / st));
             const cy = br.y0 - i;
-            setPx(cx, cy, '#f472b6');
-            setPx(cx + 1, cy, '#ec4899');
+            shadePx(cx, cy, 0.2, P_CORAL);
+            shadePx(cx + 1, cy, 0.65, P_CORAL);
+            if (i === st) { setPx(cx, cy - 1, '#ffffff'); setPx(cx + 1, cy - 1, P_CORAL.hi); }
           }
         });
-        for (let y = 18; y <= 26; y++) {
-          for (let x = 29; x <= 40; x++) {
-            const dx = (x - 34.5) / 5.5, dy = (y - 22) / 4;
-            if (dx * dx + dy * dy <= 1.0) setPx(x, y, (x + y) % 2 === 0 ? '#fb923c' : '#ea580c');
+        for (let y = 17; y <= 26; y++) {
+          for (let x = 29; x <= 41; x++) {
+            const dx = (x - 35) / 6, dy = (y - 21.5) / 4.5;
+            if (dx * dx + dy * dy <= 1.0) {
+              const groove = ((x + y * 2) % 4 === 0);
+              shadePx(x, y, groove ? 0.85 : (y - 17) / 9, P_ORANGE);
+            }
           }
         }
-      } else if (rt === 'broadleaf' || rt === 'fern') {
-        const isFern = rt === 'fern';
-        for (let i = -2; i <= 2; i++) {
-          const lx = 24 + i * 6;
-          const ly = 11 + Math.abs(i) * 3;
-          for (let y = ly; y <= 32; y++) setPx(24 + Math.round((lx - 24) * ((32 - y) / (32 - ly))), y, '#14532d');
-          for (let dy = -4; dy <= 4; dy++) {
-            const w = isFern ? Math.max(1, 3 - Math.abs(dy)) : 4;
-            for (let dx = -w; dx <= w; dx++) setPx(lx + dx, ly + dy, dy < 0 ? '#4ade80' : '#16a34a');
+      } else if (rt === 'broadleaf') {
+        outCol = P_FERN.out;
+        for (let x = 11; x <= 37; x++) { setPx(x, 31, P_FERN.sh); setPx(x, 32, P_WOOD.sh); }
+        const leaves = [
+          { cx: 14, cy: 20, rx: 5, ry: 4 },
+          { cx: 20, cy: 12, rx: 6, ry: 5 },
+          { cx: 29, cy: 13, rx: 6, ry: 5 },
+          { cx: 35, cy: 21, rx: 5, ry: 4 },
+          { cx: 24, cy: 22, rx: 5, ry: 4 }
+        ];
+        leaves.forEach(lf => {
+          for (let y = lf.cy + lf.ry; y <= 31; y++) setPx(lf.cx, y, P_FERN.sh);
+          for (let y = lf.cy - lf.ry; y <= lf.cy + lf.ry; y++) {
+            for (let x = lf.cx - lf.rx; x <= lf.cx + lf.rx; x++) {
+              const dx = (x - lf.cx) / lf.rx, dy = (y - lf.cy) / lf.ry;
+              if (dx * dx + dy * dy <= 1.0) {
+                if (x === lf.cx && y > lf.cy - 2) setPx(x, y, P_GREEN.hi);
+                else shadePx(x, y, (y - (lf.cy - lf.ry)) / (lf.ry * 2), P_FERN);
+              }
+            }
           }
-        }
+        });
+      } else if (rt === 'fern') {
+        outCol = P_FERN.out;
+        const fronds = [
+          { bx: 20, tx: 9,  ty: 12 },
+          { bx: 22, tx: 15, ty: 6 },
+          { bx: 24, tx: 24, ty: 4 },
+          { bx: 26, tx: 33, ty: 7 },
+          { bx: 28, tx: 39, ty: 13 }
+        ];
+        fronds.forEach(fr => {
+          const steps = 32 - fr.ty;
+          for (let i = 0; i <= steps; i++) {
+            const f = i / steps;
+            const cx = Math.round(fr.bx + (fr.tx - fr.bx) * f);
+            const cy = 32 - i;
+            const hw = f < 0.18 ? 1 : (f > 0.85 ? 1 : 3);
+            for (let dx = -hw; dx <= hw; dx++) {
+              if (dx === 0) setPx(cx, cy, P_FERN.sh);
+              else shadePx(cx + dx, cy, 1 - f * 0.8, P_GREEN);
+            }
+          }
+        });
       } else if (rt === 'carpet' || rt === 'grass' || rt === 'moss') {
-        for (let x = 7; x <= 41; x++) {
-          const h = rt === 'grass' ? (12 - Math.abs(x - 24) * 0.4) : (6 + Math.sin(x * 0.35) * 3);
-          for (let y = Math.round(32 - h); y <= 32; y++) {
-            setPx(x, y, y < 32 - h + 2 ? '#86efac' : (x % 2 === 0 ? '#22c55e' : '#15803d'));
+        outCol = P_GREEN.out;
+        if (rt === 'grass') {
+          for (let b = -7; b <= 7; b++) {
+            const len = 18 - Math.abs(b);
+            for (let i = 0; i < len; i++) {
+              const curve = Math.round(Math.pow(i / len, 1.5) * b * 2.1);
+              shadePx(24 + b + curve, 33 - i, 1 - i / len, P_GREEN);
+            }
+          }
+        } else {
+          for (let x = 6; x <= 42; x++) {
+            const mound = Math.round(Math.sin(((x - 6) / 36) * Math.PI) * 6) + (rt === 'moss' && x % 2 === 0 ? 3 : 0);
+            const top = 33 - 5 - mound;
+            for (let y = top; y <= 33; y++) shadePx(x, y, (y - top) / Math.max(1, 33 - top), rt === 'moss' ? P_FERN : P_GREEN);
+            if (x % 3 === 1) setPx(x, top - 1, P_GREEN.hi);
           }
         }
       } else if (rt === 'driftwood') {
-        outCol = '#291202';
-        for (let y = 16; y <= 32; y++) {
-          for (let dx = -2; dx <= 2; dx++) setPx(24 + dx, y, dx < 0 ? '#b45309' : '#78350f');
+        outCol = P_WOOD.out;
+        for (let y = 16; y <= 33; y++) {
+          const bend = Math.round(Math.sin((33 - y) * 0.25) * 2);
+          for (let dx = -3; dx <= 3; dx++) shadePx(24 + bend + dx, y, (dx + 3) / 6, P_WOOD);
         }
-        for (let i = 0; i < 10; i++) {
-          setPx(23 - i, 16 - Math.floor(i / 2), '#92400e');
-          setPx(25 + i, 15 - Math.floor(i / 2), '#92400e');
+        setPx(19, 33, P_WOOD.sh); setPx(20, 32, P_WOOD.mid); setPx(28, 32, P_WOOD.mid); setPx(29, 33, P_WOOD.sh);
+        for (let i = 0; i < 11; i++) {
+          shadePx(23 - i, 16 - Math.floor(i / 2), 0.3, P_WOOD);
+          shadePx(25 + i, 15 - Math.floor(i / 2), 0.3, P_WOOD);
         }
-        [{ cx: 14, cy: 11, rx: 6, ry: 3 }, { cx: 24, cy: 7, rx: 7, ry: 3.5 }, { cx: 34, cy: 10, rx: 6, ry: 3 }].forEach(c => {
+        [{ cx: 13, cy: 11, rx: 7, ry: 3.5 }, { cx: 24, cy: 7, rx: 8, ry: 4 }, { cx: 35, cy: 10, rx: 7, ry: 3.5 }].forEach(c => {
           for (let y = Math.floor(c.cy - c.ry); y <= Math.ceil(c.cy + c.ry); y++) {
             for (let x = Math.floor(c.cx - c.rx); x <= Math.ceil(c.cx + c.rx); x++) {
               const dx = (x - c.cx) / c.rx, dy = (y - c.cy) / c.ry;
-              if (dx * dx + dy * dy <= 1.0) setPx(x, y, y < c.cy ? '#4ade80' : '#16a34a');
+              if (dx * dx + dy * dy <= 1.0) shadePx(x, y, (y - (c.cy - c.ry)) / (c.ry * 2), P_GREEN);
             }
           }
         });
       } else if (rt === 'rock') {
-        outCol = '#0f172a';
-        for (let y = 14; y <= 32; y++) {
-          const halfW = Math.round(6 + ((y - 14) / 18) * 10);
-          for (let x = 24 - halfW; x <= 24 + halfW; x++) setPx(x, y, y < 20 ? '#94a3b8' : (y < 27 ? '#64748b' : '#475569'));
+        outCol = P_STONE.out;
+        for (let y = 11; y <= 33; y++) {
+          const halfW = Math.round(5 + ((y - 11) / 22) * 13);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            const ridge = Math.sin(x * 0.4 + y * 0.2) * 0.2;
+            shadePx(x, y, Math.max(0, Math.min(1, (y - 11) / 22 + ridge)), P_STONE);
+          }
         }
       } else if (rt === 'cave') {
-        outCol = '#451a03';
-        for (let y = 16; y <= 32; y++) {
-          const halfW = Math.round(7 + ((y - 16) / 16) * 6);
+        outCol = P_CLAY.out;
+        for (let y = 13; y <= 33; y++) {
+          const halfW = Math.round(8 + ((y - 13) / 20) * 8);
           for (let x = 24 - halfW; x <= 24 + halfW; x++) {
-            const isHole = y >= 22 && Math.abs(x - 24) <= 5;
-            setPx(x, y, isHole ? '#1c1917' : (y < 21 ? '#d97706' : '#92400e'));
+            const isHole = y >= 21 && Math.abs(x - 24) <= 6;
+            if (isHole) setPx(x, y, '#090d16');
+            else shadePx(x, y, (y - 13) / 20, P_CLAY);
           }
         }
       } else if (rt === 'bubbler') {
-        outCol = '#0f172a';
-        for (let y = 22; y <= 32; y++) {
-          const halfW = Math.round(5 + ((y - 22) / 10) * 6);
-          for (let x = 24 - halfW; x <= 24 + halfW; x++) setPx(x, y, '#475569');
+        outCol = P_STONE.out;
+        for (let y = 20; y <= 33; y++) {
+          const halfW = Math.round(5 + ((y - 20) / 13) * 8);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) shadePx(x, y, (y - 20) / 13, P_STONE);
         }
-        setPx(23, 20, '#38bdf8'); setPx(25, 20, '#38bdf8');
-        setPx(24, 15, '#bae6fd'); setPx(22, 11, '#ffffff'); setPx(25, 8, '#bae6fd');
+        setPx(23, 19, '#38bdf8'); setPx(25, 19, '#38bdf8');
+        setPx(24, 14, '#bae6fd'); setPx(25, 14, '#ffffff');
+        setPx(21, 9, '#ffffff');  setPx(22, 9, '#bae6fd');
+        setPx(26, 6, '#ffffff');  setPx(24, 3, '#7dd3fc');
       }
 
       const outlined = Array.from({ length: PH }, (_, y) =>
@@ -2405,8 +2537,9 @@
       return `<img src="${url}" alt="${itemId}" width="${width}" height="${height}" style="image-rendering: pixelated; width: ${width}px; height: ${height}px; object-fit: contain;" />`;
     }
 
+    // Dựng Sprite Pixel Art 16-bit 4 sắc độ Dithered Shading cho 5 Sinh vật chức năng (đẹp sắc nét như cá)
     function getCleanerPixelSprite(cleanerId, isOpen = true) {
-      const key = `cl_${cleanerId}_${isOpen ? 1 : 0}`;
+      const key = `cl_hd_${cleanerId}_${isOpen ? 1 : 0}`;
       if (PIXEL_SPRITE_CACHE.has(key)) return PIXEL_SPRITE_CACHE.get(key);
       const PW = 48, PH = 32;
       const off = document.createElement('canvas');
@@ -2419,70 +2552,142 @@
         const ix = Math.round(x), iy = Math.round(y);
         if (ix >= 1 && ix < PW - 1 && iy >= 1 && iy < PH - 1) grid[iy][ix] = col;
       };
+      const shadePx = (x, y, ratio, pal) => {
+        const checker = ((Math.round(x) + Math.round(y)) % 2 === 0);
+        if (ratio < 0.25) setPx(x, y, pal.hi);
+        else if (ratio < 0.48) setPx(x, y, checker ? pal.hi : pal.mid);
+        else if (ratio < 0.75) setPx(x, y, checker ? pal.mid : pal.sh);
+        else setPx(x, y, pal.sh);
+      };
+
       let outCol = '#1c1917';
 
       if (cleanerId === 'amano_shrimp') {
-        outCol = '#7c2d12';
+        const P_SHRIMP = { hi: '#fed7aa', mid: '#fb923c', sh: '#c2410c', out: '#431407' };
+        const P_STRIPE = { hi: '#ffffff', mid: '#cbd5e1', sh: '#64748b' };
+        outCol = P_SHRIMP.out;
         for (let x = 10; x <= 36; x++) {
-          const arch = Math.round(Math.sin(((x - 10) / 26) * Math.PI) * 4);
-          for (let dy = -2; dy <= 2; dy++) setPx(x, 18 - arch + dy, x % 4 === 0 ? '#fb923c' : '#fed7aa');
-        }
-        setPx(8, 19, '#ea580c'); setPx(35, 16, '#0f172a');
-        for (let rx = 37; rx <= 44; rx++) setPx(rx, 15 - Math.floor((rx - 37) / 3), '#fdba74');
-      } else if (cleanerId === 'nerite_snail') {
-        outCol = '#422006';
-        for (let x = 12; x <= 36; x++) setPx(x, 24, '#cbd5e1');
-        for (let y = 10; y <= 23; y++) {
-          for (let x = 14; x <= 31; x++) {
-            const dx = (x - 22.5) / 8.5, dy = (y - 16.5) / 6.5;
-            if (dx * dx + dy * dy <= 1.0) setPx(x, y, ((x + y) % 4 === 0) ? '#1e293b' : '#eab308');
+          const arch = Math.round(Math.sin(((x - 10) / 26) * Math.PI) * 5);
+          const halfH = x > 31 ? 3 : (x < 14 ? 2 : 3);
+          for (let dy = -halfH; dy <= halfH; dy++) {
+            const isSegment = (x % 4 === 0);
+            shadePx(x, 18 - arch + dy, (dy + halfH) / (halfH * 2), isSegment ? P_STRIPE : P_SHRIMP);
           }
         }
+        setPx(7, 19, P_SHRIMP.hi); setPx(8, 19, P_SHRIMP.mid);
+        setPx(7, 21, P_SHRIMP.mid); setPx(8, 20, P_SHRIMP.sh);
+        for (let lx = 16; lx <= 31; lx += 3) {
+          const arch = Math.round(Math.sin(((lx - 10) / 26) * Math.PI) * 4);
+          setPx(lx, 21 - arch, P_SHRIMP.sh);
+          setPx(lx - 1, 23 - arch, P_SHRIMP.mid);
+          setPx(lx - 2, 25 - arch, P_SHRIMP.sh);
+        }
+        for (let rx = 37; rx <= 45; rx++) {
+          setPx(rx, 15 - Math.floor((rx - 37) / 3), P_SHRIMP.hi);
+          if (rx <= 43) setPx(rx, 18 + Math.floor((rx - 37) / 3), P_SHRIMP.mid);
+        }
+        setPx(34, 15, '#ffffff'); setPx(35, 15, '#090d16');
+        setPx(34, 16, '#090d16'); setPx(35, 16, '#090d16');
+      } else if (cleanerId === 'nerite_snail') {
+        const P_SHELL = { hi: '#fef08a', mid: '#eab308', sh: '#a16207', out: '#422006' };
+        const P_BAND  = { hi: '#475569', mid: '#1e293b', sh: '#090d16' };
+        const P_FOOT  = { hi: '#f1f5f9', mid: '#cbd5e1', sh: '#64748b' };
+        outCol = P_SHELL.out;
+        for (let x = 11; x <= 37; x++) {
+          shadePx(x, 24, 0.2, P_FOOT);
+          shadePx(x, 25, 0.7, P_FOOT);
+        }
+        setPx(37, 22, P_FOOT.hi); setPx(38, 21, P_FOOT.mid); setPx(39, 20, P_FOOT.sh);
+        setPx(36, 21, P_FOOT.hi); setPx(37, 20, P_FOOT.mid);
+        for (let y = 9; y <= 23; y++) {
+          for (let x = 13; x <= 32; x++) {
+            const dx = (x - 22.5) / 9.5, dy = (y - 16) / 7;
+            if (dx * dx + dy * dy <= 1.0) {
+              const stripe = ((x + y) % 4 === 0);
+              shadePx(x, y, (y - 9) / 14, stripe ? P_BAND : P_SHELL);
+            }
+          }
+        }
+        setPx(19, 15, '#090d16'); setPx(20, 15, P_SHELL.hi);
       } else if (cleanerId === 'trumpet_snail') {
-        outCol = '#1c1917';
-        for (let x = 28; x <= 39; x++) setPx(x, 24, '#cbd5e1');
-        for (let x = 7; x <= 31; x++) {
-          const frac = (x - 7) / 24;
-          const halfH = Math.max(1, Math.round(frac * 6));
+        const P_CONE = { hi: '#e7e5e4', mid: '#78716c', sh: '#44403c', out: '#1c1917' };
+        const P_GOLD = { hi: '#fef08a', mid: '#eab308', sh: '#854d0e' };
+        const P_FOOT = { hi: '#f1f5f9', mid: '#cbd5e1', sh: '#64748b' };
+        outCol = P_CONE.out;
+        for (let x = 27; x <= 40; x++) {
+          shadePx(x, 24, 0.2, P_FOOT);
+          shadePx(x, 25, 0.7, P_FOOT);
+        }
+        setPx(39, 22, P_FOOT.hi); setPx(40, 21, P_FOOT.mid);
+        for (let x = 6; x <= 32; x++) {
+          const frac = (x - 6) / 26;
+          const halfH = Math.max(1, Math.round(frac * 6.5));
           const cy = 20 + Math.round((1 - frac) * 2);
-          for (let y = cy - halfH; y <= cy + halfH; y++) setPx(x, y, x % 4 === 0 ? '#facc15' : '#78716c');
+          const isGroove = (x % 4 === 0);
+          for (let y = cy - halfH; y <= cy + halfH; y++) {
+            shadePx(x, y, (y - (cy - halfH)) / Math.max(1, halfH * 2), isGroove ? P_GOLD : P_CONE);
+          }
         }
       } else if (cleanerId === 'pearl_oyster') {
-        outCol = '#2e1065';
-        for (let y = 19; y <= 26; y++) {
-          const halfW = 13 - (y - 19);
-          for (let x = 24 - halfW; x <= 24 + halfW; x++) setPx(x, y, y < 22 ? '#9333ea' : '#581c87');
-        }
-        const lift = isOpen ? 5 : 1;
-        for (let y = 12 - lift; y <= 18 - lift; y++) {
-          const halfW = 13 - Math.abs(y - (16 - lift));
-          for (let x = 24 - halfW; x <= 24 + halfW; x++) setPx(x, y, y < 15 - lift ? '#d8b4fe' : '#7e22ce');
+        const P_OYSTER = { hi: '#e9d5ff', mid: '#9333ea', sh: '#581c87', out: '#2e1065' };
+        const P_INNER  = { hi: '#fbcfe8', mid: '#f472b6', sh: '#be185d' };
+        outCol = P_OYSTER.out;
+        for (let y = 19; y <= 27; y++) {
+          const halfW = 14 - (y - 19);
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            const rib = (x % 3 === 0) ? 0.2 : 0.65;
+            shadePx(x, y, rib, P_OYSTER);
+          }
         }
         if (isOpen) {
-          for (let y = 15; y <= 19; y++) {
-            for (let x = 22; x <= 26; x++) {
-              const dx = x - 24, dy = y - 17;
-              if (dx * dx + dy * dy <= 4) setPx(x, y, (dx <= 0 && dy <= 0) ? '#ffffff' : '#e2e8f0');
+          for (let x = 14; x <= 34; x++) {
+            shadePx(x, 18, 0.3, P_INNER);
+            shadePx(x, 19, 0.7, P_INNER);
+          }
+        }
+        const lift = isOpen ? 6 : 1;
+        for (let y = 12 - lift; y <= 18 - lift; y++) {
+          const halfW = 14 - Math.abs(y - (16 - lift));
+          for (let x = 24 - halfW; x <= 24 + halfW; x++) {
+            const rib = (x % 3 === 0) ? 0.15 : 0.55;
+            shadePx(x, y, rib, P_OYSTER);
+          }
+        }
+        if (isOpen) {
+          for (let y = 14; y <= 19; y++) {
+            for (let x = 21; x <= 27; x++) {
+              const dx = x - 24, dy = y - 16.5;
+              if (dx * dx + dy * dy <= 6.5) {
+                if (dx <= -1 && dy <= -1) setPx(x, y, '#ffffff');
+                else if (dx <= 1 && dy <= 1) setPx(x, y, '#f1f5f9');
+                else setPx(x, y, '#94a3b8');
+              }
             }
           }
         }
       } else if (cleanerId === 'chili_crab') {
-        outCol = '#450a0a';
-        for (let y = 14; y <= 21; y++) {
-          for (let x = 16; x <= 32; x++) {
-            const dx = (x - 24) / 8, dy = (y - 17.5) / 3.5;
-            if (dx * dx + dy * dy <= 1.0) setPx(x, y, y < 17 ? '#f87171' : '#dc2626');
+        const P_CRAB = { hi: '#fca5a5', mid: '#ef4444', sh: '#991b1b', out: '#450a0a' };
+        const P_CLAW = { hi: '#fed7aa', mid: '#f97316', sh: '#c2410c' };
+        outCol = P_CRAB.out;
+        for (let y = 13; y <= 21; y++) {
+          for (let x = 15; x <= 33; x++) {
+            const dx = (x - 24) / 9, dy = (y - 17) / 4;
+            if (dx * dx + dy * dy <= 1.0) {
+              shadePx(x, y, (y - 13) / 8, P_CRAB);
+            }
           }
         }
-        for (let y = 11; y <= 15; y++) {
-          for (let x = 12; x <= 16; x++) setPx(x, y, '#f97316');
-          for (let x = 32; x <= 36; x++) setPx(x, y, '#f97316');
+        for (let y = 10; y <= 15; y++) {
+          for (let x = 11; x <= 16; x++) shadePx(x, y, (y - 10) / 5, P_CLAW);
+          for (let x = 32; x <= 37; x++) shadePx(x, y, (y - 10) / 5, P_CLAW);
         }
-        [17, 20, 23].forEach(ly => {
-          setPx(13, ly + 1, '#991b1b'); setPx(11, ly + 3, '#dc2626');
-          setPx(35, ly + 1, '#991b1b'); setPx(37, ly + 3, '#dc2626');
+        [16, 19, 22].forEach((ly, idx) => {
+          const step = idx % 2 === 0 ? 0 : 1;
+          setPx(13, ly, P_CRAB.sh); setPx(11, ly + 2 + step, P_CRAB.mid); setPx(9, ly + 4 + step, P_CRAB.sh);
+          setPx(35, ly, P_CRAB.sh); setPx(37, ly + 2 + step, P_CRAB.mid); setPx(39, ly + 4 + step, P_CRAB.sh);
         });
-        setPx(20, 12, '#ffffff'); setPx(28, 12, '#ffffff');
+        setPx(20, 11, '#ffffff'); setPx(20, 12, '#090d16');
+        setPx(28, 11, '#ffffff'); setPx(28, 12, '#090d16');
       }
 
       const outlined = Array.from({ length: PH }, (_, y) =>
@@ -2595,14 +2800,12 @@
       if (lightOn) {
         ctx.save();
         if (tank.lightLevel === 1) {
-          // Cấp 1: Tia sáng trắng thẳng đứng song song
           ctx.fillStyle = 'rgba(224, 242, 254, 0.08)';
           for (let i = 0; i < 4; i++) {
             const bx = snap(W * (0.18 + i * 0.21));
             ctx.fillRect(bx, bandTop, pxUnit * 10, H * 0.72);
           }
         } else if (tank.lightLevel === 2) {
-          // Cấp 2 (WRGB): Tia sáng rẽ quạt hình nón vàng ấm - xanh lam
           for (let i = 0; i < 4; i++) {
             const bx = snap(W * (0.14 + i * 0.22) + Math.sin(timeSec * 0.7 + i) * pxUnit * 3);
             ctx.fillStyle = i % 2 === 0 ? 'rgba(125, 211, 252, 0.10)' : 'rgba(253, 224, 71, 0.08)';
@@ -2613,7 +2816,6 @@
             }
           }
         } else {
-          // Cấp 3 (RGB Studio): Chùm tia lăng kính đa sắc giao thoa chéo
           const prismColors = ['rgba(244, 114, 182, 0.09)', 'rgba(56, 189, 248, 0.10)', 'rgba(250, 204, 21, 0.08)', 'rgba(192, 132, 252, 0.09)'];
           for (let i = 0; i < 5; i++) {
             const bx = snap(W * (0.10 + i * 0.19) + Math.sin(timeSec * 0.8 + i) * pxUnit * 4);
@@ -2702,7 +2904,6 @@
       const fw = snap(W * 0.045);
       const fh = snap(H * 0.28);
 
-      // Thân máy lọc góc
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(fx - p, fy - p, fw + p * 2, fh + p * 2);
       ctx.fillStyle = lv === 5 ? '#1e1b4b' : '#334155';
@@ -2716,12 +2917,10 @@
       }
 
       if (lv === 1) {
-        // Cấp 1: Lọc cơ bản bình thường (sủi bọt nhẹ)
         if (Math.random() < 0.16 * (gameState.gameSpeed || 1)) {
           bubbleParticles.push({ x: 0.055, y: 0.14, r: 1.5, vx: 0.015, vy: -0.05 });
         }
       } else if (lv === 2) {
-        // Cấp 2: Lọc Thác — hiệu ứng thác nước chảy từ trên xuống mặt hồ
         const wfX = fx + fw;
         const wfTop = snap(H * 0.035);
         const wfBot = snap(H * 0.16);
@@ -2736,7 +2935,6 @@
           bubbleParticles.push({ x: 0.075 + Math.random() * 0.025, y: 0.16, r: 2.2, vx: 0.02, vy: -0.04 });
         }
       } else if (lv === 3) {
-        // Cấp 3: Lọc Treo — hiệu ứng tạo dòng chảy ngang & oxy bay theo dòng
         const outX = fx + fw;
         const outY = snap(H * 0.14);
         ctx.fillStyle = '#0ea5e9';
@@ -2751,7 +2949,6 @@
           bubbleParticles.push({ x: 0.075, y: 0.14 + (Math.random() * 0.03 - 0.015), r: 2.0, vx: 0.14 + Math.random() * 0.05, vy: -0.02 });
         }
       } else if (lv === 4) {
-        // Cấp 4: Lọc Tràn Đa Ngăn — hiệu ứng thanh dàn mưa nhiều dòng nước chảy xuống
         const barY = snap(H * 0.042);
         const barStart = fx + fw;
         const barW = snap(W * 0.46);
@@ -2769,32 +2966,27 @@
           bubbleParticles.push({ x: 0.08 + Math.random() * 0.42, y: 0.17, r: 1.8, vx: 0.01, vy: -0.05 });
         }
       } else if (lv >= 5) {
-        // Cấp 5 (Hệ Thống Lọc Chuyên Nghiệp): Tháp lọc lõi đèn UV tím xanh + xoáy dòng chảy bề mặt + cột sủi oxy pha lê siêu mịn từ đáy bể
         const towerTop = snap(H * 0.06);
         const towerBot = snap(H * 0.84);
         const towerH = towerBot - towerTop;
         const towerW = fw + p;
 
-        // Vỏ tháp lọc chuyên nghiệp chạm đáy
         ctx.fillStyle = '#090d16';
         ctx.fillRect(fx - p, towerTop - p, towerW + p * 2, towerH + p * 2);
         ctx.fillStyle = '#1e1b4b';
         ctx.fillRect(fx, towerTop, towerW, towerH);
 
-        // Lõi đèn UV tím - xanh phát sáng nhịp nhàng bên trong tháp
         const uvPulse = 0.65 + Math.sin(timeSec * 4.5) * 0.35;
         ctx.fillStyle = `rgba(168, 85, 247, ${uvPulse.toFixed(2)})`;
         ctx.fillRect(fx + p, towerTop + p * 2, towerW - p * 2, towerH - p * 4);
         ctx.fillStyle = `rgba(56, 189, 248, ${(uvPulse * 0.85).toFixed(2)})`;
         ctx.fillRect(fx + p * 2, towerTop + p * 3, Math.max(p, towerW - p * 4), towerH - p * 6);
 
-        // Các khớp ngăn lọc & nan tản nhiệt
         ctx.fillStyle = '#0f172a';
         for (let gy = towerTop + p * 6; gy < towerBot - p * 4; gy += p * 6) {
           ctx.fillRect(fx, gy, towerW, p);
         }
 
-        // Xoáy dòng chảy bề mặt nước
         const surfY = snap(H * 0.065);
         for (let w = 0; w < 6; w++) {
           const sx = snap(fx + towerW + p * 3 + ((timeSec * 150 + w * 48) % (W * 0.56)));
@@ -2805,7 +2997,6 @@
           ctx.fillRect(sx + p, sy + p, p * 2, p);
         }
 
-        // Đế sủi oxy pha lê siêu mịn ở đáy bể ngay chân tháp lọc
         const diffX = fx + towerW + p * 2;
         const diffY = snap(H * 0.83);
         ctx.fillStyle = '#38bdf8';
@@ -2813,7 +3004,6 @@
         ctx.fillStyle = '#e0f2fe';
         ctx.fillRect(diffX + p, diffY, p * 2, p);
 
-        // Cột sủi oxy pha lê siêu mịn bay thẳng từ đáy lên mặt nước
         for (let b = 0; b < 18; b++) {
           const prog = ((timeSec * 0.65 + b * 0.055) % 1);
           const by = snap(diffY - prog * (diffY - surfY));
@@ -2870,7 +3060,6 @@
       ctx.restore();
     }
 
-    // Giảm tỷ lệ cây thủy sinh, san hô, lũa & trang trí xuống 1 nửa (từ 3.1 xuống 1.55)
     function drawDecorInstance(inst, W, H, timeSec) {
       const sprite = getDecorPixelSprite(inst.itemId);
       if (!sprite) return;
@@ -2893,7 +3082,6 @@
         ctx.setLineDash([]);
       }
 
-      // Đung đưa nhẹ phần ngọn theo dòng nước
       ctx.transform(1, 0, sway / Math.max(40, dh), 1, 0, 0);
       ctx.drawImage(sprite, -dw / 2, -dh + Math.round(dh * 0.08), dw, dh);
       ctx.restore();
@@ -3171,8 +3359,15 @@
 
       if (!Array.isArray(tank.cleaners)) return;
       const effDt = dt * (gameState.gameSpeed || 1);
+      let oysterSlot = 0;
       tank.cleaners.forEach(cl => {
-        if (gameState.gameSpeed > 0 && cl.type !== 'pearl_oyster') {
+        if (cl.type === 'pearl_oyster') {
+          // Cố định Trai Ngọc Trai luôn nằm gọn bên trái đáy hồ
+          cl.x = 0.13 + oysterSlot * 0.055;
+          cl.y = 0.85;
+          cl.vx = 0;
+          oysterSlot++;
+        } else if (gameState.gameSpeed > 0) {
           cl.x += cl.vx * effDt;
           if (cl.x < 0.06) { cl.x = 0.06; cl.vx = Math.abs(cl.vx); }
           if (cl.x > 0.94) { cl.x = 0.94; cl.vx = -Math.abs(cl.vx); }
@@ -3197,14 +3392,13 @@
         ctx.drawImage(sprite, -dw / 2, -dh / 2, dw, dh);
         ctx.restore();
 
-        // Hiển thị đồng hồ đếm ngược 3 giây & lời nhắc bấm thu hoạch $20 khi Trai Ngọc Trai mở vỏ tại chỗ
         if (cl.type === 'pearl_oyster' && cl.isOpen) {
           const rem = Math.max(0.1, cl.openTimer || 3.0).toFixed(1);
           ctx.save();
           ctx.font = 'bold 11px Inter, sans-serif';
           ctx.textAlign = 'center';
           ctx.fillStyle = '#fef08a';
-          ctx.fillText(`💎 BẤM NHẬN $20 (${rem}s)`, cx, cy - dh * 0.65);
+          ctx.fillText(`💎 BẤM NHẬN $10 (${rem}s)`, cx, cy - dh * 0.65);
           ctx.restore();
         }
       });
@@ -3271,7 +3465,6 @@
       const tank = getCurrentTank();
       const { xNorm, yNorm } = screenToTankCoords(e.clientX, e.clientY);
 
-      // 0. Kiểm tra bấm vào Trai Ngọc Trai đang mở vỏ tại chỗ (trong 3 giây) -> nhận $20
       if (Array.isArray(tank.cleaners)) {
         for (const cl of tank.cleaners) {
           if (cl.type === 'pearl_oyster' && cl.isOpen) {
@@ -3280,12 +3473,12 @@
               cl.isOpen = false;
               cl.openTimer = 0;
               cl.pearlCooldown = 16 + Math.random() * 10;
-              gameState.money += 20;
-              gameState.stats.totalRevenue += 20;
+              gameState.money += 10;
+              gameState.stats.totalRevenue += 10;
               playSfx('cash');
               addPlayerXp(8);
-              addFloatingText(cl.x, cl.y - 0.05, '💎 +$20 Ngọc Trai!', '#fde047');
-              showToast('💎 Tuyệt vời! Bạn đã bấm kịp thu hoạch viên Ngọc Trai bán được +$20!', 'success');
+              addFloatingText(cl.x, cl.y - 0.05, '💎 +$10 Ngọc Trai!', '#fde047');
+              showToast('💎 Tuyệt vời! Bạn đã bấm kịp thu hoạch viên Ngọc Trai bán được +$10!', 'success');
               updateHeaderUI();
               saveGameToStorage();
               return;
@@ -3294,7 +3487,6 @@
         }
       }
 
-      // 1. Kéo thả bố trí cây/đá trang trí
       if (decorEditMode) {
         let bestDecor = null;
         let minDist = 0.09;
@@ -3311,7 +3503,6 @@
         }
       }
 
-      // 2. Chọn cá trong bể
       let clickedFish = null;
       let minFishDist = 0.065;
       for (let i = tank.fishes.length - 1; i >= 0; i--) {
@@ -3391,7 +3582,7 @@
     function toggleDecorEditMode() {
       decorEditMode = !decorEditMode;
       const lbl = document.getElementById('dragDecorLabel');
-      if (lbl) lbl.textContent = decorEditMode ? 'Bố Trí Cây/Đá: BẬT (Kéo thả)' : 'Bố Trí Cây/Đá: TẮT';
+      if (lbl) lbl.textContent = decorEditMode ? 'Bố Trí: BẬT' : 'Bố Trí: TẮT';
       showToast(decorEditMode ? '✋ Kéo thả trực tiếp cây thủy sinh, san hô, lũa, đá trong bể!' : 'Đã khóa vị trí trang trí.', 'info');
     }
 
@@ -3409,6 +3600,7 @@
       if (!Array.isArray(tank.cleaners)) tank.cleaners = [];
       gameState.money -= cl.price;
       gameState.stats.totalSpent += cl.price;
+      const existingOysters = tank.cleaners.filter(c => c.type === 'pearl_oyster').length;
       tank.cleaners.push({
         uid: 'cl-' + Date.now() + '-' + Math.floor(Math.random() * 999),
         type: cl.id,
@@ -3417,7 +3609,7 @@
         isOpen: false,
         openTimer: 0,
         pearlCooldown: 5 + Math.random() * 6,
-        x: 0.15 + Math.random() * 0.7,
+        x: cl.id === 'pearl_oyster' ? (0.13 + existingOysters * 0.055) : (0.15 + Math.random() * 0.7),
         y: cl.id === 'nerite_snail' ? (0.25 + Math.random() * 0.5) : 0.85,
         vx: cl.id === 'pearl_oyster' ? 0 : (Math.random() < 0.5 ? 1 : -1) * 0.02,
         vy: cl.id === 'nerite_snail' ? (Math.random() < 0.5 ? 1 : -1) * 0.009 : 0
@@ -4382,7 +4574,6 @@
         const f = fishingState.targetFish;
         const sp = getSpeciesById(f.speciesId);
         const varInfo = GENETIC_VARIANTS[f.variant] || GENETIC_VARIANTS.normal;
-        const sellVal = calculateFishValue(f);
         actionHtml = `
           <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-400 space-y-2">
             <div class="flex items-center gap-3">
@@ -4482,7 +4673,6 @@
       drawFishingSceneCanvas();
     }
 
-    // Hỗ trợ phím Dấu Cách (Spacebar) để giật cần và giữ/thả kéo cá nhanh hơn
     window.addEventListener('keydown', (e) => {
       if (e.code !== 'Space' || activeTab !== 'fishing') return;
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
@@ -4584,8 +4774,8 @@
 
       const curFood = getFoodById(gameState.selectedFoodId);
       const stock = gameState.foodInventory[curFood.id] || 0;
-      document.getElementById('quickFeedName').textContent = `${curFood.name}: ${stock}`;
-
+      const shortFoodName = curFood.name.split('(')[0].trim();
+      document.getElementById('quickFeedName').textContent = `${shortFoodName}: ${stock}`;
       const totalFoodStock = Object.values(gameState.foodInventory).reduce((a, b) => a + b, 0);
       document.getElementById('navFoodBadge').textContent = totalFoodStock;
       document.getElementById('navManageBadge').textContent = tank.fishes.length + tank.eggClutches.length;
@@ -4803,7 +4993,7 @@
       if (cat === 'all' || cat === 'cleaners') {
         cleanersHtml = `
           <div class="p-2.5 rounded-xl bg-emerald-950/35 border border-emerald-500/40 space-y-2 mb-2">
-            <div class="text-xs font-extrabold text-emerald-300 uppercase">🦐 5 Sinh Vật Chức Năng Trong Bể (Tép, Ốc Tháp, Trai Ngọc Trai $20, Cua Ớt)</div>
+            <div class="text-xs font-extrabold text-emerald-300 uppercase">🦐 5 Sinh Vật Chức Năng Trong Bể (Tép, Ốc Tháp, Trai Ngọc Trai $10, Cua Ớt)</div>
             <div class="grid grid-cols-1 gap-2">
               ${CLEANER_DB.map(cl => {
                 const ownedCount = (tank.cleaners || []).filter(c => c.type === cl.id).length;
