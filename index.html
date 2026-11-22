@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; user-select: none; }
-    body { margin: 0; padding: 0; background: #040d1a; color: #e2e8f0; overflow-x: hidden; }
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; user-select: none; touch-action: manipulation; }
+    html, body { margin: 0; padding: 0; background: #040d1a; color: #e2e8f0; overflow-x: hidden; touch-action: manipulation; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
     ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.35); border-radius: 9999px; }
@@ -4625,8 +4625,9 @@
         const f = fishingState.targetFish;
         const sp = getSpeciesById(f.speciesId);
         const varInfo = GENETIC_VARIANTS[f.variant] || GENETIC_VARIANTS.normal;
+        const sellVal = calculateFishValue(f);
         actionHtml = `
-          <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-400 space-y-2">
+          <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-400 space-y-2.5">
             <div class="flex items-center gap-3">
               <div class="w-16 h-12 rounded-xl bg-slate-950 flex items-center justify-center shrink-0">
                 ${generateFishSvgMarkup(sp, f.variant, 56, 36)}
@@ -4640,29 +4641,24 @@
                 </div>
               </div>
             </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-900/95 border border-emerald-400/50 space-y-2">
+              <div class="text-xs font-extrabold text-emerald-300">📦 Chọn Cách Xử Lý Cá Vừa Bắt Được:</div>
+              <div class="flex items-center gap-1.5">
+                <select id="caughtTargetTankSel" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-white">
+                  ${gameState.tanks.map((t, idx) => `<option value="${idx}">Thả vào: ${t.name}</option>`).join('')}
+                </select>
+                <button onclick="keepCaughtFishInTank(document.getElementById('caughtTargetTankSel').value)" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-extrabold shrink-0">
+                  🌊 Bỏ Vô Hồ
+                </button>
+              </div>
+              <button onclick="sellCaughtFishImmediately()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold">
+                💵 Bán Luôn Tại Chỗ (+$${sellVal})
+              </button>
+            </div>
           </div>
         `;
       }
-
-      const caughtDecisionBottomHtml = (fishingState.phase === 'caught' && fishingState.targetFish) ? (() => {
-        const sellVal = calculateFishValue(fishingState.targetFish);
-        return `
-          <div class="p-3 rounded-xl bg-slate-900 border-2 border-emerald-400/70 space-y-2.5 mt-2 shadow-lg">
-            <div class="text-xs font-extrabold text-emerald-300">📦 Chọn Cách Xử Lý Cá Vừa Bắt Được:</div>
-            <div class="flex items-center gap-1.5">
-              <select id="caughtTargetTankSel" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-white">
-                ${gameState.tanks.map((t, idx) => `<option value="${idx}">Thả vào: ${t.name}</option>`).join('')}
-              </select>
-              <button onclick="keepCaughtFishInTank(document.getElementById('caughtTargetTankSel').value)" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-extrabold shrink-0">
-                🌊 Bỏ Vô Hồ
-              </button>
-            </div>
-            <button onclick="sellCaughtFishImmediately()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold">
-              💵 Bán Luôn Tại Chỗ (+$${sellVal})
-            </button>
-          </div>
-        `;
-      })() : '';
 
       container.innerHTML = `
         <div class="rounded-xl overflow-hidden border border-cyan-500/40 bg-slate-950 relative">
@@ -4717,23 +4713,22 @@
             `).join('')}
           </select>
         </div>
-
-        ${caughtDecisionBottomHtml}
       `;
 
       drawFishingSceneCanvas();
     }
 
     window.addEventListener('keydown', (e) => {
-      if (e.code !== 'Space' || activeTab !== 'fishing') return;
+      if (e.code !== 'Space') return;
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-      if (fishingState.phase === 'biting') {
-        e.preventDefault();
-        hookBitingFish();
-      } else if (fishingState.phase === 'reeling') {
-        e.preventDefault();
-        fishingState.holdingPull = true;
+      e.preventDefault();
+      if (activeTab === 'fishing') {
+        if (fishingState.phase === 'biting') {
+          hookBitingFish();
+        } else if (fishingState.phase === 'reeling') {
+          fishingState.holdingPull = true;
+        }
       }
     });
 
