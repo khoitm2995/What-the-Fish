@@ -36,12 +36,6 @@
       50% { opacity: 1; }
     }
     .pulse-badge { animation: pulseGlow 2s infinite ease-in-out; }
-    button, select, a, label, .tab-btn { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-    #fishingContainer, #fishingContainer * { -webkit-touch-callout: none; }
-    #btnHoldPull { touch-action: none; -webkit-user-select: none; user-select: none; }
-    @media (pointer: coarse) {
-      input[type="text"], input:not([type]), select, textarea { font-size: 16px !important; }
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
@@ -87,7 +81,7 @@
         <div class="flex items-center gap-1.5 bg-sky-950/70 border border-sky-500/30 px-2.5 py-1 rounded-xl">
           <span class="text-sky-400 text-sm">🐠</span>
           <div>
-            <div class="text-[10px] text-sky-300/80 uppercase leading-none" title="Nhỏ=1 • Trung=3 • Lớn=5">Sức chứa bể</div>
+            <div class="text-[10px] text-sky-300/80 uppercase leading-none">Mật độ bể</div>
             <div id="headerFishCount" class="text-xs sm:text-sm font-bold text-sky-200 leading-tight">0 / 30</div>
           </div>
         </div>
@@ -278,6 +272,7 @@
                 <div id="inspFishSub" class="text-xs text-slate-400 mt-0.5">
                   Giai đoạn: Trưởng thành • Tuổi: 4.2/30 ngày • Kích thước: 3.5 cm
                 </div>
+                <div id="inspEnvWarn" class="mt-1 text-[11px] font-semibold"></div>
               </div>
             </div>
 
@@ -409,15 +404,27 @@
                 <span class="text-slate-300">Nhiệt độ mục tiêu:</span>
                 <span id="targetTempLabel" class="font-bold text-amber-300">26.0°C</span>
               </div>
-              <input id="sliderTargetTemp" type="range" min="20" max="31" step="0.5" value="26" oninput="updateTargetEnv('temp', this.value)" class="w-full accent-amber-400 cursor-pointer" />
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="adjustEnv('temp', -1)" class="w-7 h-7 shrink-0 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-600 text-white font-extrabold text-base leading-none select-none" title="Giảm">−</button>
+                <input id="sliderTargetTemp" type="range" min="20" max="31" step="0.5" value="26" oninput="updateTargetEnv('temp', this.value)" class="w-full accent-amber-400 cursor-pointer" />
+                <button type="button" onclick="adjustEnv('temp', 1)" class="w-7 h-7 shrink-0 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-600 text-white font-extrabold text-base leading-none select-none" title="Tăng">+</button>
+              </div>
             </div>
             <div class="flex-1">
               <div class="flex justify-between text-xs mb-1">
                 <span class="text-slate-300">Độ pH mục tiêu:</span>
                 <span id="targetPhLabel" class="font-bold text-purple-300">7.0</span>
               </div>
-              <input id="sliderTargetPh" type="range" min="5.5" max="8.5" step="0.1" value="7.0" oninput="updateTargetEnv('ph', this.value)" class="w-full accent-purple-400 cursor-pointer" />
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="adjustEnv('ph', -1)" class="w-7 h-7 shrink-0 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-600 text-white font-extrabold text-base leading-none select-none" title="Giảm">−</button>
+                <input id="sliderTargetPh" type="range" min="5.5" max="8.5" step="0.1" value="7.0" oninput="updateTargetEnv('ph', this.value)" class="w-full accent-purple-400 cursor-pointer" />
+                <button type="button" onclick="adjustEnv('ph', 1)" class="w-7 h-7 shrink-0 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-600 text-white font-extrabold text-base leading-none select-none" title="Tăng">+</button>
+              </div>
             </div>
+          </div>
+          <div id="envRangeHint" class="text-[11px] space-y-0.5 pt-1.5 border-t border-slate-800/80"></div>
+          <div class="flex justify-end">
+            <button id="btnAutoTuneEnv" onclick="autoTuneCurrentTank()" class="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold">🎯 Tự cân bằng theo đàn cá</button>
           </div>
         </div>
 
@@ -545,12 +552,6 @@
             </button>
             <button id="btnAutoSellOvercrowdedFry" onclick="autoSellOvercrowdedFry()" class="px-2.5 py-1 rounded-xl bg-amber-600/30 hover:bg-amber-600/50 border border-amber-400/40 text-amber-200 text-xs font-bold">
               🐟 Tự Bán Cá Con Quá Tải
-            </button>
-          </div>
-          <div id="manageBatchMoveBar" class="hidden flex flex-wrap items-center gap-1.5">
-            <select id="manageBatchMoveTank" class="flex-1 min-w-[150px] bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-xs text-slate-200"></select>
-            <button onclick="moveSelectedBatchFish()" class="px-2.5 py-1 rounded-xl bg-sky-600/30 hover:bg-sky-600/50 border border-sky-400/40 text-sky-200 text-xs font-bold">
-              ⇄ Chuyển Cá Đã Chọn
             </button>
           </div>
         </div>
@@ -710,11 +711,8 @@
           <p>• <b>Sốt giá thị trường:</b> giá bán một nhóm cá ×1.5 hoặc ×2.<br/>• <b>Thời tiết:</b> nắng nóng +3°C (giảm Oxy) hoặc gió mùa lạnh -3°C — chỉnh lại Nhiệt độ mục tiêu / Lọc để cứu cá.<br/>• <b>Thương lái VIP:</b> bán giảm giá 1 cá biến thể hiếm hoặc thu mua 1 loài giá ×2, chỉ ở lại khoảng 1 ngày.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-bold text-sky-300 mb-1">7. Sức Chứa & Sinh Sản</div>
-          <p>• Sức chứa bể tính theo điểm: <b>Cá Nhỏ = 1</b>, <b>Cá Trung = 3</b>, <b>Cá Lớn = 5</b>.<br/>
-          • Cá con phải đủ <b>10 ngày</b> trong game mới trưởng thành được.<br/>
-          • Cá vừa đẻ cần nghỉ <b>15 ngày</b> trong game mới thụ thai / đẻ lần tiếp theo.<br/>
-          • 1 phần thức ăn = <b>10 hạt</b>. Mỗi lần rải, số hạt theo số cá đang đói (tối đa 24 hạt, bể ít cá thì ít hạt) và kho chỉ bị trừ theo số hạt đã rải; cá no hết thì không rải.</p>
+          <div class="font-bold text-sky-300 mb-1">7. Nhiệt Độ & pH</div>
+          <p>Mỗi loài có khoảng nhiệt độ/pH lý tưởng (xem ở Cửa Hàng và ngay dưới thanh trượt ở Tab 1). Lệch quá <b>1.5°C</b> hoặc <b>0.5 pH</b> thì cá mất sức khỏe, càng lệch xa càng nặng — khiến cá không đẻ và không lớn. Ở khoảng lý tưởng, cá <b>lên màu nhanh +25%</b> và <b>dễ đẻ +10%</b>. Cá biển cần pH 8.0–8.4. Bể trống tự chỉnh khi thả cá đầu tiên; nút <b>🎯 Tự cân bằng</b> chọn mức tốt nhất cho cả đàn.</p>
         </div>
       </div>
     </div>
@@ -874,11 +872,11 @@
     ];
 
     const TANK_LEVELS = [
-      { level: 1, name: 'Level 1: Bể Mini Để Bàn', liters: 40, maxFish: 30, upgradeCost: 0, unlockPlayerLv: 1, desc: 'Bể kính 40L cơ bản sức chứa 30 điểm (cá nhỏ=1, trung=3, lớn=5).' },
-      { level: 2, name: 'Level 2: Bể Tiêu Chuẩn 90L', liters: 90, maxFish: 60, upgradeCost: 260, unlockPlayerLv: 2, desc: 'Tăng gấp đôi không gian bơi lên 60 điểm sức chứa.' },
-      { level: 3, name: 'Level 3: Bể Lớn Thủy Sinh 180L', liters: 180, maxFish: 110, upgradeCost: 650, unlockPlayerLv: 3, desc: 'Bể kính siêu trong 180L, sức chứa 110 điểm.' },
-      { level: 4, name: 'Level 4: Bể Chuyên Nghiệp 350L', liters: 350, maxFish: 180, upgradeCost: 1400, unlockPlayerLv: 4, desc: 'Bể quy mô lớn 350L (tối đa 180 điểm sức chứa).' },
-      { level: 5, name: 'Level 5: Bể Đại Dương / Trang Trại 500L', liters: 500, maxFish: 300, upgradeCost: 2800, unlockPlayerLv: 5, desc: 'Sức chứa khổng lồ 300 điểm/bể cho cá lớn & cá biển!' }
+      { level: 1, name: 'Level 1: Bể Mini Để Bàn', liters: 40, maxFish: 30, upgradeCost: 0, unlockPlayerLv: 1, desc: 'Bể kính 40L cơ bản sức chứa 30 cá thể.' },
+      { level: 2, name: 'Level 2: Bể Tiêu Chuẩn 90L', liters: 90, maxFish: 60, upgradeCost: 260, unlockPlayerLv: 2, desc: 'Tăng gấp đôi không gian bơi lên 60 cá thể.' },
+      { level: 3, name: 'Level 3: Bể Lớn Thủy Sinh 180L', liters: 180, maxFish: 110, upgradeCost: 650, unlockPlayerLv: 3, desc: 'Bể kính siêu trong 180L, sức chứa 110 cá thể.' },
+      { level: 4, name: 'Level 4: Bể Chuyên Nghiệp 350L', liters: 350, maxFish: 180, upgradeCost: 1400, unlockPlayerLv: 4, desc: 'Bể quy mô lớn 350L (tối đa 180 cá).' },
+      { level: 5, name: 'Level 5: Bể Đại Dương / Trang Trại 500L', liters: 500, maxFish: 300, upgradeCost: 2800, unlockPlayerLv: 5, desc: 'Sức chứa khổng lồ 300 cá/bể cho cá lớn & cá biển!' }
     ];
 
     const FILTER_LEVELS = [
@@ -1161,18 +1159,6 @@
       medium: 'Size Trung',
       large: 'Size Lớn'
     };
-
-    // Sức chứa tính theo điểm: cá nhỏ = 1, cá trung = 3, cá lớn = 5
-    const SIZE_LOAD_WEIGHT = { small: 1, medium: 3, large: 5 };
-    const MIN_MATURE_AGE_DAYS = 10;   // Cá con phải đủ 10 ngày game mới trưởng thành
-    const BREED_REST_DAYS = 15;       // Cá mới đẻ nghỉ 15 ngày game mới thụ thai tiếp
-    function getSpeciesLoadWeight(sp) { return SIZE_LOAD_WEIGHT[getSpeciesSizeClass(sp)] || 1; }
-    function getFishLoadWeight(fish) { return getSpeciesLoadWeight(getSpeciesById(fish.speciesId)); }
-    function getTankLoad(tank) {
-      let total = 0;
-      (tank.fishes || []).forEach(f => { total += getFishLoadWeight(f); });
-      return total;
-    }
 
     function getFoodById(id) {
       return FOOD_DB.find(f => f.id === id) || FOOD_DB[0];
@@ -1465,8 +1451,7 @@
         }
         gameState.money -= pendingTankNameCost;
         gameState.stats.totalSpent += pendingTankNameCost;
-        const nextId = Math.max(0, ...gameState.tanks.map(t => t.id)) + 1;
-        const newTank = createInitialTank(nextId, finalName, false);
+        const newTank = createInitialTank(idx, finalName, false);
         gameState.tanks.push(newTank);
         gameState.activeTankIndex = idx;
         playSfx('levelup');
@@ -1780,7 +1765,7 @@
         tank.excessFoodLoad = 0;
       } else {
         const fishLoad = tank.fishes.length;
-        const overCap = Math.max(0, getTankLoad(tank) - tankMeta.maxFish);
+        const overCap = Math.max(0, fishLoad - tankMeta.maxFish);
         const wallAlgaePenalty = (tank.wallAlgae / 100) * 1.4;
         const trumpetSlowFactor = Math.max(0.45, 1 - trumpetCount * 0.14);
         const wasteRate = ((fishLoad * 0.16) + (overCap * 0.65) + wallAlgaePenalty) * trumpetSlowFactor;
@@ -1861,8 +1846,34 @@
       const targetOxy = Math.min(100, Math.max(25, 72 + filterMeta.oxyBonus + habitat.oxyBoost * lightFactor - tank.fishes.length * 0.7 - getWeatherOxyPenalty()));
       tank.oxygen += (targetOxy - tank.oxygen) * Math.min(1, effDt * 0.3);
 
-      // Auto-Feeder (hồ đang xem: rải hạt; hồ nền: cho ăn trực tiếp)
-      runAutoFeeder(tank, effDt);
+      // Auto-Feeder
+      if (gameState.autoFeeder && tank.fishes.length > 0) {
+        const fryList = tank.fishes.filter(f => f.stage === 'fry');
+        const adultList = tank.fishes.filter(f => f.stage !== 'fry');
+
+        if (fryList.length > 0) {
+          const avgFryHunger = fryList.reduce((sum, f) => sum + f.hunger, 0) / fryList.length;
+          const activeFryFood = foodParticles.filter(p => p.tankId === tank.id && p.foodGroup === 'fry').length;
+          if (avgFryHunger < 80 && activeFryFood < 4) {
+            const fryFood = FOOD_DB.find(f => f.group === 'fry' && (gameState.foodInventory[f.id] || 0) > 0);
+            if (fryFood) dispenseFoodIntoTank(tank, fryFood.id, true);
+          }
+        }
+
+        if (adultList.length > 0) {
+          const avgAdultHunger = adultList.reduce((sum, f) => sum + f.hunger, 0) / adultList.length;
+          const activeAdultFood = foodParticles.filter(p => p.tankId === tank.id && p.foodGroup === 'adult').length;
+          if (avgAdultHunger < 80 && activeAdultFood < 4) {
+            const curFood = getFoodById(gameState.selectedFoodId);
+            if (curFood && curFood.group === 'adult' && (gameState.foodInventory[curFood.id] || 0) > 0) {
+              dispenseFoodIntoTank(tank, curFood.id, true);
+            } else {
+              const basicAdultFood = FOOD_DB.find(f => f.group === 'adult' && (gameState.foodInventory[f.id] || 0) > 0);
+              if (basicAdultFood) dispenseFoodIntoTank(tank, basicAdultFood.id, true);
+            }
+          }
+        }
+      }
 
       // Cập nhật ổ trứng
       for (let i = tank.eggClutches.length - 1; i >= 0; i--) {
@@ -1876,8 +1887,7 @@
         clutch.progress += dayDelta / clutch.hatchDaysReq;
         if (clutch.progress >= 1.0) {
           const survivingEggs = Math.max(1, Math.round(clutch.eggCount * (1 - clutch.spoiledRatio + filterMeta.eggProtect * 0.5)));
-          const eggW = getSpeciesLoadWeight(sp);
-          const spaceLeft = Math.max(2, Math.floor((tankMeta.maxFish + 8 - getTankLoad(tank)) / eggW));
+          const spaceLeft = Math.max(2, tankMeta.maxFish + 8 - tank.fishes.length);
           const actualSpawn = Math.min(survivingEggs, spaceLeft);
 
           let rareBorn = 0;
@@ -1923,8 +1933,7 @@
           let envPenalty = 0;
           if (tank.cleanliness < sp.minClean) envPenalty += (sp.minClean - tank.cleanliness) * 0.35;
           if (tank.oxygen < 60) envPenalty += (60 - tank.oxygen) * 0.4;
-          if (tank.temperature < sp.tempRange[0] - 1.5 || tank.temperature > sp.tempRange[1] + 1.5) envPenalty += 8;
-          if (tank.ph < sp.phRange[0] - 0.5 || tank.ph > sp.phRange[1] + 0.5) envPenalty += 8;
+          envPenalty += getTempPenalty(tank.temperature, sp) + getPhPenalty(tank.ph, sp);
           if (tank.hairAlgae > 15) envPenalty += (tank.hairAlgae / 100) * 14;
 
           if (fish.hunger <= 5) {
@@ -1937,7 +1946,7 @@
         }
 
         if (tank.lightOn && tank.cleanliness > 80 && fish.hunger > 60) {
-          fish.colorQuality = Math.min(100, fish.colorQuality + 0.6 * lightMeta.colorRate * dayDelta);
+          fish.colorQuality = Math.min(100, fish.colorQuality + 0.6 * lightMeta.colorRate * dayDelta * (isEnvComfortable(tank, sp) ? 1.25 : 1));
         }
 
         const reqStreakDays = Number((sp.matureDays * 0.5).toFixed(1));
@@ -1945,12 +1954,11 @@
           if (fish.health > 90) {
             const fastMult = fish.health >= 99.5 ? 2.0 : 1.6;
             fish.fullHealthStreakDays = Number(((fish.fullHealthStreakDays || 0) + dayDelta * fastMult).toFixed(3));
-            const ageRatio = Math.min(1.0, fish.ageDays / MIN_MATURE_AGE_DAYS);
-            const streakRatio = Math.min(1.0, fish.fullHealthStreakDays / reqStreakDays, ageRatio);
+            const streakRatio = Math.min(1.0, fish.fullHealthStreakDays / reqStreakDays);
             fish.sizeCm = Number((sp.maxSizeCm * (0.32 + 0.68 * streakRatio)).toFixed(2));
 
             if (fish.stage === 'fry' && streakRatio >= 0.45) fish.stage = 'juvenile';
-            if (fish.fullHealthStreakDays >= reqStreakDays && fish.ageDays >= MIN_MATURE_AGE_DAYS) {
+            if (fish.fullHealthStreakDays >= reqStreakDays) {
               fish.stage = 'adult';
               fish.sizeCm = sp.maxSizeCm;
               gameState.stats.totalFryMatured++;
@@ -1968,13 +1976,13 @@
           if (fish.pregnancyProgress >= 1.0) {
             fish.isPregnant = false;
             fish.pregnancyProgress = 0;
-            fish.breedCooldown = BREED_REST_DAYS;
+            fish.breedCooldown = 0.2;
             if (!modFlags.immortalFullStats) {
               fish.health = Math.max(5, Number((fish.health - 80).toFixed(1)));
               fish.hunger = Math.max(20, fish.hunger - 30);
             }
 
-            const spaceLeft = Math.max(2, Math.floor((tankMeta.maxFish + 8 - getTankLoad(tank)) / getSpeciesLoadWeight(sp)));
+            const spaceLeft = Math.max(2, tankMeta.maxFish + 8 - tank.fishes.length);
             const rawCount = Math.max(3, Math.round(sp.avgOffspring * (0.65 + (fish.health / 200) + (habitat.breedScore / 150))));
             const spawnCount = Math.min(rawCount, spaceLeft);
 
@@ -2008,7 +2016,7 @@
         renderAllPanels();
       }
 
-      if (!modFlags.disableBreeding && Math.random() < dayDelta * 8.0 && getTankLoad(tank) < tankMeta.maxFish) {
+      if (!modFlags.disableBreeding && Math.random() < dayDelta * 8.0 && tank.fishes.length < tankMeta.maxFish) {
         attemptBreedingInTank(tank, habitat);
       }
 
@@ -2037,7 +2045,7 @@
           const sp = getSpeciesById(spId);
           if (tank.cleanliness < sp.minClean - 15) continue;
 
-          const chance = Math.min(0.95, (0.72 + habitat.breedScore * 0.015) / (sp.difficulty * 0.35));
+          const chance = Math.min(0.95, ((0.72 + habitat.breedScore * 0.015) / (sp.difficulty * 0.35)) * (isEnvComfortable(tank, sp) ? 1.1 : 1));
           if (Math.random() > chance) continue;
 
           const male = group.males[0];
@@ -2067,7 +2075,7 @@
               female.health = Math.max(5, Number((female.health - 80).toFixed(1)));
             }
             male.breedCooldown = 0.3;
-            female.breedCooldown = BREED_REST_DAYS;
+            female.breedCooldown = 0.35;
             gameState.stats.totalBreedingEvents++;
 
             let eggX = 0.25 + Math.random() * 0.5;
@@ -3289,7 +3297,6 @@
               if (fp.tankId !== tank.id) continue;
               const fGroup = fp.foodGroup || getFoodById(fp.foodId).group;
               if (fish.stage === 'fry' && (fGroup === 'adult' || fGroup === 'tonic')) continue;
-              if (fish.stage === 'adult' && fGroup === 'fry') continue;
               if (fGroup === 'tonic' && fish.stage !== 'adult') continue;
               const d = Math.hypot(fp.x - fish.x, fp.y - fish.y);
               if (d < bestDist) {
@@ -3755,9 +3762,8 @@
       }
 
       const countNeeded = buyAsBreedingPair ? 2 : 1;
-      const loadNeeded = countNeeded * getSpeciesLoadWeight(sp);
-      if (getTankLoad(tank) + loadNeeded > tankMeta.maxFish) {
-        showToast(`⚠️ Bể không đủ sức chứa! Cần ${loadNeeded} điểm (còn ${Math.max(0, tankMeta.maxFish - getTankLoad(tank))}/${tankMeta.maxFish}).`, 'warn');
+      if (tank.fishes.length + countNeeded > tankMeta.maxFish) {
+        showToast(`⚠️ Bể đã đạt sức chứa tối đa (${tankMeta.maxFish} cá)!`, 'warn');
         return;
       }
 
@@ -3771,6 +3777,7 @@
       gameState.money -= cost;
       gameState.stats.totalSpent += cost;
       gameState.stats.totalFishBought += countNeeded;
+      autoTuneTankForSpecies(tank, sp);
 
       if (buyAsBreedingPair) {
         const maleFish = createFishEntity(sp.id, 'adult', 'male');
@@ -3779,15 +3786,10 @@
         selectedFishId = femaleFish.id;
         showToast(`🐟 Đã mua cặp ${sp.nameVi} Trưởng Thành!`, 'success');
       } else {
-        // Mua lẻ: bù giới tính còn thiếu của loài này trong bể (cân bằng ♂/♀), hòa thì ngẫu nhiên 50/50
-        const sameSp = tank.fishes.filter(x => x.speciesId === sp.id && x.stage === 'adult');
-        const maleN = sameSp.filter(x => x.gender === 'male').length;
-        const femaleN = sameSp.length - maleN;
-        const pickedGender = maleN > femaleN ? 'female' : (femaleN > maleN ? 'male' : null);
-        const f = createFishEntity(sp.id, 'adult', pickedGender);
+        const f = createFishEntity(sp.id, 'adult', null);
         tank.fishes.push(f);
         selectedFishId = f.id;
-        showToast(`🐟 Đã mua 1 ${sp.nameVi} ${f.gender === 'male' ? '♂ Đực' : '♀ Cái'} Trưởng Thành!`, 'success');
+        showToast(`🐟 Đã mua 1 ${sp.nameVi} Trưởng Thành!`, 'success');
       }
 
       playSfx('cash');
@@ -3816,77 +3818,22 @@
       dispenseFoodIntoTank(getCurrentTank(), gameState.selectedFoodId, false);
     }
 
-    // ------------------------------------------------------------------
-    // AUTO-FEED: kích hoạt theo nhóm đói, liều theo số cá đói, chạy cả hồ nền
-    // ------------------------------------------------------------------
-    const autoFeedTimers = {};
-    const PARTICLES_PER_SERVING = 10;   // 1 phần thức ăn = 10 hạt
-
-    // Gói đang mở: số hạt dư của từng loại thức ăn
-    function getFoodOpenParticles(foodId) {
-      return (gameState.foodOpened && gameState.foodOpened[foodId]) || 0;
-    }
-    function getFoodAvailableParticles(foodId) {
-      return (gameState.foodInventory[foodId] || 0) * PARTICLES_PER_SERVING + getFoodOpenParticles(foodId);
-    }
-    // Trừ kho theo số hạt thực rải; trả về số hạt thực sự lấy được
-    function consumeFoodParticles(foodId, want) {
-      if (!gameState.foodOpened) gameState.foodOpened = {};
-      let open = gameState.foodOpened[foodId] || 0;
-      let stock = gameState.foodInventory[foodId] || 0;
-      const n = Math.min(want, open + stock * PARTICLES_PER_SERVING);
-      if (n <= 0) return 0;
-      const need = n - open;
-      if (need > 0) {
-        const packs = Math.ceil(need / PARTICLES_PER_SERVING);
-        stock -= packs;
-        open += packs * PARTICLES_PER_SERVING;
+    function dispenseFoodIntoTank(tank, foodId, isSilentAuto = false) {
+      const food = getFoodById(foodId);
+      const stock = gameState.foodInventory[food.id] || 0;
+      if (stock <= 0) {
+        if (!isSilentAuto) {
+          showToast(`⚠️ Đã hết "${food.name}" trong kho!`, 'warn');
+          switchTab('food');
+        }
+        return;
       }
-      open -= n;
-      gameState.foodInventory[foodId] = stock;
-      gameState.foodOpened[foodId] = open;
-      return n;
-    }
 
-    // Trả về số cá đang đói (<70%) nếu nhóm cần cho ăn: có cá <50% no, hoặc ≥30% đàn <70% no
-    function autoFeedHungryCount(list) {
-      if (!list.length) return 0;
-      const lows = list.filter(f => f.hunger < 70).length;
-      const veryLow = list.some(f => f.hunger < 50);
-      if (!veryLow && lows / list.length < 0.3) return 0;
-      return Math.max(1, lows);
-    }
-
-    function autoFeedParticleCount(hungryCount) {
-      // ~1 hạt / 1,5 cá đói; tối thiểu 3 hạt nhưng không vượt số cá đói (bể ít cá thì ít hạt); tối đa 24
-      return Math.max(Math.min(3, hungryCount), Math.min(24, Math.ceil(hungryCount / 1.5)));
-    }
-
-    // Chọn thức ăn auto: ưu tiên loại đang chọn (nếu đúng nhóm), loại hết hàng thì bỏ qua
-    function pickAutoFood(kind) {
-      const inv = gameState.foodInventory;
-      const has = f => f && getFoodAvailableParticles(f.id) > 0;
-      const sel = getFoodById(gameState.selectedFoodId);
-      if (kind === 'fry') {
-        if (sel && sel.group === 'fry' && has(sel)) return sel;
-        return FOOD_DB.find(f => f.group === 'fry' && has(f)) || null;
-      }
-      if (sel && (sel.group === 'adult' || sel.group === 'live') && has(sel)) return sel;
-      return FOOD_DB.find(f => f.group === 'adult' && has(f)) || null;
-    }
-
-    function autoFeedOutOfStock(kind) {
-      gameState.autoFeeder = false;
-      const label = kind === 'fry' ? 'cá bột' : 'cá lớn';
-      showToast(`⚠️ Kho hết thức ăn cho ${label}! Đã tự TẮT Máy Cho Ăn Tự Động.`, 'danger');
-      logEvent(`Máy cho ăn tự động đã tắt vì hết thức ăn cho ${label} trong kho.`, 'warn');
-      renderAllPanels();
-    }
-
-    function spawnAutoFoodParticles(tank, food, count) {
+      gameState.foodInventory[food.id] = stock - 1;
       const colorMap = { fry: '#fde047', adult: '#f97316', live: '#ef4444', tonic: '#c084fc' };
       const vyBase = food.id === 'sinking_wafers' ? 0.14 : 0.065;
-      for (let i = 0; i < count; i++) {
+
+      for (let i = 0; i < 8; i++) {
         foodParticles.push({
           tankId: tank.id,
           foodId: food.id,
@@ -3902,98 +3849,10 @@
           seed: Math.random() * 10
         });
       }
-    }
-
-    // Cho ăn trực tiếp (hồ nền): cộng độ no, sức khỏe, sắc tố + ô nhiễm nhỏ, không tạo hạt
-    function feedTankDirect(tank, fishList, food, bites) {
-      const targets = fishList.filter(f => f.hunger <= 80).sort((a, b) => a.hunger - b.hunger).slice(0, bites);
-      targets.forEach(fish => {
-        let restore = food.hungerRestore;
-        if (fish.stage === 'fry' && food.group === 'fry') {
-          restore *= 1.2;
-          fish.ageDays = Number((fish.ageDays + 0.12 * food.fryGrowthBoost).toFixed(2));
-        }
-        fish.hunger = Math.min(100, Number((fish.hunger + restore).toFixed(1)));
-        const healthGain = Number(((food.healthPower || 15) * Math.max(0.08, fish.health / 100)).toFixed(1));
-        fish.health = Number(Math.min(100, fish.health + healthGain).toFixed(1));
-        fish.colorQuality = Math.min(100, fish.colorQuality + food.colorBoost);
-        if (!modFlags.alwaysCleanNoAlgae) {
-          tank.cleanliness = Math.max(5, tank.cleanliness - food.pollution * 0.08);
-          tank.excessFoodLoad = (tank.excessFoodLoad || 0) + food.pollution * 0.1;
-        }
-      });
-    }
-
-    function runAutoFeeder(tank, effDt) {
-      if (!gameState.autoFeeder || tank.fishes.length === 0) return;
-      autoFeedTimers[tank.id] = (autoFeedTimers[tank.id] || 0) - effDt;
-      if (autoFeedTimers[tank.id] > 0) return;
-      autoFeedTimers[tank.id] = 1.0;
-
-      const isActive = tank === getCurrentTank();
-      const groups = [
-        { kind: 'fry', fish: tank.fishes.filter(f => f.stage === 'fry') },
-        { kind: 'adult', fish: tank.fishes.filter(f => f.stage !== 'fry') }
-      ];
-
-      for (const g of groups) {
-        const hungry = autoFeedHungryCount(g.fish);
-        if (!hungry) continue;
-
-        // Hạt đang rơi/chưa ăn được tính vào liều: chỉ bổ sung phần còn thiếu
-        let need = autoFeedParticleCount(hungry);
-        if (isActive) {
-          const pending = foodParticles.filter(p => p.tankId === tank.id &&
-            (g.kind === 'fry' ? p.foodGroup === 'fry' : (p.foodGroup === 'adult' || p.foodGroup === 'live'))).length;
-          need -= pending;
-          if (need <= 0) continue;
-        }
-
-        const food = pickAutoFood(g.kind);
-        if (!food) { autoFeedOutOfStock(g.kind); return; }
-
-        const bites = consumeFoodParticles(food.id, need);
-        if (bites <= 0) continue;
-
-        if (isActive) spawnAutoFoodParticles(tank, food, bites);
-        else feedTankDirect(tank, g.fish, food, bites);
-      }
-    }
-
-    function isFishEligibleForFood(fish, food) {
-      if (food.group === 'fry') return fish.stage !== 'adult';
-      if (food.group === 'adult') return fish.stage !== 'fry';
-      if (food.group === 'tonic') return fish.stage === 'adult';
-      return true; // live
-    }
-
-    function dispenseFoodIntoTank(tank, foodId, isSilentAuto = false) {
-      const food = getFoodById(foodId);
-      if (getFoodAvailableParticles(food.id) <= 0) {
-        if (!isSilentAuto) {
-          showToast(`⚠️ Đã hết "${food.name}" trong kho!`, 'warn');
-          switchTab('food');
-        }
-        return;
-      }
-
-      const eligible = tank.fishes.filter(f => isFishEligibleForFood(f, food));
-      if (eligible.length === 0) {
-        if (!isSilentAuto) showToast(`ℹ️ ${tank.name} không có cá nào ăn được "${food.name}"!`, 'info');
-        return;
-      }
-      const canEat = eligible.filter(f => f.hunger <= 80).length;
-      if (canEat === 0) {
-        if (!isSilentAuto) showToast('😋 Cá đều no rồi, chưa cần rải thêm!', 'info');
-        return;
-      }
-
-      const used = consumeFoodParticles(food.id, autoFeedParticleCount(canEat));
-      spawnAutoFoodParticles(tank, food, used);
 
       if (!isSilentAuto) {
         playSfx('bubble');
-        showToast(`🦐 Đã rải ${used} hạt ${food.name} cho ${canEat} cá đói`, 'info');
+        showToast(`🦐 Đã rải 1 phần ${food.name}`, 'info');
       }
       renderAllPanels();
     }
@@ -4036,6 +3895,21 @@
       addFloatingText(0.5, 0.4, '💊 Phục hồi sức khỏe +35%', '#f43f5e');
       showToast('💊 Đã bổ sung vi sinh dưỡng cá!', 'success');
       renderAllPanels();
+    }
+
+    function adjustEnv(type, dir) {
+      const isTemp = type === 'temp';
+      const slider = document.getElementById(isTemp ? 'sliderTargetTemp' : 'sliderTargetPh');
+      if (!slider) return;
+      const step = isTemp ? 0.5 : 0.1;
+      const min = parseFloat(slider.min), max = parseFloat(slider.max);
+      const tank = getCurrentTank();
+      const cur = isTemp ? tank.targetTemperature : tank.targetPh;
+      let next = Math.round((cur + dir * step) * 10) / 10;
+      next = Math.max(min, Math.min(max, next));
+      slider.value = next;
+      updateTargetEnv(type, next);
+      renderEnvHint(tank);
     }
 
     function updateTargetEnv(type, val) {
@@ -4259,19 +4133,13 @@
     function autoSellOvercrowdedFry() {
       const tank = getCurrentTank();
       const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
-      const overCount = getTankLoad(tank) - tankMeta.maxFish;
+      const overCount = tank.fishes.length - tankMeta.maxFish;
       if (overCount <= 0) {
         showToast('✅ Bể hiện tại chưa bị quá tải mật độ cá!', 'info');
         return;
       }
       const eligibleFry = tank.fishes.filter(f => f.stage === 'fry' && (!f.variant || f.variant === 'normal') && !f.locked);
-      const toSell = [];
-      let freed = 0;
-      for (const f of eligibleFry) {
-        if (freed >= overCount) break;
-        toSell.push(f);
-        freed += getFishLoadWeight(f);
-      }
+      const toSell = eligibleFry.slice(0, overCount);
       if (toSell.length === 0) {
         showToast('⚠️ Không có cá con thường để bán giảm tải!', 'warn');
         return;
@@ -4766,11 +4634,12 @@
         return;
       }
       const destMeta = TANK_LEVELS[destTank.tankLevel - 1];
-      if (getTankLoad(destTank) + getSpeciesLoadWeight(sp) > destMeta.maxFish) {
-        showToast(`⚠️ ${destTank.name} không đủ sức chứa (${getTankLoad(destTank)}/${destMeta.maxFish} điểm)!`, 'warn');
+      if (destTank.fishes.length >= destMeta.maxFish) {
+        showToast(`⚠️ ${destTank.name} đã đầy (${destMeta.maxFish} cá)!`, 'warn');
         return;
       }
 
+      autoTuneTankForSpecies(destTank, sp);
       destTank.fishes.push(fish);
       gameState.activeTankIndex = tankIdx;
       selectedFishId = fish.id;
@@ -4831,7 +4700,7 @@
             </div>
             <div class="flex gap-2">
               <button onclick="releaseFishingCast()" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow">
-                🚀 Quăng Câu / Thả Mồi Ngay! (Phím cách)
+                🚀 Quăng Câu / Thả Mồi Ngay!
               </button>
               <button onclick="cancelFishingTrip()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">
                 Hủy
@@ -4872,7 +4741,7 @@
                 <div id="fishReelProgBar" class="h-full bg-cyan-400" style="width: 35%"></div>
               </div>
             </div>
-            <button id="btnHoldPull" oncontextmenu="return false" onpointerdown="fishingState.holdingPull=true" onpointerup="fishingState.holdingPull=false" onpointerleave="fishingState.holdingPull=false" onpointercancel="fishingState.holdingPull=false" class="w-full py-3 rounded-xl bg-sky-600 active:bg-sky-500 text-white text-xs font-extrabold shadow-lg">
+            <button onpointerdown="fishingState.holdingPull=true" onpointerup="fishingState.holdingPull=false" onpointerleave="fishingState.holdingPull=false" class="w-full py-3 rounded-xl bg-sky-600 active:bg-sky-500 text-white text-xs font-extrabold shadow-lg">
               ✊ NHẤN GIỮ ĐỂ KÉO CÁ (THẢ RA ĐỂ GIẢM LỰC)
             </button>
           </div>
@@ -4980,10 +4849,8 @@
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       e.preventDefault();
       if (activeTab === 'fishing') {
-        if (fishingState.phase === 'aiming') {
-          if (!e.repeat) releaseFishingCast();
-        } else if (fishingState.phase === 'biting') {
-          if (!e.repeat) hookBitingFish();
+        if (fishingState.phase === 'biting') {
+          hookBitingFish();
         } else if (fishingState.phase === 'reeling') {
           fishingState.holdingPull = true;
         }
@@ -4991,33 +4858,10 @@
     });
 
     window.addEventListener('keyup', (e) => {
-      if (e.code !== 'Space') return;
-      const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
-      if (activeTab === 'fishing' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') e.preventDefault();
-      if (fishingState.phase === 'reeling') {
+      if (e.code === 'Space' && fishingState.phase === 'reeling') {
         fishingState.holdingPull = false;
       }
     });
-
-    // Chống zoom khi bấm nút liên tục / chụm tay trên điện thoại
-    (function preventMobileZoom() {
-      let lastTouchEnd = 0;
-      document.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        const btn = e.target && e.target.closest ? e.target.closest('button') : null;
-        if (btn && now - lastTouchEnd < 350) {
-          e.preventDefault();
-          if (!btn.disabled && btn.id !== 'btnHoldPull') btn.click();
-        }
-        lastTouchEnd = now;
-      }, { passive: false });
-      ['gesturestart', 'gesturechange', 'gestureend'].forEach(ev => {
-        document.addEventListener(ev, (e) => e.preventDefault(), { passive: false });
-      });
-      document.addEventListener('dblclick', (e) => {
-        if (e.target && e.target.closest && e.target.closest('button')) e.preventDefault();
-      });
-    })();
 
     // =========================================================================
     // 14. HIỂN THỊ GIAO DIỆN & CẬP NHẬT DOM CHO TẤT CẢ 9 TAB
@@ -5056,7 +4900,7 @@
       const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
 
       document.getElementById('headerMoney').textContent = '$' + gameState.money.toLocaleString('en-US');
-      document.getElementById('headerFishCount').textContent = `${getTankLoad(tank)} / ${tankMeta.maxFish}`;
+      document.getElementById('headerFishCount').textContent = `${tank.fishes.length} / ${tankMeta.maxFish}`;
 
       const curRank = PLAYER_RANKS[gameState.playerLevel - 1] || PLAYER_RANKS[0];
       const nextRank = PLAYER_RANKS[gameState.playerLevel] || null;
@@ -5102,7 +4946,7 @@
       const curFood = getFoodById(gameState.selectedFoodId);
       const stock = gameState.foodInventory[curFood.id] || 0;
       const shortFoodName = curFood.name.split('(')[0].trim();
-      document.getElementById('quickFeedName').textContent = `${shortFoodName}: ${stock}${getFoodOpenParticles(curFood.id) ? '+' + getFoodOpenParticles(curFood.id) + 'h' : ''}`;
+      document.getElementById('quickFeedName').textContent = `${shortFoodName}: ${stock}`;
       const totalFoodStock = Object.values(gameState.foodInventory).reduce((a, b) => a + b, 0);
       document.getElementById('navFoodBadge').textContent = totalFoodStock;
       document.getElementById('navManageBadge').textContent = tank.fishes.length + tank.eggClutches.length;
@@ -5124,7 +4968,7 @@
           const tCls = getTankActiveSizeClass(t);
           const tag = tHab ? `${tHab === 'marine' ? 'Biển' : 'Ngọt'} • ${SIZE_CLASS_LABELS[tCls]}` : 'Trống';
           return `<button onclick="selectActiveTank(${idx})" class="px-2.5 py-1 rounded-lg text-xs font-bold transition ${active ? 'bg-cyan-600 text-white shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
-            ${t.name} (${tag} • ${getTankLoad(t)}/${tMeta.maxFish})
+            ${t.name} (${tag} • ${t.fishes.length}/${tMeta.maxFish})
           </button>`;
         }).join('');
       }
@@ -5167,7 +5011,8 @@
       vEl.className = `text-[11px] font-bold px-2 py-0.5 rounded-full ${varInfo.badgeClass}`;
 
       const stageMap = { fry: 'Cá Bột', juvenile: 'Cá Nhỡ', adult: 'Trưởng Thành' };
-      document.getElementById('inspFishSub').textContent = `${stageMap[fish.stage]} • Tuổi: ${fish.ageDays.toFixed(1)}/${sp.lifespanDays} ngày • Cỡ: ${fish.sizeCm}cm${fish.stage !== 'adult' ? ` • Trưởng thành khi ≥${MIN_MATURE_AGE_DAYS} ngày tuổi` : ''}`;
+      document.getElementById('inspFishSub').textContent = `${stageMap[fish.stage]} • Tuổi: ${fish.ageDays.toFixed(1)}/${sp.lifespanDays} ngày • Cỡ: ${fish.sizeCm}cm`;
+      updateInspectorEnvWarn(tank, sp);
 
       document.getElementById('btnInspFollow').textContent = followFishMode ? '🎥 Đang theo dõi' : '🎥 Theo dõi';
       const lockBtn = document.getElementById('btnInspLock');
@@ -5196,12 +5041,6 @@
       if (fish.isPregnant) {
         breedPct = Math.round(fish.pregnancyProgress * 100);
         breedStatusText = `Mang thai ${breedPct}%`;
-      } else if (fish.stage !== 'adult') {
-        breedPct = Math.min(100, Math.round(fish.ageDays / MIN_MATURE_AGE_DAYS * 100));
-        breedStatusText = `Chưa trưởng thành`;
-      } else if (fish.breedCooldown > 0) {
-        breedPct = Math.max(0, Math.round((1 - fish.breedCooldown / BREED_REST_DAYS) * 100));
-        breedStatusText = `Nghỉ ${fish.breedCooldown.toFixed(1)} ngày`;
       } else if (fish.health < 99.5) {
         breedPct = Math.round(fish.health);
         breedStatusText = `Cần bồi bổ (${breedPct}%)`;
@@ -5256,11 +5095,12 @@
       }
 
       const destMeta = TANK_LEVELS[destTank.tankLevel - 1];
-      if (getTankLoad(destTank) + getSpeciesLoadWeight(spCheck) > destMeta.maxFish) {
-        showToast(`⚠️ ${destTank.name} không đủ sức chứa (${getTankLoad(destTank)}/${destMeta.maxFish} điểm)!`, 'warn');
+      if (destTank.fishes.length >= destMeta.maxFish) {
+        showToast(`⚠️ ${destTank.name} đã đầy (${destMeta.maxFish} cá)!`, 'warn');
         return;
       }
 
+      autoTuneTankForSpecies(destTank, spCheck);
       const [fish] = srcTank.fishes.splice(fIdx, 1);
       destTank.fishes.push(fish);
       selectedFishId = null;
@@ -5282,18 +5122,7 @@
       const habitat = calculateTankHabitatStats(tank);
 
       document.getElementById('tankLevelBadge').textContent = tankMeta.name;
-      const tankLoad = getTankLoad(tank);
-      document.getElementById('tankStatCapacity').textContent = `${tankMeta.liters} Lít • ${tankLoad}/${tankMeta.maxFish} điểm (${tank.fishes.length} cá)`;
-      const densEl = document.getElementById('tankStatDensityStatus');
-      if (densEl) {
-        const ratio = tankLoad / tankMeta.maxFish;
-        let densText, densCls;
-        if (ratio > 1) { densText = `Quá tải! (+${tankLoad - tankMeta.maxFish} điểm) • Nhỏ=1 • Trung=3 • Lớn=5`; densCls = 'text-rose-400'; }
-        else if (ratio >= 0.85) { densText = 'Mật độ cao — sắp đầy • Nhỏ=1 • Trung=3 • Lớn=5'; densCls = 'text-amber-400'; }
-        else { densText = 'Mật độ lý tưởng • Nhỏ=1 • Trung=3 • Lớn=5'; densCls = 'text-emerald-400'; }
-        densEl.textContent = densText;
-        densEl.className = 'text-[10px] mt-0.5 ' + densCls;
-      }
+      document.getElementById('tankStatCapacity').textContent = `${tankMeta.liters} Lít • ${tank.fishes.length}/${tankMeta.maxFish} cá`;
       document.getElementById('tankStatFilter').textContent = filterMeta.name;
       document.getElementById('tankStatFilterRate').textContent = `Công suất lọc: x${filterMeta.cleanPower} • Oxy +${filterMeta.oxyBonus}%`;
       document.getElementById('tankStatLight').textContent = `${lightMeta.name} (${tank.lightOn ? 'BẬT' : 'TẮT'})`;
@@ -5351,6 +5180,8 @@
       quick('btnQuickUpLight', nL, nL && nL.cost, 0);
 
       renderUpgradePanel();
+      renderEnvHint(tank);
+      updateEnvChips(tank);
     }
 
     function renderFishShop() {
@@ -5473,7 +5304,7 @@
             </div>
 
             <div class="text-[11px] text-slate-300 bg-slate-950/60 px-2.5 py-1 rounded-lg border border-slate-800/80">
-              ${hid ? '🔒 Thông tin ăn uống & đặc tính được ẩn cho đến khi mở khóa.' : `🍽️ <b>Ăn:</b> ${sp.diet} • 💡 ${sp.specialNote}`}
+              ${hid ? '🔒 Thông tin ăn uống & đặc tính được ẩn cho đến khi mở khóa.' : `🍽️ <b>Ăn:</b> ${sp.diet} • 💡 ${sp.specialNote}<br/>🌡️ <b>Nhiệt độ:</b> ${sp.tempRange[0]}–${sp.tempRange[1]}°C • 🧪 <b>pH:</b> ${sp.phRange[0]}–${sp.phRange[1]}`}
             </div>
 
             <div class="flex items-center justify-between gap-2 pt-1">
@@ -5534,7 +5365,7 @@
                     <div>
                       <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-xs font-bold text-white">${food.name}</span>
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Tồn kho: ${stock}${getFoodOpenParticles(food.id) ? ' (+' + getFoodOpenParticles(food.id) + ' hạt)' : ''}</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Tồn kho: ${stock}</span>
                       </div>
                       <p class="text-[11px] text-slate-400 mt-0.5">${food.desc}</p>
                     </div>
@@ -5624,7 +5455,7 @@
         <div class="p-3 rounded-xl bg-slate-900/90 border border-sky-500/30 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-extrabold text-sky-300">🌊 Cấp Độ Bể: ${curTankMeta.name}</span>
-            <span class="text-xs font-bold text-white">${curTankMeta.liters}L • Tối đa ${curTankMeta.maxFish} điểm sức chứa</span>
+            <span class="text-xs font-bold text-white">${curTankMeta.liters}L • Tối đa ${curTankMeta.maxFish} cá</span>
           </div>
           <p class="text-[11px] text-slate-400">${curTankMeta.desc}</p>
           ${nextTankMeta ? `
@@ -5698,108 +5529,10 @@
       `);
     }
 
-    // Kiểm tra cá có thể chuyển sang bể đích không (extraLoad = điểm đã chuyển thêm trong lượt hàng loạt)
-    function getMoveError(fish, destTank, extraLoad = 0) {
-      const sp = getSpeciesById(fish.speciesId);
-      const destMeta = TANK_LEVELS[destTank.tankLevel - 1] || TANK_LEVELS[0];
-      const destHab = getTankActiveHabitat(destTank);
-      if (destHab && destHab !== getSpeciesHabitat(sp)) return 'khác môi trường Biển/Ngọt';
-      const destCls = getTankActiveSizeClass(destTank);
-      if (destCls && destCls !== getSpeciesSizeClass(sp)) return `đang nuôi ${SIZE_CLASS_LABELS[destCls]}`;
-      const minLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
-      if (destTank.tankLevel < minLv) return `bể cần Level ${minLv}+`;
-      if (getTankLoad(destTank) + extraLoad + getSpeciesLoadWeight(sp) > destMeta.maxFish) return 'không đủ sức chứa';
-      return null;
-    }
-
-    function moveFishToTankById(fishId, destIdxStr) {
-      if (destIdxStr === '') return;
-      const destIdx = parseInt(destIdxStr, 10);
-      const src = getCurrentTank();
-      const dest = gameState.tanks[destIdx];
-      if (!dest || dest === src) return;
-      const idx = src.fishes.findIndex(f => f.id === fishId);
-      if (idx === -1) return;
-      const err = getMoveError(src.fishes[idx], dest);
-      if (err) {
-        showToast(`🚫 Không thể chuyển sang ${dest.name}: ${err}!`, 'warn');
-        renderFishManager();
-        return;
-      }
-      const [fish] = src.fishes.splice(idx, 1);
-      dest.fishes.push(fish);
-      selectedManageFishIds.delete(fish.id);
-      if (selectedFishId === fish.id) selectedFishId = null;
-      playSfx('bubble');
-      showToast(`⇄ Đã chuyển ${getSpeciesById(fish.speciesId).nameVi} (${fish.id}) sang ${dest.name}!`, 'success');
-      renderAllPanels();
-      saveGameToStorage();
-    }
-
-    function moveSelectedBatchFish() {
-      const sel = document.getElementById('manageBatchMoveTank');
-      const destIdxStr = sel ? sel.value : '';
-      if (destIdxStr === '') { showToast('⚠️ Hãy chọn hồ đích để chuyển!', 'warn'); return; }
-      const src = getCurrentTank();
-      const dest = gameState.tanks[parseInt(destIdxStr, 10)];
-      if (!dest || dest === src) return;
-      const picked = src.fishes.filter(f => selectedManageFishIds.has(f.id));
-      if (picked.length === 0) { showToast('⚠️ Hãy tích chọn ít nhất 1 cá để chuyển!', 'warn'); return; }
-
-      const moved = [];
-      let extra = 0;
-      let firstErr = null;
-      picked.forEach(f => {
-        const err = getMoveError(f, dest, extra);
-        if (err) { if (!firstErr) firstErr = err; return; }
-        extra += getFishLoadWeight(f);
-        moved.push(f);
-      });
-      if (moved.length === 0) {
-        showToast(`🚫 Không thể chuyển sang ${dest.name}: ${firstErr}!`, 'warn');
-        return;
-      }
-      const movedIds = new Set(moved.map(f => f.id));
-      src.fishes = src.fishes.filter(f => !movedIds.has(f.id));
-      moved.forEach(f => { dest.fishes.push(f); selectedManageFishIds.delete(f.id); });
-      if (movedIds.has(selectedFishId)) selectedFishId = null;
-      playSfx('bubble');
-      const skipped = picked.length - moved.length;
-      showToast(`⇄ Đã chuyển ${moved.length} cá sang ${dest.name}${skipped ? ` (bỏ qua ${skipped} cá: ${firstErr})` : ''}!`, skipped ? 'warn' : 'success');
-      renderAllPanels();
-      saveGameToStorage();
-    }
-
     function renderFishManager() {
       const container = document.getElementById('fishManagerList');
       if (!container) return;
-      // Đang mở dropdown chuyển bể thì không dựng lại để khỏi đóng dropdown
-      const ae = document.activeElement;
-      if (ae && ae.tagName === 'SELECT' && (container.contains(ae) || ae.id === 'manageBatchMoveTank')) return;
       const tank = getCurrentTank();
-
-      const batchBar = document.getElementById('manageBatchMoveBar');
-      const batchSel = document.getElementById('manageBatchMoveTank');
-      if (batchBar && batchSel) {
-        if (gameState.tanks.length > 1) {
-          batchBar.classList.remove('hidden');
-          const keep = batchSel.value;
-          const opts = `<option value="">⇄ Chọn hồ đích...</option>` + gameState.tanks.map((t, i) => {
-            if (i === gameState.activeTankIndex) return '';
-            const hab = getTankActiveHabitat(t);
-            const cls = getTankActiveSizeClass(t);
-            const tag = hab ? `${hab === 'marine' ? 'Biển' : 'Ngọt'} • ${SIZE_CLASS_LABELS[cls]}` : 'Trống';
-            return `<option value="${i}">${escHtml(t.name)} (${tag} • ${getTankLoad(t)}/${(TANK_LEVELS[t.tankLevel - 1] || TANK_LEVELS[0]).maxFish})</option>`;
-          }).join('');
-          if (batchSel.__lastHtml !== opts) {
-            batchSel.innerHTML = opts;
-            batchSel.__lastHtml = opts;
-            if (Array.from(batchSel.options).some(o => o.value === keep)) batchSel.value = keep;
-          }
-        } else {
-          batchBar.classList.add('hidden');
-        }
-      }
 
       const validIds = new Set(tank.fishes.map(f => f.id));
       for (const id of Array.from(selectedManageFishIds)) {
@@ -5818,11 +5551,11 @@
       const list = getFilteredManagerFishes();
 
       if (list.length === 0) {
-        setHtmlIfChanged(container, `<div class="text-center text-slate-500 text-xs py-8">Không có cá thể nào trong mục lọc này tại ${tank.name}.</div>`);
+        container.innerHTML = `<div class="text-center text-slate-500 text-xs py-8">Không có cá thể nào trong mục lọc này tại ${tank.name}.</div>`;
         return;
       }
 
-      setHtmlIfChanged(container, list.map(fish => {
+      container.innerHTML = list.map(fish => {
         const sp = getSpeciesById(fish.speciesId);
         const varInfo = GENETIC_VARIANTS[fish.variant] || GENETIC_VARIANTS.normal;
         const val = calculateFishValue(fish);
@@ -5848,14 +5581,6 @@
               </div>
             </div>
             <div class="flex items-center gap-1 shrink-0" onclick="event.stopPropagation()">
-              ${gameState.tanks.length > 1 ? `<select onchange="moveFishToTankById('${fish.id}', this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-1 py-1 text-[11px] text-slate-200 max-w-[92px]" title="Chuyển cá sang hồ khác">
-                <option value="">⇄ Chuyển</option>
-                ${gameState.tanks.map((t, i) => {
-                  if (i === gameState.activeTankIndex) return '';
-                  const err = getMoveError(fish, t);
-                  return `<option value="${i}" ${err ? 'disabled' : ''}>${escHtml(t.name)}${err ? ' — ' + err : ''}</option>`;
-                }).join('')}
-              </select>` : ''}
               <button onclick="toggleFishLockById('${fish.id}')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs">
                 ${fish.locked ? '🔒' : '🔓'}
               </button>
@@ -5865,7 +5590,7 @@
             </div>
           </div>
         `;
-      }).join(''));
+      }).join('');
     }
 
     function toggleFishLockById(fishId) {
@@ -6039,7 +5764,6 @@
     function ensureGameExtensions() {
       const gs = gameState;
       if (!gs) return;
-      if (!gs.foodOpened || typeof gs.foodOpened !== 'object') gs.foodOpened = {};
       if (!gs.codex || typeof gs.codex !== 'object') gs.codex = {};
       ['owned', 'bred', 'rare', 'claimed', 'notified'].forEach(k => { if (!gs.codex[k] || typeof gs.codex[k] !== 'object') gs.codex[k] = {}; });
       if (typeof gs.codex.seeded !== 'boolean') gs.codex.seeded = false;
@@ -6053,14 +5777,6 @@
       if (!gs.contest.trophies) gs.contest.trophies = { gold: 0, silver: 0, bronze: 0 };
       if (!Array.isArray(gs.contest.hall)) gs.contest.hall = [];
       if (typeof gs.contest.nextOpenDay !== 'number') gs.contest.nextOpenDay = gs.dayCount + 1;
-      // Vá save cũ: đảm bảo mọi bể có id duy nhất
-      const seenIds = new Set();
-      gs.tanks.forEach(t => {
-        if (typeof t.id !== 'number' || seenIds.has(t.id)) {
-          t.id = Math.max(0, ...gs.tanks.map(x => (typeof x.id === 'number' ? x.id : 0)), ...Array.from(seenIds)) + 1;
-        }
-        seenIds.add(t.id);
-      });
     }
 
     // ------------------------------------------------------------------
@@ -6405,7 +6121,7 @@
       if (tankCls && tankCls !== spCls) return `${tank.name} đang nuôi ${SIZE_CLASS_LABELS[tankCls]}, không thể nuôi chung ${SIZE_CLASS_LABELS[spCls]}!`;
       const minLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
       if (tank.tankLevel < minLv) return `${sp.nameVi} cần bể tối thiểu Level ${minLv}!`;
-      if (getTankLoad(tank) + getSpeciesLoadWeight(sp) > tankMeta.maxFish) return `${tank.name} không đủ sức chứa (${getTankLoad(tank)}/${tankMeta.maxFish} điểm, ${sp.nameVi} cần ${getSpeciesLoadWeight(sp)})!`;
+      if (tank.fishes.length >= tankMeta.maxFish) return `${tank.name} đã đầy (${tankMeta.maxFish} cá)!`;
       return null;
     }
 
@@ -6420,6 +6136,7 @@
       gameState.money -= vip.price;
       gameState.stats.totalSpent += vip.price;
       gameState.stats.totalFishBought++;
+      autoTuneTankForSpecies(dest, sp);
       dest.fishes.push(vip.fish);
       selectedFishId = vip.fish.id;
       gameState.events.vip = null;
@@ -6948,6 +6665,187 @@
     }
 
     // =========================================================================
+    // 17. NHIỆT ĐỘ & pH: PHẠT THEO ĐỘ LỆCH, THƯỞNG KHI LÝ TƯỞNG, TỰ CÂN BẰNG, CẢNH BÁO
+    // =========================================================================
+    function envDeviation(v, range) {
+      return v < range[0] ? range[0] - v : (v > range[1] ? v - range[1] : 0);
+    }
+    // Vượt ngưỡng chịu đựng (±1.5°C / ±0.5 pH) mới bị phạt; càng lệch xa càng nặng (tối đa 24).
+    function getTempPenalty(t, sp) {
+      const d = envDeviation(t, sp.tempRange);
+      return d > 1.5 ? Math.min(24, 8 + (d - 1.5) * 4) : 0;
+    }
+    function getPhPenalty(ph, sp) {
+      const d = envDeviation(ph, sp.phRange);
+      return d > 0.5 ? Math.min(24, 8 + (d - 0.5) * 16) : 0;
+    }
+    function envStatusFor(sp, effTemp, ph) {
+      const dt = envDeviation(effTemp, sp.tempRange);
+      const dp = envDeviation(ph, sp.phRange);
+      const tPen = getTempPenalty(effTemp, sp);
+      const pPen = getPhPenalty(ph, sp);
+      let level = 'ok';
+      if (tPen > 0 || pPen > 0) level = 'harm';
+      else if (dt > 0.05 || dp > 0.05) level = 'tolerated';
+      return { level, dt, dp, tPen, pPen, tHigh: effTemp > sp.tempRange[1], pHigh: ph > sp.phRange[1], dmgPerDay: (tPen + pPen) * 0.6 };
+    }
+    function getEnvStatus(tank, sp) { return envStatusFor(sp, tank.temperature, tank.ph); }
+    function isEnvComfortable(tank, sp) { return getEnvStatus(tank, sp).level === 'ok'; }
+
+    function getTankSpeciesEntries(tank) {
+      const map = {};
+      tank.fishes.forEach(f => { map[f.speciesId] = (map[f.speciesId] || 0) + 1; });
+      (tank.eggClutches || []).forEach(c => { if (!map[c.speciesId]) map[c.speciesId] = 1; });
+      return Object.keys(map).map(id => ({ sp: getSpeciesById(id), count: map[id] }));
+    }
+
+    function computeBestEnv(entries, tempOffset) {
+      let avgT = 0, avgP = 0;
+      entries.forEach(e => { avgT += (e.sp.tempRange[0] + e.sp.tempRange[1]) / 2; avgP += (e.sp.phRange[0] + e.sp.phRange[1]) / 2; });
+      avgT /= entries.length; avgP /= entries.length;
+      let best = null;
+      for (let ti = 0; ti <= 22; ti++) {
+        const t = 20 + ti * 0.5;
+        const eff = t + tempOffset;
+        for (let pi = 0; pi <= 30; pi++) {
+          const p = Math.round((5.5 + pi * 0.1) * 10) / 10;
+          let dmg = 0, dev = 0, comfy = 0;
+          entries.forEach(e => {
+            const dt = envDeviation(eff, e.sp.tempRange), dp = envDeviation(p, e.sp.phRange);
+            dmg += (getTempPenalty(eff, e.sp) + getPhPenalty(p, e.sp)) * e.count;
+            dev += (dt / 1.5 + dp / 0.5) * e.count;
+            if (dt <= 0.05 && dp <= 0.05) comfy += e.count;
+          });
+          const cost = dmg * 1000 - comfy * 100 + dev * 10 + Math.abs(eff - avgT) * 0.01 + Math.abs(p - avgP) * 0.05;
+          if (!best || cost < best.cost) best = { t, p, cost, dmg, comfy };
+        }
+      }
+      return best;
+    }
+
+    function fmtRangeT(sp) { return `${sp.tempRange[0]}–${sp.tempRange[1]}°C`; }
+    function fmtRangeP(sp) { return `pH ${sp.phRange[0]}–${sp.phRange[1]}`; }
+
+    // Tự chỉnh khi thả cá đầu tiên vào bể trống; cảnh báo khi thả thêm loài không hợp điều kiện hiện tại.
+    function autoTuneTankForSpecies(tank, sp) {
+      const off = getWeatherTempOffset();
+      const hadLife = tank.fishes.length > 0 || (tank.eggClutches && tank.eggClutches.length > 0);
+      if (!hadLife) {
+        const st = envStatusFor(sp, tank.targetTemperature + off, tank.targetPh);
+        if (st.level === 'ok') return;
+        const best = computeBestEnv([{ sp, count: 1 }], off);
+        tank.targetTemperature = best.t;
+        tank.targetPh = best.p;
+        showToast(`🎯 Tự chỉnh ${tank.name}: ${best.t.toFixed(1)}°C • pH ${best.p.toFixed(1)} cho ${sp.nameVi}`, 'info');
+        logEvent(`Tự chỉnh môi trường ${tank.name} (${best.t.toFixed(1)}°C, pH ${best.p.toFixed(1)}) phù hợp ${sp.nameVi}.`, 'info');
+      } else {
+        const st = envStatusFor(sp, tank.targetTemperature + off, tank.targetPh);
+        if (st.level === 'harm') {
+          showToast(`⚠️ ${sp.nameVi} cần ${fmtRangeT(sp)} • ${fmtRangeP(sp)} — khác môi trường hiện tại của ${tank.name}! Bấm "🎯 Tự cân bằng" hoặc tách bể.`, 'warn');
+        }
+      }
+    }
+
+    function autoTuneCurrentTank() {
+      const tank = getCurrentTank();
+      const entries = getTankSpeciesEntries(tank);
+      if (entries.length === 0) { showToast('🐟 Bể chưa có cá để cân bằng môi trường!', 'warn'); return; }
+      const best = computeBestEnv(entries, getWeatherTempOffset());
+      tank.targetTemperature = best.t;
+      tank.targetPh = best.p;
+      const total = entries.reduce((s, e) => s + e.count, 0);
+      const off = getWeatherTempOffset();
+      showToast(`🎯 Đã cân bằng: mục tiêu ${best.t.toFixed(1)}°C${off ? ` (thực tế ${(best.t + off).toFixed(1)}°C do thời tiết)` : ''} • pH ${best.p.toFixed(1)} — ${best.comfy}/${total} cá ở điều kiện lý tưởng`, best.dmg > 0 ? 'warn' : 'success');
+      if (best.dmg > 0) showToast('⚠️ Một số loài trong bể có khoảng nhiệt độ/pH không trùng nhau — nên tách sang bể riêng!', 'warn');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function renderEnvHint(tank) {
+      const el = document.getElementById('envRangeHint');
+      if (!el) return;
+      const entries = getTankSpeciesEntries(tank);
+      if (entries.length === 0) {
+        setHtmlIfChanged(el, `<div class="text-slate-500">🐟 Thả cá vào bể để xem khoảng nhiệt độ & pH lý tưởng của từng loài.</div>`);
+        return;
+      }
+      const lo = Math.max(...entries.map(e => e.sp.tempRange[0])), hi = Math.min(...entries.map(e => e.sp.tempRange[1]));
+      const plo = Math.max(...entries.map(e => e.sp.phRange[0])), phi = Math.min(...entries.map(e => e.sp.phRange[1]));
+      const compatible = lo <= hi && plo <= phi;
+      const rows = entries.map(e => ({ ...e, st: getEnvStatus(tank, e.sp) }));
+      const harm = rows.filter(r => r.st.level === 'harm');
+      const tol = rows.filter(r => r.st.level === 'tolerated');
+      const okCount = rows.filter(r => r.st.level === 'ok').reduce((s, r) => s + r.count, 0);
+      const off = getWeatherTempOffset();
+
+      let html = compatible
+        ? `<div class="text-slate-300">🎯 Khoảng lý tưởng chung của đàn: <b class="text-amber-300">${lo}–${hi}°C</b> • <b class="text-purple-300">pH ${plo}–${phi}</b>${off ? ` <span class="text-orange-300">(thời tiết ${off > 0 ? '+' : ''}${off}°C: thực tế = mục tiêu ${off > 0 ? '+' : ''}${off})</span>` : ''}</div>`
+        : `<div class="text-rose-300 font-semibold">⚠️ Các loài trong bể có khoảng nhiệt độ/pH KHÔNG trùng nhau — nên tách bể!</div>`;
+
+      harm.slice(0, 5).forEach(r => {
+        const parts = [];
+        if (r.st.tPen > 0) parts.push(`nhiệt độ ${tank.temperature.toFixed(1)}°C ${r.st.tHigh ? 'quá cao' : 'quá thấp'} (cần ${fmtRangeT(r.sp)})`);
+        if (r.st.pPen > 0) parts.push(`pH ${tank.ph.toFixed(1)} ${r.st.pHigh ? 'quá cao' : 'quá thấp'} (cần ${r.sp.phRange[0]}–${r.sp.phRange[1]})`);
+        html += `<div class="text-rose-300">⛔ ${r.sp.nameVi} ×${r.count}: ${parts.join(', ')} → mất ~${r.st.dmgPerDay.toFixed(1)}% sức khỏe/ngày</div>`;
+      });
+      if (harm.length > 5) html += `<div class="text-rose-300">⛔ … và ${harm.length - 5} loài khác đang bị hại</div>`;
+      tol.slice(0, 3).forEach(r => {
+        html += `<div class="text-amber-300">🟡 ${r.sp.nameVi} ×${r.count}: hơi lệch (lý tưởng ${fmtRangeT(r.sp)}, ${fmtRangeP(r.sp)}) — chưa gây hại nhưng không có thưởng</div>`;
+      });
+      if (okCount > 0) html += `<div class="text-emerald-300">✅ ${okCount} cá đang ở điều kiện lý tưởng: màu lên nhanh +25%, dễ đẻ +10%</div>`;
+      setHtmlIfChanged(el, html);
+    }
+
+    function updateEnvChips(tank) {
+      const tEl = document.getElementById('envTempText');
+      const pEl = document.getElementById('envPhText');
+      if (!tEl || !pEl) return;
+      const rows = getTankSpeciesEntries(tank).map(e => getEnvStatus(tank, e.sp));
+      const tBad = rows.some(r => r.tPen > 0), pBad = rows.some(r => r.pPen > 0);
+      const tWarn = !tBad && rows.some(r => r.dt > 0.05), pWarn = !pBad && rows.some(r => r.dp > 0.05);
+      tEl.className = 'font-bold ' + (tBad ? 'text-rose-400' : (tWarn ? 'text-yellow-300' : 'text-amber-300'));
+      pEl.className = 'font-bold ' + (pBad ? 'text-rose-400' : (pWarn ? 'text-yellow-200' : 'text-purple-300'));
+      tEl.title = tBad ? 'Nhiệt độ đang gây hại cho một số loài!' : '';
+      pEl.title = pBad ? 'pH đang gây hại cho một số loài!' : '';
+    }
+
+    function updateInspectorEnvWarn(tank, sp) {
+      const el = document.getElementById('inspEnvWarn');
+      if (!el) return;
+      const st = getEnvStatus(tank, sp);
+      if (st.level === 'harm') {
+        const parts = [];
+        if (st.tPen > 0) parts.push(`nhiệt độ ${tank.temperature.toFixed(1)}°C ${st.tHigh ? 'quá cao' : 'quá thấp'} (cần ${fmtRangeT(sp)})`);
+        if (st.pPen > 0) parts.push(`pH ${tank.ph.toFixed(1)} ${st.pHigh ? 'quá cao' : 'quá thấp'} (cần ${sp.phRange[0]}–${sp.phRange[1]})`);
+        el.className = 'mt-1 text-[11px] font-semibold text-rose-300';
+        el.textContent = `⛔ ${parts.join(', ')} — mất ~${st.dmgPerDay.toFixed(1)}% sức khỏe/ngày`;
+      } else if (st.level === 'tolerated') {
+        el.className = 'mt-1 text-[11px] font-semibold text-amber-300';
+        el.textContent = `🟡 Hơi lệch khỏi khoảng lý tưởng (${fmtRangeT(sp)}, ${fmtRangeP(sp)}) — chưa gây hại`;
+      } else {
+        el.className = 'mt-1 text-[11px] font-semibold text-emerald-300';
+        el.textContent = `✅ Điều kiện lý tưởng (${fmtRangeT(sp)}, ${fmtRangeP(sp)}) — màu lên nhanh, dễ đẻ hơn`;
+      }
+    }
+
+    const envAlertState = {};
+    function checkEnvAlerts() {
+      if (!gameState) return;
+      gameState.tanks.forEach(t => {
+        const harmNames = getTankSpeciesEntries(t).filter(e => getEnvStatus(t, e.sp).level === 'harm').map(e => e.sp.nameVi).sort();
+        const key = harmNames.join('|');
+        const prev = envAlertState[t.id] || { key: '', at: 0 };
+        if (key && key !== prev.key && Date.now() - prev.at > 30000) {
+          showToast(`🌡️ ${t.name}: nhiệt độ/pH đang gây hại cho ${harmNames.slice(0, 2).join(', ')}${harmNames.length > 2 ? '…' : ''}!`, 'danger');
+          logEvent(`Cảnh báo: môi trường ${t.name} (${t.temperature.toFixed(1)}°C, pH ${t.ph.toFixed(1)}) đang gây hại cho ${harmNames.join(', ')}.`, 'danger');
+          envAlertState[t.id] = { key, at: Date.now() };
+        } else if (!key) {
+          envAlertState[t.id] = { key: '', at: prev.at };
+        }
+      });
+    }
+
+    // =========================================================================
     // 15. CÁC MODAL & KHỞI CHẠY GAME
     // =========================================================================
     function openGuideModal() {
@@ -7072,7 +6970,9 @@
       setInterval(() => {
         if (!gameState || !gameState.events) return;
         tickEvents();
+        checkEnvAlerts();
         if (codexScan() && activeTab === 'codex') renderCodexPanel();
+        updateExtensionBadges();
         if (activeTab === 'contest') renderContestPanel();
         refreshTimers();
       }, 1000);
