@@ -714,7 +714,7 @@
           <p>• Sức chứa bể tính theo điểm: <b>Cá Nhỏ = 1</b>, <b>Cá Trung = 3</b>, <b>Cá Lớn = 5</b>.<br/>
           • Cá con phải đủ <b>10 ngày</b> trong game mới trưởng thành được.<br/>
           • Cá vừa đẻ cần nghỉ <b>15 ngày</b> trong game mới thụ thai / đẻ lần tiếp theo.<br/>
-          • 1 phần thức ăn = <b>10 hạt</b>. Mỗi lần rải, số hạt theo số cá đang đói (3–24 hạt) và kho chỉ bị trừ theo số hạt đã rải; cá no hết thì không rải.</p>
+          • 1 phần thức ăn = <b>10 hạt</b>. Mỗi lần rải, số hạt theo số cá đang đói (tối đa 24 hạt, bể ít cá thì ít hạt) và kho chỉ bị trừ theo số hạt đã rải; cá no hết thì không rải.</p>
         </div>
       </div>
     </div>
@@ -3858,7 +3858,8 @@
     }
 
     function autoFeedParticleCount(hungryCount) {
-      return Math.max(3, Math.min(24, Math.ceil(hungryCount / 1.5)));
+      // ~1 hạt / 1,5 cá đói; tối thiểu 3 hạt nhưng không vượt số cá đói (bể ít cá thì ít hạt); tối đa 24
+      return Math.max(Math.min(3, hungryCount), Math.min(24, Math.ceil(hungryCount / 1.5)));
     }
 
     // Chọn thức ăn auto: ưu tiên loại đang chọn (nếu đúng nhóm), loại hết hàng thì bỏ qua
@@ -3939,16 +3940,19 @@
         const hungry = autoFeedHungryCount(g.fish);
         if (!hungry) continue;
 
+        // Hạt đang rơi/chưa ăn được tính vào liều: chỉ bổ sung phần còn thiếu
+        let need = autoFeedParticleCount(hungry);
         if (isActive) {
           const pending = foodParticles.filter(p => p.tankId === tank.id &&
             (g.kind === 'fry' ? p.foodGroup === 'fry' : (p.foodGroup === 'adult' || p.foodGroup === 'live'))).length;
-          if (pending >= 3) continue;
+          need -= pending;
+          if (need <= 0) continue;
         }
 
         const food = pickAutoFood(g.kind);
         if (!food) { autoFeedOutOfStock(g.kind); return; }
 
-        const bites = consumeFoodParticles(food.id, autoFeedParticleCount(hungry));
+        const bites = consumeFoodParticles(food.id, need);
         if (bites <= 0) continue;
 
         if (isActive) spawnAutoFoodParticles(tank, food, bites);
