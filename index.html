@@ -713,7 +713,8 @@
           <div class="font-bold text-sky-300 mb-1">7. Sức Chứa & Sinh Sản</div>
           <p>• Sức chứa bể tính theo điểm: <b>Cá Nhỏ = 1</b>, <b>Cá Trung = 3</b>, <b>Cá Lớn = 5</b>.<br/>
           • Cá con phải đủ <b>10 ngày</b> trong game mới trưởng thành được.<br/>
-          • Cá vừa đẻ cần nghỉ <b>15 ngày</b> trong game mới thụ thai / đẻ lần tiếp theo.</p>
+          • Cá vừa đẻ cần nghỉ <b>15 ngày</b> trong game mới thụ thai / đẻ lần tiếp theo.<br/>
+          • 1 phần thức ăn = <b>10 hạt</b>. Mỗi lần rải, số hạt theo số cá đang đói (3–24 hạt) và kho chỉ bị trừ theo số hạt đã rải; cá no hết thì không rải.</p>
         </div>
       </div>
     </div>
@@ -3819,6 +3820,33 @@
     // AUTO-FEED: kích hoạt theo nhóm đói, liều theo số cá đói, chạy cả hồ nền
     // ------------------------------------------------------------------
     const autoFeedTimers = {};
+    const PARTICLES_PER_SERVING = 10;   // 1 phần thức ăn = 10 hạt
+
+    // Gói đang mở: số hạt dư của từng loại thức ăn
+    function getFoodOpenParticles(foodId) {
+      return (gameState.foodOpened && gameState.foodOpened[foodId]) || 0;
+    }
+    function getFoodAvailableParticles(foodId) {
+      return (gameState.foodInventory[foodId] || 0) * PARTICLES_PER_SERVING + getFoodOpenParticles(foodId);
+    }
+    // Trừ kho theo số hạt thực rải; trả về số hạt thực sự lấy được
+    function consumeFoodParticles(foodId, want) {
+      if (!gameState.foodOpened) gameState.foodOpened = {};
+      let open = gameState.foodOpened[foodId] || 0;
+      let stock = gameState.foodInventory[foodId] || 0;
+      const n = Math.min(want, open + stock * PARTICLES_PER_SERVING);
+      if (n <= 0) return 0;
+      const need = n - open;
+      if (need > 0) {
+        const packs = Math.ceil(need / PARTICLES_PER_SERVING);
+        stock -= packs;
+        open += packs * PARTICLES_PER_SERVING;
+      }
+      open -= n;
+      gameState.foodInventory[foodId] = stock;
+      gameState.foodOpened[foodId] = open;
+      return n;
+    }
 
     // Trả về số cá đang đói (<70%) nếu nhóm cần cho ăn: có cá <50% no, hoặc ≥30% đàn <70% no
     function autoFeedHungryCount(list) {
@@ -3836,7 +3864,7 @@
     // Chọn thức ăn auto: ưu tiên loại đang chọn (nếu đúng nhóm), loại hết hàng thì bỏ qua
     function pickAutoFood(kind) {
       const inv = gameState.foodInventory;
-      const has = f => f && (inv[f.id] || 0) > 0;
+      const has = f => f && getFoodAvailableParticles(f.id) > 0;
       const sel = getFoodById(gameState.selectedFoodId);
       if (kind === 'fry') {
         if (sel && sel.group === 'fry' && has(sel)) return sel;
@@ -3920,20 +3948,24 @@
         const food = pickAutoFood(g.kind);
         if (!food) { autoFeedOutOfStock(g.kind); return; }
 
-        const stock = gameState.foodInventory[food.id] || 0;
-        const bites = Math.min(autoFeedParticleCount(hungry), stock * 8);
-        const servings = Math.ceil(bites / 8);
-        gameState.foodInventory[food.id] = stock - servings;
+        const bites = consumeFoodParticles(food.id, autoFeedParticleCount(hungry));
+        if (bites <= 0) continue;
 
         if (isActive) spawnAutoFoodParticles(tank, food, bites);
         else feedTankDirect(tank, g.fish, food, bites);
       }
     }
 
+    function isFishEligibleForFood(fish, food) {
+      if (food.group === 'fry') return fish.stage !== 'adult';
+      if (food.group === 'adult') return fish.stage !== 'fry';
+      if (food.group === 'tonic') return fish.stage === 'adult';
+      return true; // live
+    }
+
     function dispenseFoodIntoTank(tank, foodId, isSilentAuto = false) {
       const food = getFoodById(foodId);
-      const stock = gameState.foodInventory[food.id] || 0;
-      if (stock <= 0) {
+      if (getFoodAvailableParticles(food.id) <= 0) {
         if (!isSilentAuto) {
           showToast(`⚠️ Đã hết "${food.name}" trong kho!`, 'warn');
           switchTab('food');
@@ -3941,30 +3973,23 @@
         return;
       }
 
-      gameState.foodInventory[food.id] = stock - 1;
-      const colorMap = { fry: '#fde047', adult: '#f97316', live: '#ef4444', tonic: '#c084fc' };
-      const vyBase = food.id === 'sinking_wafers' ? 0.14 : 0.065;
-
-      for (let i = 0; i < 8; i++) {
-        foodParticles.push({
-          tankId: tank.id,
-          foodId: food.id,
-          foodGroup: food.group,
-          x: 0.15 + Math.random() * 0.7,
-          y: 0.08 + Math.random() * 0.05,
-          vy: vyBase + Math.random() * 0.03,
-          radius: food.group === 'fry' ? 2.2 : 3.4,
-          color: colorMap[food.group] || '#fbbf24',
-          pollution: food.pollution,
-          settled: false,
-          sandTimer: 2.0,
-          seed: Math.random() * 10
-        });
+      const eligible = tank.fishes.filter(f => isFishEligibleForFood(f, food));
+      if (eligible.length === 0) {
+        if (!isSilentAuto) showToast(`ℹ️ ${tank.name} không có cá nào ăn được "${food.name}"!`, 'info');
+        return;
       }
+      const canEat = eligible.filter(f => f.hunger <= 80).length;
+      if (canEat === 0) {
+        if (!isSilentAuto) showToast('😋 Cá đều no rồi, chưa cần rải thêm!', 'info');
+        return;
+      }
+
+      const used = consumeFoodParticles(food.id, autoFeedParticleCount(canEat));
+      spawnAutoFoodParticles(tank, food, used);
 
       if (!isSilentAuto) {
         playSfx('bubble');
-        showToast(`🦐 Đã rải 1 phần ${food.name}`, 'info');
+        showToast(`🦐 Đã rải ${used} hạt ${food.name} cho ${canEat} cá đói`, 'info');
       }
       renderAllPanels();
     }
@@ -5073,7 +5098,7 @@
       const curFood = getFoodById(gameState.selectedFoodId);
       const stock = gameState.foodInventory[curFood.id] || 0;
       const shortFoodName = curFood.name.split('(')[0].trim();
-      document.getElementById('quickFeedName').textContent = `${shortFoodName}: ${stock}`;
+      document.getElementById('quickFeedName').textContent = `${shortFoodName}: ${stock}${getFoodOpenParticles(curFood.id) ? '+' + getFoodOpenParticles(curFood.id) + 'h' : ''}`;
       const totalFoodStock = Object.values(gameState.foodInventory).reduce((a, b) => a + b, 0);
       document.getElementById('navFoodBadge').textContent = totalFoodStock;
       document.getElementById('navManageBadge').textContent = tank.fishes.length + tank.eggClutches.length;
@@ -5505,7 +5530,7 @@
                     <div>
                       <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-xs font-bold text-white">${food.name}</span>
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Tồn kho: ${stock}</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Tồn kho: ${stock}${getFoodOpenParticles(food.id) ? ' (+' + getFoodOpenParticles(food.id) + ' hạt)' : ''}</span>
                       </div>
                       <p class="text-[11px] text-slate-400 mt-0.5">${food.desc}</p>
                     </div>
@@ -6010,6 +6035,7 @@
     function ensureGameExtensions() {
       const gs = gameState;
       if (!gs) return;
+      if (!gs.foodOpened || typeof gs.foodOpened !== 'object') gs.foodOpened = {};
       if (!gs.codex || typeof gs.codex !== 'object') gs.codex = {};
       ['owned', 'bred', 'rare', 'claimed', 'notified'].forEach(k => { if (!gs.codex[k] || typeof gs.codex[k] !== 'object') gs.codex[k] = {}; });
       if (typeof gs.codex.seeded !== 'boolean') gs.codex.seeded = false;
