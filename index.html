@@ -151,6 +151,12 @@
       <button id="navTab-fishing" onclick="switchTab('fishing')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
         <span>🎣</span> 9. Đi Câu Cá
       </button>
+      <button id="navTab-contest" onclick="switchTab('contest')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
+        <span>🏆</span> 10. Triển Lãm <span id="navContestBadge" class="hidden px-1.5 py-0.2 bg-amber-500/30 text-amber-300 rounded text-[10px] pulse-badge">MỞ</span>
+      </button>
+      <button id="navTab-codex" onclick="switchTab('codex')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
+        <span>📖</span> 11. Sổ Tay Cá <span id="navCodexBadge" class="px-1.5 py-0.2 bg-fuchsia-500/20 text-fuchsia-300 rounded text-[10px]">0/80</span>
+      </button>
     </div>
   </nav>
 
@@ -159,6 +165,9 @@
 
     <!-- CỘT TRÁI / TRUNG TÂM (7 CỘT) -->
     <section class="lg:col-span-7 flex flex-col gap-2.5 w-full">
+
+      <!-- BẢNG SỰ KIỆN HÀNG NGÀY -->
+      <div id="eventBanner" class="hidden flex flex-col gap-1.5"></div>
 
       <!-- Thanh chọn bể & Thanh chỉ số môi trường nhanh -->
       <div class="glass-panel rounded-2xl p-2.5 flex flex-wrap items-center justify-between gap-2">
@@ -575,6 +584,28 @@
         <div id="fishingContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
       </div>
 
+      <!-- TAB 10: GIẢI ĐẤU TRIỂN LÃM -->
+      <div id="tabPanel-contest" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
+        <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-extrabold text-amber-300 uppercase">🏆 Giải Đấu Triển Lãm Cá Cảnh</h2>
+            <p class="text-[11px] text-slate-400">Đăng ký cá / bể đẹp nhất để tranh Cúp Vàng – Bạc – Đồng & tiền thưởng lớn</p>
+          </div>
+        </div>
+        <div id="contestContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
+      </div>
+
+      <!-- TAB 11: SỔ TAY SƯU TẦM 80 LOÀI -->
+      <div id="tabPanel-codex" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
+        <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-extrabold text-fuchsia-300 uppercase">📖 Sổ Tay Sưu Tầm 80 Loài</h2>
+            <p class="text-[11px] text-slate-400">Sở hữu • Nhân giống • Săn biến thể hiếm — mốc 10/25/50/80 loài nhận thưởng & buff vĩnh viễn</p>
+          </div>
+        </div>
+        <div id="codexContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
+      </div>
+
     </aside>
   </main>
 
@@ -654,6 +685,18 @@
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
           <div class="font-bold text-amber-300 mb-1">3. Đi Câu Cá & Vớt Cá Tự Nhiên (Tab 9)</div>
           <p>Chọn vùng nước (<b>Ao Hồ</b>, <b>Sông Lớn</b>, <b>Biển Sâu</b>), trang bị đúng dụng cụ theo size cá (<b>Vợt</b> cho Size Nhỏ, <b>Cần Thường</b> cho Size Trung, <b>Cần Carbon Pro</b> cho Size Lớn) và chọn loại mồi khớp khẩu vị để săn cá hiếm!</p>
+        </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+          <div class="font-bold text-fuchsia-300 mb-1">4. Sổ Tay Sưu Tầm (Tab 11)</div>
+          <p>Tự ghi nhận loài bạn từng <b>sở hữu</b>, <b>nhân giống</b> và <b>săn được biến thể hiếm</b>. Đạt mốc <b>10 / 25 / 50 / 80 loài</b> để nhận tiền, XP và buff vĩnh viễn (tổng cộng <b>+10% giá bán toàn trại</b>, <b>+5% tỷ lệ đột biến</b>).</p>
+        </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+          <div class="font-bold text-amber-300 mb-1">5. Giải Đấu Triển Lãm (Tab 10)</div>
+          <p>Cứ vài ngày game lại có 1 giải với chủ đề ngẫu nhiên (hoặc bạn trả phí để mở sớm). Đăng ký 1 cá / 1 bể; điểm tính theo <b>Sắc tố + Biến thể + Kích cỡ + Sức khỏe</b> (bể thì theo độ sạch, trang trí, đa dạng...). Cá dự thi được khóa bảo vệ. Top 3 nhận Cúp Vàng/Bạc/Đồng + tiền thưởng lớn.</p>
+        </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+          <div class="font-bold text-emerald-300 mb-1">6. Sự Kiện Hàng Ngày</div>
+          <p>• <b>Sốt giá thị trường:</b> giá bán một nhóm cá ×1.5 hoặc ×2.<br/>• <b>Thời tiết:</b> nắng nóng +3°C (giảm Oxy) hoặc gió mùa lạnh -3°C — chỉnh lại Nhiệt độ mục tiêu / Lọc để cứu cá.<br/>• <b>Thương lái VIP:</b> bán giảm giá 1 cá biến thể hiếm hoặc thu mua 1 loài giá ×2, chỉ ở lại khoảng 1 ngày.</p>
         </div>
       </div>
     </div>
@@ -1257,10 +1300,52 @@
           </div>
           <span class="px-2 py-0.5 rounded font-bold ${modFlags.alwaysCleanNoAlgae ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">${modFlags.alwaysCleanNoAlgae ? 'ĐANG BẬT' : 'TẮT'}</span>
         </button>
+
+        <button onclick="triggerModAction('ext_event')" class="w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-lime-500/40 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-lime-300">📈 Kích hoạt Cơn Sốt Giá</div>
+            <div class="text-[11px] text-slate-400">Tạo ngay 1 sự kiện sốt giá thị trường</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-lime-500/20 text-lime-300 font-bold">Kích hoạt</span>
+        </button>
+        <button onclick="triggerModAction('ext_weather')" class="w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-orange-500/40 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-orange-300">🌡️ Kích hoạt Thời Tiết Cực Đoan</div>
+            <div class="text-[11px] text-slate-400">Nắng nóng +3°C hoặc gió mùa -3°C</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-bold">Kích hoạt</span>
+        </button>
+        <button onclick="triggerModAction('ext_vip')" class="w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-fuchsia-500/40 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-fuchsia-300">🤵 Mời Thương Lái VIP</div>
+            <div class="text-[11px] text-slate-400">Triệu hồi thương lái VIP ghé thăm</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 font-bold">Kích hoạt</span>
+        </button>
+        <button onclick="triggerModAction('ext_contest')" class="w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-500/40 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-amber-300">🏆 Mở Giải Đấu Ngay</div>
+            <div class="text-[11px] text-slate-400">Mở 1 cuộc thi triển lãm ngẫu nhiên</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">Kích hoạt</span>
+        </button>
+        <button onclick="triggerModAction('ext_codex')" class="w-full p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-sky-500/40 flex items-center justify-between text-left">
+          <div>
+            <div class="font-bold text-sky-300">📖 Mở Khóa Toàn Bộ Sổ Tay</div>
+            <div class="text-[11px] text-slate-400">Đánh dấu đã sở hữu cả 80 loài</div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-bold">Kích hoạt</span>
+        </button>
       `;
     }
 
     function triggerModAction(action) {
+      if (handleModActionExt(action)) {
+        renderModTestOptions();
+        renderAllPanels();
+        saveGameToStorage();
+        return;
+      }
       if (action === 'money') {
         gameState.money = 9999999;
         playSfx('cash');
@@ -1445,7 +1530,7 @@
       if (parentTraits) {
         colorQuality = Math.min(100, Math.max(50, Math.round(parentTraits.avgColor + (Math.random() * 14 - 5))));
         const mutRoll = Math.random();
-        const mutChance = 0.14 + lightObj.mutationBonus + rankBonus + modRareBoost + (parentTraits.hasRareParent ? 0.18 : 0);
+        const mutChance = 0.14 + lightObj.mutationBonus + rankBonus + modRareBoost + getCodexMutationBonus() + (parentTraits.hasRareParent ? 0.18 : 0);
         if (mutRoll < mutChance) {
           const r2 = Math.random();
           if (r2 < 0.12) variant = 'platinum';
@@ -1456,7 +1541,7 @@
           variant = parentTraits.inheritedVariant;
         }
       } else {
-        if (Math.random() < (0.05 + modRareBoost)) {
+        if (Math.random() < (0.05 + modRareBoost + getCodexMutationBonus())) {
           const r2 = Math.random();
           variant = r2 < 0.15 ? 'platinum' : (r2 < 0.4 ? 'galaxy' : (r2 < 0.7 ? 'albino' : 'golden'));
         }
@@ -1496,6 +1581,11 @@
     }
 
     function calculateFishValue(fish) {
+      const sp = getSpeciesById(fish.speciesId);
+      return Math.max(1, Math.round(calculateFishBaseValue(fish) * getSaleMultiplier(sp)));
+    }
+
+    function calculateFishBaseValue(fish) {
       const sp = getSpeciesById(fish.speciesId);
       const varInfo = GENETIC_VARIANTS[fish.variant] || GENETIC_VARIANTS.normal;
       const demandMult = (gameState.marketDemand && gameState.marketDemand[sp.id]) ? gameState.marketDemand[sp.id] : 1.0;
@@ -1641,7 +1731,7 @@
       const lightMeta = LIGHT_LEVELS[tank.lightLevel - 1] || LIGHT_LEVELS[0];
       const habitat = calculateTankHabitatStats(tank);
 
-      tank.temperature += (tank.targetTemperature - tank.temperature) * Math.min(1, effDt * 0.5);
+      tank.temperature += ((tank.targetTemperature + getWeatherTempOffset()) - tank.temperature) * Math.min(1, effDt * 0.5);
       tank.ph += (tank.targetPh - tank.ph) * Math.min(1, effDt * 0.5);
 
       if (typeof tank.hairAlgae !== 'number') tank.hairAlgae = 0;
@@ -1737,7 +1827,7 @@
       }
 
       const lightFactor = tank.lightOn ? lightMeta.plantBonus : 0.5;
-      const targetOxy = Math.min(100, Math.max(25, 72 + filterMeta.oxyBonus + habitat.oxyBoost * lightFactor - tank.fishes.length * 0.7));
+      const targetOxy = Math.min(100, Math.max(25, 72 + filterMeta.oxyBonus + habitat.oxyBoost * lightFactor - tank.fishes.length * 0.7 - getWeatherOxyPenalty()));
       tank.oxygen += (targetOxy - tank.oxygen) * Math.min(1, effDt * 0.3);
 
       // Auto-Feeder
@@ -2730,6 +2820,7 @@
             gameState.timeOfDay -= 24;
             gameState.dayCount++;
             ensureNpcOrders();
+            onNewDay();
           }
           gameState.tanks.forEach(t => simulateTankStep(t, dt));
         }
@@ -3661,7 +3752,8 @@
         return;
       }
 
-      const cost = buyAsBreedingPair ? Math.round(sp.buyPrice * 2.2) : sp.buyPrice;
+      const unitPrice = getShopBuyPrice(sp);
+      const cost = buyAsBreedingPair ? Math.round(unitPrice * 2.2) : unitPrice;
       if (gameState.money < cost) {
         showToast(`⚠️ Không đủ ngân quỹ! Cần $${cost}.`, 'warn');
         return;
@@ -4530,6 +4622,7 @@
     function sellCaughtFishImmediately() {
       const fish = fishingState.targetFish;
       if (!fish) return;
+      codexRegisterFish(fish);
       const sp = getSpeciesById(fish.speciesId);
       const val = calculateFishValue(fish);
       gameState.money += val;
@@ -4826,6 +4919,7 @@
       document.getElementById('navFoodBadge').textContent = totalFoodStock;
       document.getElementById('navManageBadge').textContent = tank.fishes.length + tank.eggClutches.length;
       document.getElementById('navOrderBadge').textContent = gameState.npcOrders.length;
+      updateExtensionBadges();
 
       const emptyOverlay = document.getElementById('emptyTankOverlay');
       if (emptyOverlay) {
@@ -5107,7 +5201,8 @@
         const wrongHabitat = tankHab && tankHab !== spHab;
         const wrongSizeGroup = tankCls && tankCls !== szClass;
         const tankTooSmall = tank.tankLevel < minTankLv;
-        const pairPrice = Math.round(sp.buyPrice * 2.2);
+        const unitPriceShop = getShopBuyPrice(sp);
+        const pairPrice = Math.round(unitPriceShop * 2.2);
         const ownedCount = ownedBySpecies[sp.id] || 0;
 
         const habBadge = spHab === 'marine'
@@ -5170,7 +5265,7 @@
               ` : `
                 <div class="flex items-center gap-1.5">
                   <button onclick="buyFishFromShop('${sp.id}', false)" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold shadow">
-                    + Mua 1 ($${sp.buyPrice})
+                    + Mua 1 ($${unitPriceShop})
                   </button>
                   <button onclick="buyFishFromShop('${sp.id}', true)" class="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-400/40 text-emerald-200 text-xs font-bold">
                     💑 Cặp ♂♀ ($${pairPrice})
@@ -5553,6 +5648,938 @@
       if (activeTab === 'stats') renderStatsPanel();
       if (activeTab === 'orders') renderOrdersPanel();
       if (activeTab === 'fishing') renderFishingPanel();
+      if (activeTab === 'contest') renderContestPanel();
+      if (activeTab === 'codex') renderCodexPanel();
+    }
+
+    // =========================================================================
+    // 16. NÂNG CẤP: SỔ TAY SƯU TẦM • GIẢI ĐẤU TRIỂN LÃM • SỰ KIỆN HÀNG NGÀY
+    // =========================================================================
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function fmtMoney(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+    function nowAbsHours() { return (gameState.dayCount - 1) * 24 + gameState.timeOfDay; }
+    function fmtRemaining(h) {
+      if (h <= 0) return 'sắp hết';
+      if (h >= 24) return (h / 24).toFixed(1) + ' ngày';
+      return Math.ceil(h) + ' giờ';
+    }
+    function setHtmlIfChanged(el, html) {
+      if (!el || el.__lastHtml === html) return false;
+      const top = el.scrollTop;
+      el.innerHTML = html;
+      el.__lastHtml = html;
+      el.scrollTop = top;
+      return true;
+    }
+    function refreshTimers() {
+      if (!gameState) return;
+      const t = nowAbsHours();
+      document.querySelectorAll('[data-endabs]').forEach(n => {
+        n.textContent = fmtRemaining(parseFloat(n.getAttribute('data-endabs')) - t);
+      });
+    }
+
+    function ensureGameExtensions() {
+      const gs = gameState;
+      if (!gs) return;
+      if (!gs.codex || typeof gs.codex !== 'object') gs.codex = {};
+      ['owned', 'bred', 'rare', 'claimed', 'notified'].forEach(k => { if (!gs.codex[k] || typeof gs.codex[k] !== 'object') gs.codex[k] = {}; });
+      if (typeof gs.codex.seeded !== 'boolean') gs.codex.seeded = false;
+      if (!gs.events || typeof gs.events !== 'object') gs.events = { market: null, weather: null, vip: null };
+      if (!('market' in gs.events)) gs.events.market = null;
+      if (!('weather' in gs.events)) gs.events.weather = null;
+      if (!('vip' in gs.events)) gs.events.vip = null;
+      if (!gs.contest || typeof gs.contest !== 'object') {
+        gs.contest = { current: null, nextOpenDay: gs.dayCount + 1, last: null, trophies: { gold: 0, silver: 0, bronze: 0 }, hall: [], lastTheme: null };
+      }
+      if (!gs.contest.trophies) gs.contest.trophies = { gold: 0, silver: 0, bronze: 0 };
+      if (!Array.isArray(gs.contest.hall)) gs.contest.hall = [];
+      if (typeof gs.contest.nextOpenDay !== 'number') gs.contest.nextOpenDay = gs.dayCount + 1;
+    }
+
+    // ------------------------------------------------------------------
+    // 16.1 SỔ TAY SƯU TẦM 80 LOÀI (FISHDEX)
+    // ------------------------------------------------------------------
+    const CODEX_MILESTONES = [
+      { count: 10, money: 500,   xp: 150,  sellBuff: 0.03, mutBuff: 0,    title: 'Nhà Sưu Tầm Tập Sự' },
+      { count: 25, money: 2000,  xp: 400,  sellBuff: 0,    mutBuff: 0.02, title: 'Nhà Sưu Tầm Tâm Huyết' },
+      { count: 50, money: 8000,  xp: 1000, sellBuff: 0.07, mutBuff: 0,    title: 'Chuyên Gia Thủy Sinh' },
+      { count: 80, money: 30000, xp: 3000, sellBuff: 0,    mutBuff: 0.03, title: 'Bậc Thầy Thủy Cung' }
+    ];
+    const VARIANT_ORDER = ['normal', 'golden', 'albino', 'galaxy', 'platinum'];
+    let codexFilter = 'all';
+
+    function variantRank(v) { return Math.max(0, VARIANT_ORDER.indexOf(v || 'normal')); }
+    function getCodexOwnedCount() { return gameState && gameState.codex ? Object.keys(gameState.codex.owned).length : 0; }
+    function getCodexBuffs() {
+      let sell = 0, mut = 0;
+      if (gameState && gameState.codex) {
+        CODEX_MILESTONES.forEach(m => {
+          if (gameState.codex.claimed[m.count]) { sell += m.sellBuff; mut += m.mutBuff; }
+        });
+      }
+      return { sell, mut };
+    }
+    function getCodexMutationBonus() { return getCodexBuffs().mut; }
+
+    function codexScan() {
+      if (!gameState || !gameState.codex) return false;
+      const c = gameState.codex;
+      const newSpecies = [];
+      const newRare = [];
+      let changed = false;
+
+      const reg = (f) => {
+        if (!f || !f.speciesId) return;
+        if (!c.owned[f.speciesId]) { c.owned[f.speciesId] = true; newSpecies.push(f.speciesId); changed = true; }
+        if (f.variant && f.variant !== 'normal') {
+          const cur = c.rare[f.speciesId];
+          if (!cur || variantRank(f.variant) > variantRank(cur)) {
+            c.rare[f.speciesId] = f.variant; newRare.push([f.speciesId, f.variant]); changed = true;
+          }
+        }
+      };
+      gameState.tanks.forEach(t => t.fishes.forEach(reg));
+      if (fishingState && fishingState.targetFish) reg(fishingState.targetFish);
+
+      const born = (gameState.stats && gameState.stats.speciesBorn) || {};
+      Object.keys(born).forEach(id => {
+        if (born[id] > 0) {
+          if (!c.owned[id]) { c.owned[id] = true; changed = true; }
+          if (!c.bred[id]) {
+            c.bred[id] = true; changed = true;
+            if (c.seeded) {
+              const sp = getSpeciesById(id);
+              showToast(`📖 Sổ Tay: Nhân giống thành công ${sp.nameVi}!`, 'success');
+            }
+          }
+        }
+      });
+
+      if (c.seeded) {
+        newSpecies.forEach(id => showToast(`📖 Sổ Tay: Thêm loài mới — ${getSpeciesById(id).nameVi}!`, 'success'));
+        newRare.forEach(([id, v]) => showToast(`💎 Sổ Tay: Săn được biến thể ${GENETIC_VARIANTS[v].name} của ${getSpeciesById(id).nameVi}!`, 'success'));
+        const owned = Object.keys(c.owned).length;
+        CODEX_MILESTONES.forEach(m => {
+          if (owned >= m.count && !c.claimed[m.count] && !c.notified[m.count]) {
+            c.notified[m.count] = true;
+            showToast(`🎁 Sổ Tay đạt mốc ${m.count} loài! Mở tab Sổ Tay để nhận thưởng.`, 'success');
+            logEvent(`Sổ Tay Cá Cảnh đạt mốc ${m.count} loài — sẵn sàng nhận thưởng!`, 'success');
+          }
+        });
+      }
+      c.seeded = true;
+      return changed;
+    }
+
+    function codexRegisterFish(fish) {
+      if (!gameState || !gameState.codex || !fish) return;
+      const c = gameState.codex;
+      c.owned[fish.speciesId] = true;
+      if (fish.variant && fish.variant !== 'normal') {
+        const cur = c.rare[fish.speciesId];
+        if (!cur || variantRank(fish.variant) > variantRank(cur)) c.rare[fish.speciesId] = fish.variant;
+      }
+    }
+
+    function claimCodexMilestone(count) {
+      const m = CODEX_MILESTONES.find(x => x.count === count);
+      const c = gameState.codex;
+      if (!m || c.claimed[m.count] || getCodexOwnedCount() < m.count) return;
+      c.claimed[m.count] = true;
+      gameState.money += m.money;
+      gameState.stats.totalRevenue += m.money;
+      playSfx('levelup');
+      addPlayerXp(m.xp);
+      const buffTxt = codexBuffText(m);
+      showToast(`🎁 Nhận thưởng mốc ${m.count} loài: +${fmtMoney(m.money)}, +${m.xp} XP${buffTxt ? ', ' + buffTxt : ''}`, 'success');
+      logEvent(`Nhận thưởng Sổ Tay mốc ${m.count} loài: +${fmtMoney(m.money)}, +${m.xp} XP${buffTxt ? ' • Buff vĩnh viễn: ' + buffTxt : ''}.`, 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function codexBuffText(m) {
+      const out = [];
+      if (m.sellBuff) out.push(`+${Math.round(m.sellBuff * 100)}% giá bán toàn trại`);
+      if (m.mutBuff) out.push(`+${Math.round(m.mutBuff * 100)}% tỷ lệ đột biến`);
+      return out.join(' • ');
+    }
+
+    function setCodexFilter(v) { codexFilter = v; renderCodexPanel(); }
+
+    function renderCodexPanel() {
+      const container = document.getElementById('codexContainer');
+      if (!container || !gameState || !gameState.codex) return;
+      const c = gameState.codex;
+      const total = SPECIES_DB.length;
+      const owned = getCodexOwnedCount();
+      const bredN = Object.keys(c.bred).length;
+      const rareN = Object.keys(c.rare).length;
+      const buffs = getCodexBuffs();
+      const bar = (n, color) => `<div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1"><div class="h-full ${color}" style="width:${Math.round(n / total * 100)}%"></div></div>`;
+
+      let html = `
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400">📖 Đã sở hữu</div>
+            <div class="font-extrabold text-cyan-300">${owned} / ${total}</div>${bar(owned, 'bg-cyan-400')}
+          </div>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400">🥚 Nhân giống</div>
+            <div class="font-extrabold text-emerald-300">${bredN} / ${total}</div>${bar(bredN, 'bg-emerald-400')}
+          </div>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400">💎 Biến thể hiếm</div>
+            <div class="font-extrabold text-fuchsia-300">${rareN} / ${total}</div>${bar(rareN, 'bg-fuchsia-400')}
+          </div>
+        </div>
+        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-amber-500/30 text-xs flex flex-wrap items-center justify-between gap-1">
+          <span class="font-bold text-amber-300">✨ Buff vĩnh viễn đang có</span>
+          <span class="text-slate-200"><b class="text-emerald-300">+${Math.round(buffs.sell * 100)}%</b> giá bán toàn trại • <b class="text-fuchsia-300">+${Math.round(buffs.mut * 100)}%</b> tỷ lệ đột biến</span>
+        </div>
+        <div class="space-y-1.5">
+          ${CODEX_MILESTONES.map(m => {
+            const claimed = !!c.claimed[m.count];
+            const reach = owned >= m.count;
+            const pct = Math.min(100, Math.round(owned / m.count * 100));
+            return `
+            <div class="p-2.5 rounded-xl border ${claimed ? 'bg-emerald-950/40 border-emerald-600/40' : (reach ? 'bg-amber-950/40 border-amber-400/60' : 'bg-slate-900/80 border-slate-800')}">
+              <div class="flex items-center justify-between gap-2">
+                <div>
+                  <div class="text-xs font-extrabold ${claimed ? 'text-emerald-300' : 'text-white'}">🏅 Mốc ${m.count} loài — ${m.title}</div>
+                  <div class="text-[11px] text-slate-400">${fmtMoney(m.money)} • ${m.xp} XP • <span class="text-amber-300">${codexBuffText(m)}</span></div>
+                </div>
+                ${claimed
+                  ? `<span class="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-bold shrink-0">✅ Đã nhận</span>`
+                  : (reach
+                    ? `<button onclick="claimCodexMilestone(${m.count})" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow pulse-badge shrink-0">🎁 Nhận thưởng</button>`
+                    : `<span class="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 text-[11px] font-bold shrink-0">${owned}/${m.count}</span>`)}
+              </div>
+              ${(!claimed && !reach) ? `<div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden mt-1.5"><div class="h-full bg-amber-400" style="width:${pct}%"></div></div>` : ''}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-xs font-bold text-sky-300">Danh sách 80 loài</span>
+          <select onchange="setCodexFilter(this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-xs text-slate-200">
+            ${[['all', 'Tất cả'], ['owned', 'Đã sở hữu'], ['missing', 'Chưa sở hữu'], ['notbred', 'Chưa nhân giống'], ['norare', 'Chưa có biến thể hiếm'], ['marine', 'Cá Biển'], ['freshwater', 'Cá Nước Ngọt']]
+              .map(([v, l]) => `<option value="${v}" ${codexFilter === v ? 'selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </div>`;
+
+      const list = SPECIES_DB.filter(sp => {
+        switch (codexFilter) {
+          case 'owned': return !!c.owned[sp.id];
+          case 'missing': return !c.owned[sp.id];
+          case 'notbred': return !c.bred[sp.id];
+          case 'norare': return !c.rare[sp.id];
+          case 'marine': return getSpeciesHabitat(sp) === 'marine';
+          case 'freshwater': return getSpeciesHabitat(sp) === 'freshwater';
+          default: return true;
+        }
+      });
+
+      html += `<div class="grid grid-cols-2 gap-2">` + list.map(sp => {
+        const has = !!c.owned[sp.id];
+        const bred = !!c.bred[sp.id];
+        const rv = c.rare[sp.id];
+        const locked = sp.unlockLevel > gameState.playerLevel;
+        const marine = getSpeciesHabitat(sp) === 'marine';
+        return `
+          <div class="p-2 rounded-xl border ${has ? 'bg-slate-900/90 border-sky-500/30' : 'bg-slate-950/70 border-slate-800'}">
+            <div class="flex items-center justify-between text-[10px] text-slate-500">
+              <span class="font-mono">#${String(sp.code).padStart(2, '0')}</span>
+              <span>${marine ? '🌊' : '💧'}${locked && !has ? ' 🔒Cấp ' + sp.unlockLevel : ''}</span>
+            </div>
+            <div class="h-10 flex items-center justify-center my-1" style="${has ? '' : 'filter: brightness(0) opacity(0.35);'}">
+              ${generateFishSvgMarkup(sp, rv || 'normal', 52, 34)}
+            </div>
+            <div class="text-[11px] font-bold truncate ${has ? 'text-white' : 'text-slate-500'}" title="${escHtml(sp.nameVi)}">${has ? sp.nameVi : '??? ' + sp.nameVi}</div>
+            <div class="flex items-center gap-1 mt-1 text-[10px]">
+              <span class="px-1.5 py-0.5 rounded ${has ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-800 text-slate-600'}" title="Đã sở hữu">🐟</span>
+              <span class="px-1.5 py-0.5 rounded ${bred ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-600'}" title="Đã nhân giống">🥚</span>
+              <span class="px-1.5 py-0.5 rounded ${rv ? GENETIC_VARIANTS[rv].badgeClass : 'bg-slate-800 text-slate-600'}" title="Biến thể hiếm">💎${rv ? ' ' + GENETIC_VARIANTS[rv].name.split(' ')[0] : ''}</span>
+            </div>
+          </div>`;
+      }).join('') + `</div>`;
+      if (list.length === 0) html += `<div class="text-center text-slate-500 text-xs py-6">Không có loài nào phù hợp bộ lọc.</div>`;
+
+      setHtmlIfChanged(container, html);
+    }
+
+    // ------------------------------------------------------------------
+    // 16.2 SỰ KIỆN NGẪU NHIÊN HÀNG NGÀY
+    // ------------------------------------------------------------------
+    const MARKET_TARGETS = [
+      { id: 'marine',     name: 'Cá Biển',       icon: '🐠', test: sp => getSpeciesHabitat(sp) === 'marine' },
+      { id: 'arowana',    name: 'Cá Rồng',       icon: '🐉', test: sp => /arowana/.test(sp.id) || sp.nameVi.indexOf('Rồng') !== -1 },
+      { id: 'livebearer', name: 'Cá Đẻ Con',     icon: '🍼', test: sp => sp.group === 'livebearer' },
+      { id: 'special',    name: 'Thủy Quái',     icon: '🦈', test: sp => sp.group === 'special' },
+      { id: 'small',      name: 'Cá Cảnh Nhỏ',   icon: '🐟', test: sp => getSpeciesSizeClass(sp) === 'small' },
+      { id: 'large',      name: 'Cá Size Lớn',   icon: '🐋', test: sp => getSpeciesSizeClass(sp) === 'large' }
+    ];
+    const VIP_NAMES = ['Ông Chín (Thương lái Chợ Cá Nổi)', 'Bà Tư Cá Kiểng', 'Anh Hai (Đại lý Xuất Khẩu)', 'Ông Chủ Hồ Điền Đại Phát', 'Chị Mai (Nhà Sưu Tầm Quận 7)'];
+
+    function getMarketEventMult(sp) {
+      const ev = gameState && gameState.events && gameState.events.market;
+      if (!ev) return 1;
+      const tg = MARKET_TARGETS.find(t => t.id === ev.targetId);
+      return (tg && tg.test(sp)) ? ev.mult : 1;
+    }
+    function getSaleMultiplier(sp) { return (1 + getCodexBuffs().sell) * getMarketEventMult(sp); }
+    function getShopBuyPrice(sp) { return Math.round(sp.buyPrice * (1 + (getMarketEventMult(sp) - 1) * 0.5)); }
+    function getWeatherTempOffset() {
+      const w = gameState && gameState.events && gameState.events.weather;
+      return w ? w.delta : 0;
+    }
+    function getWeatherOxyPenalty() {
+      const w = gameState && gameState.events && gameState.events.weather;
+      return (w && w.type === 'heat') ? 10 : 0;
+    }
+
+    function startMarketEvent() {
+      const tg = MARKET_TARGETS[Math.floor(Math.random() * MARKET_TARGETS.length)];
+      const mult = Math.random() < 0.65 ? 1.5 : 2;
+      const dur = 24 + Math.floor(Math.random() * 25);
+      gameState.events.market = { targetId: tg.id, mult, endAbs: nowAbsHours() + dur };
+      showToast(`📈 Cơn sốt ${tg.name}! Giá bán ×${mult} trong ${fmtRemaining(dur)}!`, 'success');
+      logEvent(`Sự kiện: Cơn sốt ${tg.name} — giá bán ×${mult} (giá nhập tại shop tăng nhẹ). Hãy xả hàng!`, 'success');
+    }
+    function startWeatherEvent() {
+      const heat = Math.random() < 0.5;
+      const dur = 24 + Math.floor(Math.random() * 25);
+      gameState.events.weather = { type: heat ? 'heat' : 'cold', delta: heat ? 3 : -3, endAbs: nowAbsHours() + dur };
+      showToast(heat ? '🔥 Đợt nắng nóng! Nhiệt độ các bể +3°C, Oxy giảm — chỉnh lại ngay!' : '❄️ Gió mùa lạnh! Nhiệt độ các bể -3°C — chỉnh sưởi ngay!', 'warn');
+      logEvent(heat ? 'Sự kiện: Đợt nắng nóng (+3°C, giảm Oxy). Hạ nhiệt độ mục tiêu / nâng cấp Lọc để cứu cá.' : 'Sự kiện: Gió mùa lạnh (-3°C). Tăng nhiệt độ mục tiêu để giữ ấm cho cá.', 'warn');
+    }
+    function startVipVisit() {
+      const unlocked = SPECIES_DB.filter(s => s.unlockLevel <= gameState.playerLevel);
+      const name = VIP_NAMES[Math.floor(Math.random() * VIP_NAMES.length)];
+      const endAbs = nowAbsHours() + 28;
+      const ownedFish = [];
+      gameState.tanks.forEach(t => t.fishes.forEach(f => { if (!f.locked && f.stage !== 'fry') ownedFish.push(f); }));
+
+      if (Math.random() < 0.5 || ownedFish.length === 0) {
+        const sp = unlocked[Math.floor(Math.random() * unlocked.length)];
+        const r = Math.random();
+        const variant = r < 0.08 ? 'platinum' : (r < 0.30 ? 'galaxy' : (r < 0.60 ? 'albino' : 'golden'));
+        const fish = createFishEntity(sp.id, 'adult');
+        fish.variant = variant;
+        fish.colorQuality = Math.min(100, Math.round(82 + Math.random() * 16));
+        fish.health = 95; fish.hunger = 85;
+        const marketValue = calculateFishValue(fish);
+        const discount = 0.35 + Math.random() * 0.2;
+        gameState.events.vip = { kind: 'sell', merchant: name, fish, marketValue, discount, price: Math.max(5, Math.round(marketValue * (1 - discount))), endAbs };
+        showToast(`🤵 ${name} ghé thăm, mang theo ${sp.nameVi} ${GENETIC_VARIANTS[variant].name} giảm giá!`, 'success');
+      } else {
+        const pool = Math.random() < 0.7 ? ownedFish : null;
+        const spId = pool ? pool[Math.floor(Math.random() * pool.length)].speciesId : unlocked[Math.floor(Math.random() * unlocked.length)].id;
+        gameState.events.vip = { kind: 'buy', merchant: name, speciesId: spId, mult: 2, endAbs };
+        showToast(`🤵 ${name} ghé thăm, muốn thu mua ${getSpeciesById(spId).nameVi} giá ×2!`, 'success');
+      }
+      logEvent(`Thương lái VIP ${name} ghé thăm trang trại (chỉ ở lại ~1 ngày).`, 'success');
+    }
+
+    function rollDailyEvent() {
+      const ev = gameState.events;
+      if (Math.random() > 0.7) return;
+      const opts = [];
+      if (!ev.market) opts.push('market', 'market');
+      if (!ev.weather) opts.push('weather', 'weather');
+      if (!ev.vip) opts.push('vip', 'vip');
+      if (!opts.length) return;
+      const pick = opts[Math.floor(Math.random() * opts.length)];
+      if (pick === 'market') startMarketEvent();
+      else if (pick === 'weather') startWeatherEvent();
+      else startVipVisit();
+      renderAllPanels();
+    }
+
+    function tickEvents() {
+      if (!gameState || !gameState.events) return;
+      const t = nowAbsHours();
+      const ev = gameState.events;
+      let changed = false;
+      if (ev.market && t >= ev.market.endAbs) {
+        const tg = MARKET_TARGETS.find(x => x.id === ev.market.targetId);
+        logEvent(`Cơn sốt ${tg ? tg.name : ''} đã kết thúc, giá thị trường trở lại bình thường.`, 'info');
+        showToast('📉 Cơn sốt giá đã kết thúc.', 'info');
+        ev.market = null; changed = true;
+      }
+      if (ev.weather && t >= ev.weather.endAbs) {
+        logEvent('Thời tiết đã trở lại bình thường.', 'info');
+        showToast('🌤️ Thời tiết đã ổn định trở lại.', 'info');
+        ev.weather = null; changed = true;
+      }
+      if (ev.vip && t >= ev.vip.endAbs) {
+        logEvent(`Thương lái VIP ${ev.vip.merchant} đã rời đi.`, 'info');
+        showToast('🤵 Thương lái VIP đã rời đi.', 'info');
+        ev.vip = null; changed = true;
+      }
+      if (changed) renderAllPanels();
+    }
+
+    function onNewDay() {
+      if (!gameState) return;
+      ensureGameExtensions();
+      tickEvents();
+      rollDailyEvent();
+      processContestDaily();
+      saveGameToStorage();
+    }
+
+    function getPlacementError(sp, tank) {
+      const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
+      const tankHab = getTankActiveHabitat(tank);
+      const spHab = getSpeciesHabitat(sp);
+      if (tankHab && tankHab !== spHab) return `${tank.name} đang nuôi ${tankHab === 'marine' ? 'Cá Biển' : 'Cá Nước Ngọt'}, không thể thả chung!`;
+      const tankCls = getTankActiveSizeClass(tank);
+      const spCls = getSpeciesSizeClass(sp);
+      if (tankCls && tankCls !== spCls) return `${tank.name} đang nuôi ${SIZE_CLASS_LABELS[tankCls]}, không thể nuôi chung ${SIZE_CLASS_LABELS[spCls]}!`;
+      const minLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
+      if (tank.tankLevel < minLv) return `${sp.nameVi} cần bể tối thiểu Level ${minLv}!`;
+      if (tank.fishes.length >= tankMeta.maxFish) return `${tank.name} đã đầy (${tankMeta.maxFish} cá)!`;
+      return null;
+    }
+
+    function buyVipFish() {
+      const vip = gameState.events.vip;
+      if (!vip || vip.kind !== 'sell') return;
+      if (gameState.money < vip.price) { showToast(`⚠️ Không đủ ngân quỹ! Cần ${fmtMoney(vip.price)}.`, 'warn'); return; }
+      const sp = getSpeciesById(vip.fish.speciesId);
+      const order = [gameState.tanks[gameState.activeTankIndex], ...gameState.tanks.filter((t, i) => i !== gameState.activeTankIndex)];
+      const dest = order.find(t => !getPlacementError(sp, t));
+      if (!dest) { showToast('🚫 ' + getPlacementError(sp, order[0]), 'warn'); return; }
+      gameState.money -= vip.price;
+      gameState.stats.totalSpent += vip.price;
+      gameState.stats.totalFishBought++;
+      dest.fishes.push(vip.fish);
+      selectedFishId = vip.fish.id;
+      gameState.events.vip = null;
+      playSfx('cash');
+      addPlayerXp(15);
+      showToast(`🤵 Đã mua ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)} thả vào ${dest.name}!`, 'success');
+      logEvent(`Mua của thương lái VIP: ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)}.`, 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function findVipBuyCandidate(spId) {
+      let best = null;
+      gameState.tanks.forEach(t => t.fishes.forEach(f => {
+        if (f.locked || f.speciesId !== spId || f.stage === 'fry') return;
+        const v = calculateFishValue(f);
+        if (!best || v < best.v) best = { tank: t, fish: f, v };
+      }));
+      return best;
+    }
+
+    function sellToVip() {
+      const vip = gameState.events.vip;
+      if (!vip || vip.kind !== 'buy') return;
+      const cand = findVipBuyCandidate(vip.speciesId);
+      const sp = getSpeciesById(vip.speciesId);
+      if (!cand) { showToast(`⚠️ Bạn chưa có ${sp.nameVi} (không khóa) để bán!`, 'warn'); return; }
+      const earned = cand.v * vip.mult;
+      cand.tank.fishes = cand.tank.fishes.filter(f => f.id !== cand.fish.id);
+      if (selectedFishId === cand.fish.id) selectedFishId = null;
+      gameState.money += earned;
+      gameState.stats.totalRevenue += earned;
+      gameState.stats.totalFishSold++;
+      gameState.events.vip = null;
+      playSfx('cash');
+      addPlayerXp(15);
+      showToast(`🤵 Bán ${sp.nameVi} cho thương lái VIP với giá ×${vip.mult}: +${fmtMoney(earned)}!`, 'success');
+      logEvent(`Bán ${sp.nameVi} cho thương lái VIP giá ×${vip.mult}: +${fmtMoney(earned)}.`, 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function dismissVip() {
+      if (gameState.events.vip) { gameState.events.vip = null; renderAllPanels(); }
+    }
+
+    function renderEventBanner() {
+      const el = document.getElementById('eventBanner');
+      if (!el || !gameState || !gameState.events) return;
+      const ev = gameState.events;
+      const parts = [];
+
+      if (ev.market) {
+        const tg = MARKET_TARGETS.find(t => t.id === ev.market.targetId) || MARKET_TARGETS[0];
+        parts.push(`
+          <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-emerald-950/70 border border-emerald-500/50 text-xs">
+            <span class="text-base">📈</span>
+            <div class="flex-1"><b class="text-emerald-300">Cơn sốt ${tg.icon} ${tg.name} — Giá bán ×${ev.market.mult}!</b>
+            <div class="text-[10px] text-emerald-200/80">Còn <span data-endabs="${ev.market.endAbs}"></span> • Cơ hội xả hàng kiếm lời đậm (giá nhập tại shop chỉ tăng một nửa)</div></div>
+          </div>`);
+      }
+      if (ev.weather) {
+        const heat = ev.weather.type === 'heat';
+        parts.push(`
+          <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl ${heat ? 'bg-orange-950/70 border-orange-500/50' : 'bg-sky-950/70 border-sky-400/50'} border text-xs">
+            <span class="text-base">${heat ? '🔥' : '❄️'}</span>
+            <div class="flex-1"><b class="${heat ? 'text-orange-300' : 'text-sky-300'}">${heat ? 'Đợt nắng nóng (+3°C, giảm Oxy)' : 'Gió mùa lạnh (-3°C)'}</b>
+            <div class="text-[10px] text-slate-300">Còn <span data-endabs="${ev.weather.endAbs}"></span> • ${heat ? 'Hạ Nhiệt độ mục tiêu ~3°C, nâng cấp Lọc / thay nước để giữ Oxy' : 'Tăng Nhiệt độ mục tiêu ~3°C ở tab Bể Cá để giữ ấm cho cá'}</div></div>
+          </div>`);
+      }
+      if (ev.vip) {
+        const v = ev.vip;
+        if (v.kind === 'sell') {
+          const sp = getSpeciesById(v.fish.speciesId);
+          const vi = GENETIC_VARIANTS[v.fish.variant];
+          parts.push(`
+            <div class="px-2.5 py-2 rounded-xl bg-fuchsia-950/60 border border-fuchsia-400/50 text-xs space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <b class="text-fuchsia-300">🤵 ${escHtml(v.merchant)} đang bán giảm giá</b>
+                <span class="text-[10px] text-slate-300">Còn <span data-endabs="${v.endAbs}"></span></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-14 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">${generateFishSvgMarkup(sp, v.fish.variant, 50, 32)}</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-white truncate">${sp.nameVi} <span class="text-[10px] px-1.5 py-0.5 rounded-full ${vi.badgeClass}">${vi.name}</span></div>
+                  <div class="text-[10px] text-slate-300">Sắc tố ${Math.round(v.fish.colorQuality)} • Giá thị trường ${fmtMoney(v.marketValue)} • <b class="text-emerald-300">Giảm ${Math.round(v.discount * 100)}%</b></div>
+                </div>
+                <div class="flex flex-col gap-1 shrink-0">
+                  <button onclick="buyVipFish()" class="px-2.5 py-1 rounded-lg bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold">Mua ${fmtMoney(v.price)}</button>
+                  <button onclick="dismissVip()" class="px-2.5 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-[10px]">Từ chối</button>
+                </div>
+              </div>
+            </div>`);
+        } else {
+          const sp = getSpeciesById(v.speciesId);
+          const cand = findVipBuyCandidate(v.speciesId);
+          parts.push(`
+            <div class="px-2.5 py-2 rounded-xl bg-fuchsia-950/60 border border-fuchsia-400/50 text-xs">
+              <div class="flex items-center justify-between gap-2">
+                <b class="text-fuchsia-300">🤵 ${escHtml(v.merchant)} muốn thu mua</b>
+                <span class="text-[10px] text-slate-300">Còn <span data-endabs="${v.endAbs}"></span></span>
+              </div>
+              <div class="flex items-center gap-2 mt-1.5">
+                <div class="w-14 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">${generateFishSvgMarkup(sp, 'normal', 50, 32)}</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-white truncate">1 con ${sp.nameVi} — giá <span class="text-emerald-300">×${v.mult}</span></div>
+                  <div class="text-[10px] text-slate-300">${cand ? `Sẽ lấy con giá trị thấp nhất (không khóa): ${fmtMoney(cand.v)} → <b class="text-emerald-300">${fmtMoney(cand.v * v.mult)}</b>` : 'Bạn chưa có cá phù hợp (cá phải không bị khóa, không phải cá con)'}</div>
+                </div>
+                <div class="flex flex-col gap-1 shrink-0">
+                  <button onclick="sellToVip()" class="px-2.5 py-1 rounded-lg ${cand ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-slate-800 text-slate-500'} font-extrabold">Bán ×${v.mult}</button>
+                  <button onclick="dismissVip()" class="px-2.5 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-[10px]">Từ chối</button>
+                </div>
+              </div>
+            </div>`);
+        }
+      }
+
+      if (parts.length === 0) {
+        el.classList.add('hidden');
+        setHtmlIfChanged(el, '');
+      } else {
+        el.classList.remove('hidden');
+        setHtmlIfChanged(el, parts.join(''));
+      }
+      refreshTimers();
+    }
+
+    // ------------------------------------------------------------------
+    // 16.3 GIẢI ĐẤU TRIỂN LÃM CÁ CẢNH
+    // ------------------------------------------------------------------
+    const CONTEST_THEMES = [
+      { id: 'marine_king', name: 'Vua Cá Biển', icon: '👑', type: 'fish',
+        desc: 'Chọn 1 con cá BIỂN trưởng thành đẹp nhất.',
+        eligible: (f, sp) => getSpeciesHabitat(sp) === 'marine',
+        weights: { color: 0.35, variant: 0.25, size: 0.20, health: 0.20 } },
+      { id: 'sea_monster', name: 'Thủy Quái Uy Nghi', icon: '🦈', type: 'fish',
+        desc: 'Chỉ nhận cá SIZE LỚN trưởng thành. Kích cỡ là điểm mạnh.',
+        eligible: (f, sp) => getSpeciesSizeClass(sp) === 'large',
+        weights: { color: 0.15, variant: 0.15, size: 0.45, health: 0.25 } },
+      { id: 'royal_mutant', name: 'Đột Biến Hoàng Gia', icon: '💎', type: 'fish',
+        desc: 'Chỉ nhận cá mang BIẾN THỂ HIẾM (Hoàng Kim → Bạch Kim).',
+        eligible: (f, sp) => f.variant && f.variant !== 'normal',
+        weights: { color: 0.25, variant: 0.55, size: 0.05, health: 0.15 } },
+      { id: 'best_tank', name: 'Bể Thủy Sinh Đẹp Nhất', icon: '🌿', type: 'tank',
+        desc: 'Đưa cả 1 BỂ đi thi (cần ≥3 cá & ≥3 vật trang trí): nước sạch, ít rêu, nhiều cây, cá đa dạng & khỏe.',
+        weights: {} }
+    ];
+    const VARIANT_CONTEST_SCORE = { normal: 25, golden: 55, albino: 68, galaxy: 85, platinum: 100 };
+    const RIVAL_NAMES = ['Tiệm Cá Hoàng Gia', 'Thủy Cung Đại Dương Xanh', 'Hội Chơi Cá Sài Gòn', 'Trại Cá Ông Bảy', 'Aqua Garden Thảo Điền', 'Nhà Vườn Cá Kiểng Bà Năm'];
+
+    function contestFee() { return 40 + gameState.playerLevel * 20; }
+    function contestPrizeBase() { return 600 + gameState.playerLevel * 400; }
+    function getContestTheme(id) { return CONTEST_THEMES.find(t => t.id === id) || CONTEST_THEMES[0]; }
+
+    function contestFishScore(fish, theme) {
+      const sp = getSpeciesById(fish.speciesId);
+      const w = theme.weights;
+      const color = Math.max(0, Math.min(100, fish.colorQuality));
+      const variant = VARIANT_CONTEST_SCORE[fish.variant || 'normal'] || 25;
+      const size = Math.min(100, Math.min(1, fish.sizeCm / sp.maxSizeCm) * 70 + Math.min(1, fish.sizeCm / 40) * 30);
+      const health = Math.max(0, Math.min(100, fish.health));
+      const total = color * w.color + variant * w.variant + size * w.size + health * w.health;
+      return { total: Math.round(total * 10) / 10, color: Math.round(color), variant, size: Math.round(size), health: Math.round(health) };
+    }
+
+    function contestTankScore(tank) {
+      const hab = calculateTankHabitatStats(tank);
+      const fishes = tank.fishes.filter(f => f.stage !== 'fry');
+      const species = new Set(fishes.map(f => f.speciesId));
+      const clean = Math.max(0, Math.min(100, tank.cleanliness));
+      const algae = 100 - Math.max(tank.hairAlgae || 0, tank.wallAlgae || 0);
+      const oxy = Math.max(0, Math.min(100, tank.oxygen));
+      const decor = Math.min(100, tank.decorItems.length * 14 + (tank.cleaners ? tank.cleaners.length : 0) * 6);
+      const eco = Math.min(100, hab.breedScore * 2.2);
+      const diversity = Math.min(100, species.size * 22);
+      let quality = 0;
+      if (fishes.length) quality = fishes.reduce((s, f) => s + (f.colorQuality + f.health) / 2, 0) / fishes.length;
+      const total = clean * 0.2 + algae * 0.15 + oxy * 0.1 + decor * 0.2 + eco * 0.1 + diversity * 0.1 + quality * 0.15;
+      return { total: Math.round(total * 10) / 10, clean: Math.round(clean), algae: Math.round(algae), decor: Math.round(decor), diversity: Math.round(diversity), quality: Math.round(quality) };
+    }
+
+    function getContestCandidates(c) {
+      const theme = getContestTheme(c.themeId);
+      const out = [];
+      if (theme.type === 'tank') {
+        gameState.tanks.forEach(t => {
+          const nFish = t.fishes.filter(f => f.stage !== 'fry').length;
+          if (nFish >= 3 && t.decorItems.length >= 3) out.push({ type: 'tank', id: t.id, tank: t, score: contestTankScore(t) });
+        });
+      } else {
+        gameState.tanks.forEach(t => t.fishes.forEach(f => {
+          if (f.stage !== 'adult') return;
+          const sp = getSpeciesById(f.speciesId);
+          if (!theme.eligible(f, sp)) return;
+          out.push({ type: 'fish', id: f.id, fish: f, sp, tank: t, score: contestFishScore(f, theme) });
+        }));
+      }
+      out.sort((a, b) => b.score.total - a.score.total);
+      return out;
+    }
+
+    function openContest(themeId) {
+      const ct = gameState.contest;
+      if (ct.current) return false;
+      const level = gameState.playerLevel;
+      const base = 45 + level * 6;
+      const names = RIVAL_NAMES.slice().sort(() => Math.random() - 0.5).slice(0, 4);
+      const rivals = names.map((n, i) => {
+        let s = base + (Math.random() - 0.5) * 30 + (i === 0 ? 5 : 0);
+        return { name: n, score: Math.round(Math.max(35, Math.min(99, s)) * 10) / 10 };
+      });
+      ct.current = { id: 'CT-' + Math.floor(1000 + Math.random() * 9000), themeId, openedDay: gameState.dayCount, closeDay: gameState.dayCount + 3, rivals, entry: null };
+      ct.lastTheme = themeId;
+      const th = getContestTheme(themeId);
+      showToast(`🏆 Giải đấu "${th.name}" đã mở đăng ký! (3 ngày)`, 'success');
+      logEvent(`Giải đấu triển lãm "${th.name}" mở đăng ký — hạn chót ngày ${ct.current.closeDay}.`, 'success');
+      return true;
+    }
+
+    function openContestEarly(themeId) {
+      const ct = gameState.contest;
+      const cost = 60 + gameState.playerLevel * 15;
+      if (ct.current) return;
+      if (gameState.money < cost) { showToast(`⚠️ Không đủ ngân quỹ! Cần ${fmtMoney(cost)} để mở giải sớm.`, 'warn'); return; }
+      gameState.money -= cost;
+      gameState.stats.totalSpent += cost;
+      openContest(themeId);
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function processContestDaily() {
+      const ct = gameState.contest;
+      if (ct.current && gameState.dayCount >= ct.current.closeDay) judgeContest(false);
+      if (!ct.current && gameState.dayCount >= ct.nextOpenDay) {
+        let pool = CONTEST_THEMES.filter(t => t.id !== ct.lastTheme);
+        const playable = pool.filter(t => getContestCandidates({ themeId: t.id }).length > 0);
+        if (playable.length) pool = playable;
+        openContest(pool[Math.floor(Math.random() * pool.length)].id);
+      }
+    }
+
+    function registerContestEntry(type, refId) {
+      const c = gameState.contest.current;
+      if (!c || c.entry) return;
+      const fee = contestFee();
+      if (gameState.money < fee) { showToast(`⚠️ Không đủ ngân quỹ! Lệ phí dự thi ${fmtMoney(fee)}.`, 'warn'); return; }
+      let label = '';
+      let prevLocked = false;
+      if (type === 'fish') {
+        let fish = null;
+        gameState.tanks.forEach(t => t.fishes.forEach(f => { if (f.id === refId) fish = f; }));
+        if (!fish) return;
+        label = `${getSpeciesById(fish.speciesId).nameVi} (${fish.id})`;
+        prevLocked = !!fish.locked;
+        fish.locked = true;
+      } else {
+        const tank = gameState.tanks.find(t => t.id === refId);
+        if (!tank) return;
+        label = tank.name;
+      }
+      gameState.money -= fee;
+      gameState.stats.totalSpent += fee;
+      c.entry = { type, refId, label, prevLocked, fee };
+      playSfx('cash');
+      showToast(`📝 Đã đăng ký ${label} dự thi! Cá được khóa bảo vệ đến khi chấm giải.`, 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function releaseEntryLock(entry) {
+      if (!entry || entry.type !== 'fish') return;
+      gameState.tanks.forEach(t => t.fishes.forEach(f => { if (f.id === entry.refId) f.locked = !!entry.prevLocked; }));
+    }
+
+    function withdrawContestEntry() {
+      const c = gameState.contest.current;
+      if (!c || !c.entry) return;
+      releaseEntryLock(c.entry);
+      c.entry = null;
+      showToast('↩️ Đã rút khỏi cuộc thi (không hoàn lệ phí).', 'warn');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function judgeContestNow() { judgeContest(true); }
+
+    function judgeContest(early) {
+      const ct = gameState.contest;
+      const c = ct.current;
+      if (!c) return;
+      const theme = getContestTheme(c.themeId);
+      const nextOpen = () => { ct.nextOpenDay = gameState.dayCount + 2 + Math.floor(Math.random() * 3); };
+
+      if (!c.entry) {
+        ct.last = { missed: true, themeName: theme.name, icon: theme.icon, day: gameState.dayCount };
+        ct.current = null;
+        nextOpen();
+        logEvent(`Bạn đã bỏ lỡ giải đấu "${theme.name}".`, 'warn');
+        showToast(`⌛ Giải "${theme.name}" đã đóng — bạn chưa đăng ký.`, 'warn');
+        renderAllPanels();
+        return;
+      }
+
+      const entry = c.entry;
+      let score = null;
+      if (entry.type === 'fish') {
+        let fish = null;
+        gameState.tanks.forEach(t => t.fishes.forEach(f => { if (f.id === entry.refId) fish = f; }));
+        if (fish) score = contestFishScore(fish, theme).total;
+      } else {
+        const tank = gameState.tanks.find(t => t.id === entry.refId);
+        if (tank) score = contestTankScore(tank).total;
+      }
+      releaseEntryLock(entry);
+
+      if (score === null) {
+        ct.last = { missed: true, lost: true, themeName: theme.name, icon: theme.icon, day: gameState.dayCount, label: entry.label };
+        ct.current = null;
+        nextOpen();
+        logEvent(`Thí sinh ${entry.label} không còn để chấm giải "${theme.name}" — mất lệ phí.`, 'danger');
+        showToast('💔 Thí sinh dự thi không còn! Bạn bị loại.', 'danger');
+        renderAllPanels();
+        return;
+      }
+
+      const rank = 1 + c.rivals.filter(r => r.score > score).length;
+      const level = gameState.playerLevel;
+      const base = contestPrizeBase();
+      const prizeMap = { 1: base, 2: Math.round(base * 0.55), 3: Math.round(base * 0.3) };
+      const prize = prizeMap[rank] || Math.round(base * 0.05);
+      const xpBase = 150 + level * 60;
+      const xp = Math.round(xpBase * ({ 1: 1, 2: 0.6, 3: 0.35 }[rank] || 0.15));
+      const medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : '🎗️'));
+
+      const field = c.rivals.map(r => ({ name: r.name, score: r.score, isPlayer: false }));
+      field.push({ name: 'Bạn — ' + entry.label, score, isPlayer: true });
+      field.sort((a, b) => b.score - a.score);
+
+      gameState.money += prize;
+      gameState.stats.totalRevenue += prize;
+      if (rank <= 3) {
+        ct.trophies[rank === 1 ? 'gold' : (rank === 2 ? 'silver' : 'bronze')]++;
+        ct.hall.unshift({ rank, themeName: theme.name, icon: theme.icon, label: entry.label, score, day: gameState.dayCount, prize });
+        if (ct.hall.length > 30) ct.hall.pop();
+      }
+      ct.last = { themeName: theme.name, icon: theme.icon, rank, score, label: entry.label, prize, xp, day: gameState.dayCount, field };
+      ct.current = null;
+      nextOpen();
+
+      playSfx('levelup');
+      addPlayerXp(xp);
+      showToast(`${medal} Giải "${theme.name}": hạng ${rank} với ${score} điểm! +${fmtMoney(prize)}, +${xp} XP`, rank <= 3 ? 'success' : 'info');
+      logEvent(`Giải "${theme.name}": ${entry.label} đạt ${score} điểm, hạng ${rank}. Thưởng ${fmtMoney(prize)} + ${xp} XP.`, rank <= 3 ? 'success' : 'info');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function renderContestPanel() {
+      const container = document.getElementById('contestContainer');
+      if (!container || !gameState || !gameState.contest) return;
+      const ct = gameState.contest;
+      const c = ct.current;
+      const fee = contestFee();
+      const base = contestPrizeBase();
+      let html = '';
+
+      html += `
+        <div class="grid grid-cols-4 gap-2 text-center text-xs">
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-amber-500/40"><div class="text-lg">🥇</div><div class="font-extrabold text-amber-300">${ct.trophies.gold}</div></div>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-400/40"><div class="text-lg">🥈</div><div class="font-extrabold text-slate-200">${ct.trophies.silver}</div></div>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-orange-600/40"><div class="text-lg">🥉</div><div class="font-extrabold text-orange-300">${ct.trophies.bronze}</div></div>
+          <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800"><div class="text-[10px] text-slate-400">Thưởng Vàng</div><div class="font-extrabold text-emerald-300">${fmtMoney(base)}</div></div>
+        </div>`;
+
+      if (!c) {
+        const days = Math.max(0, ct.nextOpenDay - gameState.dayCount);
+        const early = 60 + gameState.playerLevel * 15;
+        html += `
+          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+            <div class="text-xs font-extrabold text-sky-300">⏳ Hiện chưa có giải đấu nào đang mở</div>
+            <div class="text-[11px] text-slate-400">Giải tiếp theo tự mở ${days > 0 ? `sau khoảng <b class="text-white">${days} ngày</b> nữa` : 'trong ngày hôm nay/ngày mai'}. Bạn cũng có thể đăng ký mở giải sớm (${fmtMoney(early)}) với chủ đề tự chọn:</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              ${CONTEST_THEMES.map(t => `<button onclick="openContestEarly('${t.id}')" class="px-2 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-100">${t.icon} ${t.name}</button>`).join('')}
+            </div>
+          </div>`;
+      } else {
+        const th = getContestTheme(c.themeId);
+        const closeAbs = (c.closeDay - 1) * 24;
+        const rv = c.rivals.map(r => r.score);
+        const lo = Math.floor(Math.min(...rv) / 5) * 5, hi = Math.ceil(Math.max(...rv) / 5) * 5;
+        html += `
+          <div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/50 to-slate-900/90 border border-amber-500/50 space-y-1.5">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="text-sm font-extrabold text-amber-300">${th.icon} Giải: ${th.name}</div>
+                <div class="text-[11px] text-slate-300">${th.desc}</div>
+              </div>
+              <div class="text-right shrink-0 text-[11px]">
+                <div class="text-slate-400">Chấm giải sau</div>
+                <div class="font-bold text-white" data-endabs="${closeAbs}"></div>
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-400">Lệ phí <b class="text-white">${fmtMoney(fee)}</b> • Đối thủ ước tính <b class="text-rose-300">${lo}–${hi} điểm</b> • Hạng 1: ${fmtMoney(base)} • Hạng 2: ${fmtMoney(Math.round(base * 0.55))} • Hạng 3: ${fmtMoney(Math.round(base * 0.3))}</div>
+            ${th.type === 'fish' ? `<div class="text-[10px] text-slate-500">Trọng số: Sắc tố ${Math.round(th.weights.color * 100)}% • Biến thể ${Math.round(th.weights.variant * 100)}% • Kích cỡ ${Math.round(th.weights.size * 100)}% • Sức khỏe ${Math.round(th.weights.health * 100)}%</div>` : `<div class="text-[10px] text-slate-500">Chấm: Độ sạch 20% • Rêu 15% • Oxy 10% • Trang trí 20% • Sinh thái 10% • Đa dạng loài 10% • Chất lượng cá 15%</div>`}
+          </div>`;
+
+        if (c.entry) {
+          let cur = null;
+          if (c.entry.type === 'fish') {
+            gameState.tanks.forEach(t => t.fishes.forEach(f => { if (f.id === c.entry.refId) cur = contestFishScore(f, th).total; }));
+          } else {
+            const tk = gameState.tanks.find(t => t.id === c.entry.refId);
+            if (tk) cur = contestTankScore(tk).total;
+          }
+          html += `
+          <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/50 space-y-2">
+            <div class="text-xs font-extrabold text-emerald-300">✅ Đã đăng ký: ${escHtml(c.entry.label)}</div>
+            <div class="text-[11px] text-slate-300">Điểm hiện tại: <b class="text-white">${cur === null ? 'Không còn thí sinh!' : cur}</b> — tiếp tục chăm sóc để tăng điểm trước khi chấm giải.</div>
+            <div class="flex gap-2 justify-end">
+              <button onclick="withdrawContestEntry()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">↩ Rút lui</button>
+              <button onclick="judgeContestNow()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow">🏁 Thi ngay</button>
+            </div>
+          </div>`;
+        } else {
+          const cands = getContestCandidates(c);
+          html += `<div class="text-xs font-bold text-sky-300">Chọn thí sinh (${cands.length} đủ điều kiện)</div>`;
+          if (cands.length === 0) {
+            html += `<div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-slate-400">Bạn chưa có thí sinh phù hợp. ${th.type === 'tank' ? 'Cần một bể có ≥3 cá (không tính cá con) và ≥3 vật trang trí.' : th.desc}</div>`;
+          }
+          html += cands.slice(0, 8).map(cd => {
+            if (cd.type === 'fish') {
+              const f = cd.fish; const vi = GENETIC_VARIANTS[f.variant || 'normal'];
+              return `
+              <div class="p-2 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-2">
+                <div class="w-14 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">${generateFishSvgMarkup(cd.sp, f.variant || 'normal', 50, 32)}</div>
+                <div class="flex-1 min-w-0 text-xs">
+                  <div class="font-bold text-white truncate">${cd.sp.nameVi} <span class="text-[10px] font-mono text-cyan-300">${f.id}</span> <span class="text-[10px] px-1.5 py-0.5 rounded-full ${vi.badgeClass}">${vi.name}</span></div>
+                  <div class="text-[10px] text-slate-400">🎨 ${cd.score.color} • 🧬 ${cd.score.variant} • 📏 ${cd.score.size} • ❤️ ${cd.score.health} • ${escHtml(cd.tank.name)}</div>
+                </div>
+                <div class="text-right shrink-0">
+                  <div class="text-sm font-extrabold text-amber-300">${cd.score.total}</div>
+                  <button onclick="registerContestEntry('fish','${f.id}')" class="px-2 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-[11px] font-bold">Đăng ký</button>
+                </div>
+              </div>`;
+            }
+            const s = cd.score;
+            return `
+              <div class="p-2 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-2">
+                <div class="text-2xl w-10 text-center">🌿</div>
+                <div class="flex-1 min-w-0 text-xs">
+                  <div class="font-bold text-white truncate">${escHtml(cd.tank.name)}</div>
+                  <div class="text-[10px] text-slate-400">💧 ${s.clean} • 🌱 Ít rêu ${s.algae} • 🪴 Trang trí ${s.decor} • 🐠 Đa dạng ${s.diversity} • ✨ Cá ${s.quality}</div>
+                </div>
+                <div class="text-right shrink-0">
+                  <div class="text-sm font-extrabold text-amber-300">${s.total}</div>
+                  <button onclick="registerContestEntry('tank',${cd.id})" class="px-2 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-[11px] font-bold">Đăng ký</button>
+                </div>
+              </div>`;
+          }).join('');
+        }
+      }
+
+      if (ct.last) {
+        const L = ct.last;
+        if (L.missed) {
+          html += `<div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] text-slate-400">${L.icon} Giải gần nhất "${L.themeName}" (ngày ${L.day}): ${L.lost ? 'thí sinh không còn — bị loại.' : 'bạn đã bỏ lỡ.'}</div>`;
+        } else {
+          const medal = L.rank === 1 ? '🥇' : (L.rank === 2 ? '🥈' : (L.rank === 3 ? '🥉' : '🎗️'));
+          html += `
+          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+            <div class="text-xs font-extrabold text-white">${medal} Kết quả gần nhất: ${L.icon} ${L.themeName} — Hạng ${L.rank} <span class="text-slate-400 font-normal">(ngày ${L.day})</span></div>
+            <div class="text-[11px] text-emerald-300 font-bold">+${fmtMoney(L.prize)} • +${L.xp} XP</div>
+            <div class="space-y-0.5">
+              ${L.field.map((r, i) => `<div class="flex justify-between text-[11px] px-2 py-0.5 rounded ${r.isPlayer ? 'bg-amber-500/20 text-amber-200 font-bold' : 'text-slate-400'}"><span>${i + 1}. ${escHtml(r.name)}</span><span>${r.score}</span></div>`).join('')}
+            </div>
+          </div>`;
+        }
+      }
+
+      html += `<div class="text-xs font-bold text-amber-300 pt-1">🏆 Tủ Trưng Bày Cúp</div>`;
+      if (ct.hall.length === 0) {
+        html += `<div class="text-center text-slate-500 text-xs py-3">Chưa có cúp nào. Hãy chăm cá lên 100 điểm sắc tố & giữ lại cá Bạch Kim để tranh Cúp Vàng!</div>`;
+      } else {
+        html += `<div class="grid grid-cols-2 gap-1.5">` + ct.hall.slice(0, 12).map(h => `
+          <div class="p-2 rounded-xl bg-slate-900/90 border ${h.rank === 1 ? 'border-amber-400/50' : (h.rank === 2 ? 'border-slate-400/40' : 'border-orange-600/40')}">
+            <div class="text-xl">${h.rank === 1 ? '🥇' : (h.rank === 2 ? '🥈' : '🥉')}</div>
+            <div class="text-[11px] font-bold text-white truncate">${h.icon} ${h.themeName}</div>
+            <div class="text-[10px] text-slate-400 truncate">${escHtml(h.label)} • ${h.score}đ • Ngày ${h.day}</div>
+          </div>`).join('') + `</div>`;
+      }
+
+      setHtmlIfChanged(container, html);
+      refreshTimers();
+    }
+
+    function updateExtensionBadges() {
+      if (!gameState || !gameState.codex) return;
+      codexScan();
+      const cb = document.getElementById('navCodexBadge');
+      if (cb) cb.textContent = `${getCodexOwnedCount()}/${SPECIES_DB.length}`;
+      const xb = document.getElementById('navContestBadge');
+      if (xb) {
+        const c = gameState.contest.current;
+        if (c && !c.entry) { xb.textContent = 'MỞ'; xb.classList.remove('hidden'); }
+        else if (c && c.entry) { xb.textContent = '✓'; xb.classList.remove('hidden'); }
+        else xb.classList.add('hidden');
+      }
+      renderEventBanner();
+    }
+
+    function handleModActionExt(action) {
+      if (action === 'ext_event') { startMarketEvent(); return true; }
+      if (action === 'ext_weather') { startWeatherEvent(); return true; }
+      if (action === 'ext_vip') { gameState.events.vip = null; startVipVisit(); return true; }
+      if (action === 'ext_contest') {
+        if (!gameState.contest.current) openContest(CONTEST_THEMES[Math.floor(Math.random() * CONTEST_THEMES.length)].id);
+        return true;
+      }
+      if (action === 'ext_codex') {
+        SPECIES_DB.forEach(s => { gameState.codex.owned[s.id] = true; });
+        showToast('📖 Mod: Đã mở khóa toàn bộ 80 loài trong Sổ Tay!', 'success');
+        return true;
+      }
+      return false;
     }
 
     // =========================================================================
@@ -5609,6 +6636,7 @@
         const parsed = JSON.parse(raw);
         if (parsed && parsed.tanks && Array.isArray(parsed.tanks)) {
           gameState = parsed;
+          ensureGameExtensions();
           saveGameToStorage();
           renderAllPanels();
           closeSaveModal();
@@ -5633,6 +6661,7 @@
 
     function confirmResetNewGame() {
       gameState = createDefaultGameState();
+      ensureGameExtensions();
       ensureNpcOrders();
       selectedFishId = null;
       saveGameToStorage();
@@ -5652,6 +6681,7 @@
         gameState = createDefaultGameState();
         openTankNameModal('init', 'Bể #1: Bể Chính', 0);
       }
+      ensureGameExtensions();
       ensureNpcOrders();
       resizeCanvas();
       renderAllPanels();
@@ -5674,6 +6704,15 @@
       setInterval(() => {
         if (gameState) saveGameToStorage();
       }, 15000);
+
+      setInterval(() => {
+        if (!gameState || !gameState.events) return;
+        tickEvents();
+        if (codexScan() && activeTab === 'codex') renderCodexPanel();
+        updateExtensionBadges();
+        if (activeTab === 'contest') renderContestPanel();
+        refreshTimers();
+      }, 1000);
 
       lastFrameTime = performance.now();
       requestAnimationFrame(updateAndDrawAquarium);
