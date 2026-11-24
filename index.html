@@ -125,7 +125,7 @@
   <nav class="bg-slate-900/90 border-b border-slate-800 px-2 py-1.5 z-20">
     <div class="max-w-[1600px] mx-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar">
       <button id="navTab-tank" onclick="switchTab('tank')" class="tab-btn tab-active flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-transparent whitespace-nowrap transition">
-        <span>🌊</span> 1. Bể Cá
+        <span>🌊</span> 1. Bể Cá & Nâng Cấp
       </button>
       <button id="navTab-shop" onclick="switchTab('shop')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
         <span>🛒</span> 2. Cửa Hàng Cá <span class="px-1.5 py-0.2 bg-sky-500/20 text-sky-300 rounded text-[10px]">80</span>
@@ -136,26 +136,20 @@
       <button id="navTab-decor" onclick="switchTab('decor')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
         <span>🌿</span> 4. Trang Trí & Thủy Sinh
       </button>
-      <button id="navTab-upgrade" onclick="switchTab('upgrade')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>⚡</span> 5. Nâng Cấp & Bể
-      </button>
       <button id="navTab-manage" onclick="switchTab('manage')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>📋</span> 6. Quản Lý Cá & Trứng <span id="navManageBadge" class="px-1.5 py-0.2 bg-cyan-500/20 text-cyan-300 rounded text-[10px]">0</span>
-      </button>
-      <button id="navTab-stats" onclick="switchTab('stats')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>📊</span> 7. Thống Kê & Di Truyền
+        <span>📋</span> 5. Quản Lý & Thống Kê <span id="navManageBadge" class="px-1.5 py-0.2 bg-cyan-500/20 text-cyan-300 rounded text-[10px]">0</span>
       </button>
       <button id="navTab-orders" onclick="switchTab('orders')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>🤝</span> 8. Khách Hàng <span id="navOrderBadge" class="px-1.5 py-0.2 bg-amber-500/30 text-amber-300 rounded text-[10px] pulse-badge">4</span>
+        <span>🤝</span> 6. Khách Hàng <span id="navOrderBadge" class="px-1.5 py-0.2 bg-amber-500/30 text-amber-300 rounded text-[10px] pulse-badge">4</span>
       </button>
       <button id="navTab-fishing" onclick="switchTab('fishing')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>🎣</span> 9. Đi Câu Cá
+        <span>🎣</span> 7. Đi Câu Cá
       </button>
       <button id="navTab-contest" onclick="switchTab('contest')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>🏆</span> 10. Triển Lãm <span id="navContestBadge" class="hidden px-1.5 py-0.2 bg-amber-500/30 text-amber-300 rounded text-[10px] pulse-badge">MỞ</span>
+        <span>🏆</span> 8. Triển Lãm <span id="navContestBadge" class="hidden px-1.5 py-0.2 bg-amber-500/30 text-amber-300 rounded text-[10px] pulse-badge">MỞ</span>
       </button>
       <button id="navTab-codex" onclick="switchTab('codex')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700/70 bg-slate-800/60 text-slate-300 hover:text-white whitespace-nowrap transition">
-        <span>📖</span> 11. Sổ Tay Cá <span id="navCodexBadge" class="px-1.5 py-0.2 bg-fuchsia-500/20 text-fuchsia-300 rounded text-[10px]">0/80</span>
+        <span>📖</span> 9. Sổ Tay Cá <span id="navCodexBadge" class="px-1.5 py-0.2 bg-fuchsia-500/20 text-fuchsia-300 rounded text-[10px]">0/80</span>
       </button>
     </div>
   </nav>
@@ -376,21 +370,25 @@
             <div class="text-slate-400 text-[11px]">Dung tích & Sức chứa</div>
             <div id="tankStatCapacity" class="text-sm font-extrabold text-white mt-0.5">40 Lít • 0/30 cá</div>
             <div id="tankStatDensityStatus" class="text-[10px] text-emerald-400 mt-0.5">Mật độ lý tưởng</div>
+            <button id="btnQuickUpTank" onclick="upgradeTankSize()" class="mt-1.5 w-full px-2 py-1 rounded-lg text-white text-[11px] font-bold transition bg-sky-600/80 hover:bg-sky-500">⬆ Nâng cấp bể</button>
           </div>
           <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
             <div class="text-slate-400 text-[11px]">Hệ thống Lọc hiện tại</div>
             <div id="tankStatFilter" class="text-sm font-extrabold text-cyan-300 mt-0.5">Lọc cơ bản (Cấp 1)</div>
             <div id="tankStatFilterRate" class="text-[10px] text-slate-400 mt-0.5">Khử bẩn: +1.0x</div>
+            <button id="btnQuickUpFilter" onclick="upgradeFilterSystem()" class="mt-1.5 w-full px-2 py-1 rounded-lg text-white text-[11px] font-bold transition bg-cyan-600/80 hover:bg-cyan-500">⬆ Nâng cấp lọc</button>
           </div>
           <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
             <div class="text-slate-400 text-[11px]">Hệ thống Chiếu sáng</div>
             <div id="tankStatLight" class="text-sm font-extrabold text-amber-300 mt-0.5">Đèn LED cơ bản</div>
             <div id="tankStatLightBonus" class="text-[10px] text-slate-400 mt-0.5">Quang hợp & Lên màu: x1.0</div>
+            <button id="btnQuickUpLight" onclick="upgradeLightSystem()" class="mt-1.5 w-full px-2 py-1 rounded-lg text-white text-[11px] font-bold transition bg-amber-600/80 hover:bg-amber-500">⬆ Nâng cấp đèn</button>
           </div>
           <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
             <div class="text-slate-400 text-[11px]">Điểm Thủy Sinh & Trú Ẩn</div>
             <div id="tankStatHabitat" class="text-sm font-extrabold text-emerald-300 mt-0.5">28 Điểm Sinh Thái</div>
             <div id="tankStatBreedBonus" class="text-[10px] text-emerald-400 mt-0.5">Tỷ lệ sinh sản: +14%</div>
+            <button id="btnQuickDecor" onclick="switchTab('decor')" class="mt-1.5 w-full px-2 py-1 rounded-lg text-white text-[11px] font-bold transition bg-emerald-600/80 hover:bg-emerald-500">🌿 Thêm trang trí & cây</button>
           </div>
         </div>
 
@@ -415,6 +413,13 @@
               <input id="sliderTargetPh" type="range" min="5.5" max="8.5" step="0.1" value="7.0" oninput="updateTargetEnv('ph', this.value)" class="w-full accent-purple-400 cursor-pointer" />
             </div>
           </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+            <span class="text-xs font-extrabold text-amber-300 uppercase">⚡ Nâng Cấp Bể, Lọc, Đèn & Trang Trại (Tối đa 10 bể)</span>
+          </div>
+          <div id="upgradeContainer" class="space-y-3"></div>
         </div>
 
         <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 flex-1 flex flex-col">
@@ -503,18 +508,13 @@
         <div id="decorShopContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
       </div>
 
-      <!-- TAB 5: NÂNG CẤP & QUẢN LÝ 10 BỂ -->
-      <div id="tabPanel-upgrade" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
-        <div class="pb-2 border-b border-slate-800">
-          <h2 class="text-sm font-extrabold text-amber-300 uppercase">⚡ Nâng Cấp Bể Cá, Lọc Nước, Đèn & Trang Trại (Tối Đa 10 Bể)</h2>
-          <p class="text-[11px] text-slate-400">Mở thêm hồ riêng (đặt tên từng hồ) hoặc bán thanh lý hồ</p>
-        </div>
-
-        <div id="upgradeContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-3"></div>
-      </div>
-
-      <!-- TAB 6: QUẢN LÝ ĐÀN CÁ -->
+      <!-- TAB 5: QUẢN LÝ CÁ, TRỨNG & THỐNG KÊ DI TRUYỀN -->
       <div id="tabPanel-manage" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
+        <div class="flex items-center gap-1.5 pb-2 border-b border-slate-800">
+          <button id="manageSubBtn-fish" onclick="setManageSub('fish')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition">📋 Quản Lý Cá & Trứng</button>
+          <button id="manageSubBtn-stats" onclick="setManageSub('stats')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition">📊 Thống Kê & Di Truyền</button>
+        </div>
+        <div id="manageSub-fish" class="flex-1 flex flex-col overflow-hidden min-h-0 pt-2">
         <div class="pb-2 border-b border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
             <div>
@@ -544,19 +544,18 @@
         </div>
 
         <div id="fishManagerList" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-1.5"></div>
-      </div>
-
-      <!-- TAB 7: THỐNG KÊ -->
-      <div id="tabPanel-stats" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
+        </div>
+        <div id="manageSub-stats" class="hidden flex-1 flex flex-col overflow-hidden min-h-0 pt-2">
         <div class="pb-2 border-b border-slate-800">
           <h2 class="text-sm font-extrabold text-cyan-300 uppercase">📊 Báo Cáo Sinh Sản, Di Truyền & Kinh Tế</h2>
           <p class="text-[11px] text-slate-400">Theo dõi sản lượng cá con theo từng loài, tỷ lệ sống sót và biến động giá thị trường</p>
         </div>
 
         <div id="statsContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-3"></div>
+        </div>
       </div>
 
-      <!-- TAB 8: KHÁCH HÀNG -->
+      <!-- TAB 6: KHÁCH HÀNG -->
       <div id="tabPanel-orders" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
         <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
           <div>
@@ -571,7 +570,7 @@
         <div id="ordersContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
       </div>
 
-      <!-- TAB 9: ĐI CÂU CÁ & VỚT CÁ TỰ NHIÊN -->
+      <!-- TAB 7: ĐI CÂU CÁ & VỚT CÁ TỰ NHIÊN -->
       <div id="tabPanel-fishing" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
         <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
           <div>
@@ -584,7 +583,7 @@
         <div id="fishingContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
       </div>
 
-      <!-- TAB 10: GIẢI ĐẤU TRIỂN LÃM -->
+      <!-- TAB 8: GIẢI ĐẤU TRIỂN LÃM -->
       <div id="tabPanel-contest" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
         <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
           <div>
@@ -595,7 +594,7 @@
         <div id="contestContainer" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-2.5"></div>
       </div>
 
-      <!-- TAB 11: SỔ TAY SƯU TẦM 80 LOÀI -->
+      <!-- TAB 9: SỔ TAY SƯU TẦM 80 LOÀI -->
       <div id="tabPanel-codex" class="tab-panel hidden flex-1 flex flex-col overflow-hidden">
         <div class="pb-2 border-b border-slate-800 flex items-center justify-between">
           <div>
@@ -683,15 +682,15 @@
           • <b>Cua Ớt Đỏ:</b> Dọn thức ăn thừa tầng đáy, giảm mạnh tỷ lệ xuất hiện Rêu Tóc.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-bold text-amber-300 mb-1">3. Đi Câu Cá & Vớt Cá Tự Nhiên (Tab 9)</div>
+          <div class="font-bold text-amber-300 mb-1">3. Đi Câu Cá & Vớt Cá Tự Nhiên (Tab 7)</div>
           <p>Chọn vùng nước (<b>Ao Hồ</b>, <b>Sông Lớn</b>, <b>Biển Sâu</b>), trang bị đúng dụng cụ theo size cá (<b>Vợt</b> cho Size Nhỏ, <b>Cần Thường</b> cho Size Trung, <b>Cần Carbon Pro</b> cho Size Lớn) và chọn loại mồi khớp khẩu vị để săn cá hiếm!</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-bold text-fuchsia-300 mb-1">4. Sổ Tay Sưu Tầm (Tab 11)</div>
+          <div class="font-bold text-fuchsia-300 mb-1">4. Sổ Tay Sưu Tầm (Tab 9)</div>
           <p>Tự ghi nhận loài bạn từng <b>sở hữu</b>, <b>nhân giống</b> và <b>săn được biến thể hiếm</b>. Đạt mốc <b>10 / 25 / 50 / 80 loài</b> để nhận tiền, XP và buff vĩnh viễn (tổng cộng <b>+10% giá bán toàn trại</b>, <b>+5% tỷ lệ đột biến</b>).</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <div class="font-bold text-amber-300 mb-1">5. Giải Đấu Triển Lãm (Tab 10)</div>
+          <div class="font-bold text-amber-300 mb-1">5. Giải Đấu Triển Lãm (Tab 8)</div>
           <p>Cứ vài ngày game lại có 1 giải với chủ đề ngẫu nhiên (hoặc bạn trả phí để mở sớm). Đăng ký 1 cá / 1 bể; điểm tính theo <b>Sắc tố + Biến thể + Kích cỡ + Sức khỏe</b> (bể thì theo độ sạch, trang trí, đa dạng...). Cá dự thi được khóa bảo vệ. Top 3 nhận Cúp Vàng/Bạc/Đồng + tiền thưởng lớn.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
@@ -5120,6 +5119,32 @@
         });
         listEl.innerHTML = html;
       }
+
+      const quick = (id, next, cost, lvReq) => {
+        const b = document.getElementById(id);
+        if (!b) return;
+        const base = 'mt-1.5 w-full px-2 py-1 rounded-lg text-[11px] font-bold transition ';
+        if (!next) {
+          b.textContent = '✅ Đã đạt tối đa';
+          b.disabled = true;
+          b.className = base + 'bg-slate-800 text-emerald-400 cursor-default';
+        } else {
+          const lockedLv = lvReq && gameState.playerLevel < lvReq;
+          b.textContent = lockedLv ? `🔒 Cần Cấp ${lvReq} • $${cost}` : `⬆ Nâng cấp lên ${next.name.split(':')[0]} ($${cost})`;
+          b.title = next.name;
+          b.disabled = false;
+          const color = id === 'btnQuickUpTank' ? 'sky' : (id === 'btnQuickUpFilter' ? 'cyan' : 'amber');
+          b.className = base + (lockedLv ? 'bg-slate-800 text-amber-300' : `bg-${color}-600/80 hover:bg-${color}-500 text-white`);
+        }
+      };
+      const nT = TANK_LEVELS[tank.tankLevel] || null;
+      const nF = FILTER_LEVELS[tank.filterLevel] || null;
+      const nL = LIGHT_LEVELS[tank.lightLevel] || null;
+      quick('btnQuickUpTank', nT, nT && nT.upgradeCost, nT && nT.unlockPlayerLv);
+      quick('btnQuickUpFilter', nF, nF && nF.cost, 0);
+      quick('btnQuickUpLight', nL, nL && nL.cost, 0);
+
+      renderUpgradePanel();
     }
 
     function renderFishShop() {
@@ -5179,7 +5204,7 @@
         if (cat === 'egglayer' && sp.group !== 'egglayer') return false;
         if (cat === 'special' && sp.group !== 'special') return false;
         if (cat === 'unlocked' && sp.unlockLevel > gameState.playerLevel) return false;
-        if (query && !sp.nameVi.toLowerCase().includes(query) && !sp.nameEn.toLowerCase().includes(query)) return false;
+        if (query && ((sp.unlockLevel > gameState.playerLevel && !(gameState.codex && gameState.codex.owned[sp.id])) || (!sp.nameVi.toLowerCase().includes(query) && !sp.nameEn.toLowerCase().includes(query)))) return false;
         return true;
       });
 
@@ -5195,6 +5220,7 @@
 
       container.innerHTML = cleanersHtml + filtered.map(sp => {
         const locked = sp.unlockLevel > gameState.playerLevel;
+        const hid = locked && !(gameState.codex && gameState.codex.owned[sp.id]);
         const spHab = getSpeciesHabitat(sp);
         const szClass = getSpeciesSizeClass(sp);
         const minTankLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
@@ -5220,32 +5246,32 @@
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-center gap-2.5">
                 <div class="w-16 h-11 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">
-                  ${generateFishSvgMarkup(sp, 'normal', 56, 36)}
+                  ${hid ? `<span style="display:inline-flex;filter:brightness(0) opacity(0.5);">${maskFishAlt(generateFishSvgMarkup(sp, 'normal', 56, 36))}</span>` : generateFishSvgMarkup(sp, 'normal', 56, 36)}
                 </div>
                 <div>
                   <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="text-xs font-extrabold text-white">#${sp.code}. ${sp.nameVi}</span>
+                    ${hid ? `<span class="text-xs font-extrabold text-slate-400">#${sp.code}. ??? (Loài bí ẩn)</span>` : `<span class="text-xs font-extrabold text-white">#${sp.code}. ${sp.nameVi}</span>
                     ${habBadge}
                     ${sizeBadge}
-                    ${ownedBadge}
+                    ${ownedBadge}`}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">
-                    Cỡ: <b>${sp.maxSizeCm}cm</b> • Trưởng thành: <b>${sp.matureDays} ngày</b> • Sinh sản: <b>~${sp.avgOffspring} con</b>
+                    ${hid ? 'Đạt cấp độ yêu cầu để khám phá loài cá này' : `Cỡ: <b>${sp.maxSizeCm}cm</b> • Trưởng thành: <b>${sp.matureDays} ngày</b> • Sinh sản: <b>~${sp.avgOffspring} con</b>`}
                   </div>
                 </div>
               </div>
               <div class="text-right shrink-0">
                 <div class="text-[10px] text-slate-400">Giá bán</div>
-                <div class="text-xs font-extrabold text-emerald-400">$${sp.sellPrice}</div>
+                <div class="text-xs font-extrabold text-emerald-400">${hid ? '???' : '$' + sp.sellPrice}</div>
               </div>
             </div>
 
             <div class="text-[11px] text-slate-300 bg-slate-950/60 px-2.5 py-1 rounded-lg border border-slate-800/80">
-              🍽️ <b>Ăn:</b> ${sp.diet} • 💡 ${sp.specialNote}
+              ${hid ? '🔒 Thông tin ăn uống & đặc tính được ẩn cho đến khi mở khóa.' : `🍽️ <b>Ăn:</b> ${sp.diet} • 💡 ${sp.specialNote}`}
             </div>
 
             <div class="flex items-center justify-between gap-2 pt-1">
-              <span class="text-[10px] text-sky-300 font-medium">${sp.commercialTier}</span>
+              <span class="text-[10px] text-sky-300 font-medium">${hid ? '' : sp.commercialTier}</span>
               ${locked ? `
                 <span class="px-3 py-1 rounded-lg bg-slate-800 text-amber-300 text-xs font-bold border border-amber-500/30">
                   🔒 Mở khóa ở Cấp ${sp.unlockLevel}
@@ -5388,7 +5414,7 @@
       const nextFarmReqLv = Math.min(6, gameState.tanks.length + 1);
       const liqVal = calculateTankLiquidationValue(tank);
 
-      container.innerHTML = `
+      setHtmlIfChanged(container, `
         <div class="p-3 rounded-xl bg-slate-900/90 border border-sky-500/30 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-extrabold text-sky-300">🌊 Cấp Độ Bể: ${curTankMeta.name}</span>
@@ -5463,7 +5489,7 @@
             ` : ''}
           </div>
         </div>
-      `;
+      `);
     }
 
     function renderFishManager() {
@@ -5636,6 +5662,24 @@
       }).join('');
     }
 
+    let manageSub = 'fish';
+    function setManageSub(s) { manageSub = s; renderManageHub(); }
+    function renderManageHub() {
+      const isFish = manageSub === 'fish';
+      const on = 'bg-sky-600 text-white border-sky-400/60 shadow';
+      const off = 'bg-slate-800/60 text-slate-300 border-slate-700/70 hover:text-white';
+      const base = 'px-3 py-1.5 rounded-xl text-xs font-bold border transition ';
+      const bf = document.getElementById('manageSubBtn-fish');
+      const bs = document.getElementById('manageSubBtn-stats');
+      if (bf) bf.className = base + (isFish ? on : off);
+      if (bs) bs.className = base + (isFish ? off : on);
+      const pf = document.getElementById('manageSub-fish');
+      const ps = document.getElementById('manageSub-stats');
+      if (pf) pf.classList.toggle('hidden', !isFish);
+      if (ps) ps.classList.toggle('hidden', isFish);
+      if (isFish) renderFishManager(); else renderStatsPanel();
+    }
+
     function renderAllPanels() {
       updateHeaderUI();
       updateSelectedFishInspector();
@@ -5643,9 +5687,7 @@
       if (activeTab === 'shop') renderFishShop();
       if (activeTab === 'food') renderFoodShop();
       if (activeTab === 'decor') renderDecorShop();
-      if (activeTab === 'upgrade') renderUpgradePanel();
-      if (activeTab === 'manage') renderFishManager();
-      if (activeTab === 'stats') renderStatsPanel();
+      if (activeTab === 'manage') renderManageHub();
       if (activeTab === 'orders') renderOrdersPanel();
       if (activeTab === 'fishing') renderFishingPanel();
       if (activeTab === 'contest') renderContestPanel();
@@ -5658,6 +5700,7 @@
     function escHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
+    function maskFishAlt(markup) { return String(markup).replace(/alt="[^"]*"/g, 'alt="Loài bí ẩn"'); }
     function fmtMoney(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
     function nowAbsHours() { return (gameState.dayCount - 1) * 24 + gameState.timeOfDay; }
     function fmtRemaining(h) {
@@ -5886,6 +5929,7 @@
         const bred = !!c.bred[sp.id];
         const rv = c.rare[sp.id];
         const locked = sp.unlockLevel > gameState.playerLevel;
+        const hid = locked && !has;
         const marine = getSpeciesHabitat(sp) === 'marine';
         return `
           <div class="p-2 rounded-xl border ${has ? 'bg-slate-900/90 border-sky-500/30' : 'bg-slate-950/70 border-slate-800'}">
@@ -5894,9 +5938,9 @@
               <span>${marine ? '🌊' : '💧'}${locked && !has ? ' 🔒Cấp ' + sp.unlockLevel : ''}</span>
             </div>
             <div class="h-10 flex items-center justify-center my-1" style="${has ? '' : 'filter: brightness(0) opacity(0.35);'}">
-              ${generateFishSvgMarkup(sp, rv || 'normal', 52, 34)}
+              ${hid ? maskFishAlt(generateFishSvgMarkup(sp, 'normal', 52, 34)) : generateFishSvgMarkup(sp, rv || 'normal', 52, 34)}
             </div>
-            <div class="text-[11px] font-bold truncate ${has ? 'text-white' : 'text-slate-500'}" title="${escHtml(sp.nameVi)}">${has ? sp.nameVi : '??? ' + sp.nameVi}</div>
+            <div class="text-[11px] font-bold truncate ${has ? 'text-white' : 'text-slate-500'}" title="${hid ? '' : escHtml(sp.nameVi)}">${has ? sp.nameVi : (hid ? '??? (Chưa mở khóa)' : sp.nameVi)}</div>
             <div class="flex items-center gap-1 mt-1 text-[10px]">
               <span class="px-1.5 py-0.5 rounded ${has ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-800 text-slate-600'}" title="Đã sở hữu">🐟</span>
               <span class="px-1.5 py-0.5 rounded ${bred ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-600'}" title="Đã nhân giống">🥚</span>
@@ -6695,8 +6739,7 @@
           updateHeaderUI();
           if (selectedFishId) updateSelectedFishInspector();
           if (activeTab === 'tank') renderTankControlPanel();
-          if (activeTab === 'manage') renderFishManager();
-          if (activeTab === 'stats') renderStatsPanel();
+          if (activeTab === 'manage') renderManageHub();
           if (activeTab === 'orders') renderOrdersPanel();
         }
       }, 1000);
