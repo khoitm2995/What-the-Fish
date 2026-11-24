@@ -36,6 +36,12 @@
       50% { opacity: 1; }
     }
     .pulse-badge { animation: pulseGlow 2s infinite ease-in-out; }
+    button, select, a, label, .tab-btn { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    #fishingContainer, #fishingContainer * { -webkit-touch-callout: none; }
+    #btnHoldPull { touch-action: none; -webkit-user-select: none; user-select: none; }
+    @media (pointer: coarse) {
+      input[type="text"], input:not([type]), select, textarea { font-size: 16px !important; }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
@@ -81,7 +87,7 @@
         <div class="flex items-center gap-1.5 bg-sky-950/70 border border-sky-500/30 px-2.5 py-1 rounded-xl">
           <span class="text-sky-400 text-sm">🐠</span>
           <div>
-            <div class="text-[10px] text-sky-300/80 uppercase leading-none">Mật độ bể</div>
+            <div class="text-[10px] text-sky-300/80 uppercase leading-none" title="Nhỏ=1 • Trung=3 • Lớn=5">Sức chứa bể</div>
             <div id="headerFishCount" class="text-xs sm:text-sm font-bold text-sky-200 leading-tight">0 / 30</div>
           </div>
         </div>
@@ -697,6 +703,12 @@
           <div class="font-bold text-emerald-300 mb-1">6. Sự Kiện Hàng Ngày</div>
           <p>• <b>Sốt giá thị trường:</b> giá bán một nhóm cá ×1.5 hoặc ×2.<br/>• <b>Thời tiết:</b> nắng nóng +3°C (giảm Oxy) hoặc gió mùa lạnh -3°C — chỉnh lại Nhiệt độ mục tiêu / Lọc để cứu cá.<br/>• <b>Thương lái VIP:</b> bán giảm giá 1 cá biến thể hiếm hoặc thu mua 1 loài giá ×2, chỉ ở lại khoảng 1 ngày.</p>
         </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+          <div class="font-bold text-sky-300 mb-1">7. Sức Chứa & Sinh Sản</div>
+          <p>• Sức chứa bể tính theo điểm: <b>Cá Nhỏ = 1</b>, <b>Cá Trung = 3</b>, <b>Cá Lớn = 5</b>.<br/>
+          • Cá con phải đủ <b>10 ngày</b> trong game mới trưởng thành được.<br/>
+          • Cá vừa đẻ cần nghỉ <b>15 ngày</b> trong game mới thụ thai / đẻ lần tiếp theo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -855,11 +867,11 @@
     ];
 
     const TANK_LEVELS = [
-      { level: 1, name: 'Level 1: Bể Mini Để Bàn', liters: 40, maxFish: 30, upgradeCost: 0, unlockPlayerLv: 1, desc: 'Bể kính 40L cơ bản sức chứa 30 cá thể.' },
-      { level: 2, name: 'Level 2: Bể Tiêu Chuẩn 90L', liters: 90, maxFish: 60, upgradeCost: 260, unlockPlayerLv: 2, desc: 'Tăng gấp đôi không gian bơi lên 60 cá thể.' },
-      { level: 3, name: 'Level 3: Bể Lớn Thủy Sinh 180L', liters: 180, maxFish: 110, upgradeCost: 650, unlockPlayerLv: 3, desc: 'Bể kính siêu trong 180L, sức chứa 110 cá thể.' },
-      { level: 4, name: 'Level 4: Bể Chuyên Nghiệp 350L', liters: 350, maxFish: 180, upgradeCost: 1400, unlockPlayerLv: 4, desc: 'Bể quy mô lớn 350L (tối đa 180 cá).' },
-      { level: 5, name: 'Level 5: Bể Đại Dương / Trang Trại 500L', liters: 500, maxFish: 300, upgradeCost: 2800, unlockPlayerLv: 5, desc: 'Sức chứa khổng lồ 300 cá/bể cho cá lớn & cá biển!' }
+      { level: 1, name: 'Level 1: Bể Mini Để Bàn', liters: 40, maxFish: 30, upgradeCost: 0, unlockPlayerLv: 1, desc: 'Bể kính 40L cơ bản sức chứa 30 điểm (cá nhỏ=1, trung=3, lớn=5).' },
+      { level: 2, name: 'Level 2: Bể Tiêu Chuẩn 90L', liters: 90, maxFish: 60, upgradeCost: 260, unlockPlayerLv: 2, desc: 'Tăng gấp đôi không gian bơi lên 60 điểm sức chứa.' },
+      { level: 3, name: 'Level 3: Bể Lớn Thủy Sinh 180L', liters: 180, maxFish: 110, upgradeCost: 650, unlockPlayerLv: 3, desc: 'Bể kính siêu trong 180L, sức chứa 110 điểm.' },
+      { level: 4, name: 'Level 4: Bể Chuyên Nghiệp 350L', liters: 350, maxFish: 180, upgradeCost: 1400, unlockPlayerLv: 4, desc: 'Bể quy mô lớn 350L (tối đa 180 điểm sức chứa).' },
+      { level: 5, name: 'Level 5: Bể Đại Dương / Trang Trại 500L', liters: 500, maxFish: 300, upgradeCost: 2800, unlockPlayerLv: 5, desc: 'Sức chứa khổng lồ 300 điểm/bể cho cá lớn & cá biển!' }
     ];
 
     const FILTER_LEVELS = [
@@ -1142,6 +1154,18 @@
       medium: 'Size Trung',
       large: 'Size Lớn'
     };
+
+    // Sức chứa tính theo điểm: cá nhỏ = 1, cá trung = 3, cá lớn = 5
+    const SIZE_LOAD_WEIGHT = { small: 1, medium: 3, large: 5 };
+    const MIN_MATURE_AGE_DAYS = 10;   // Cá con phải đủ 10 ngày game mới trưởng thành
+    const BREED_REST_DAYS = 15;       // Cá mới đẻ nghỉ 15 ngày game mới thụ thai tiếp
+    function getSpeciesLoadWeight(sp) { return SIZE_LOAD_WEIGHT[getSpeciesSizeClass(sp)] || 1; }
+    function getFishLoadWeight(fish) { return getSpeciesLoadWeight(getSpeciesById(fish.speciesId)); }
+    function getTankLoad(tank) {
+      let total = 0;
+      (tank.fishes || []).forEach(f => { total += getFishLoadWeight(f); });
+      return total;
+    }
 
     function getFoodById(id) {
       return FOOD_DB.find(f => f.id === id) || FOOD_DB[0];
@@ -1434,7 +1458,8 @@
         }
         gameState.money -= pendingTankNameCost;
         gameState.stats.totalSpent += pendingTankNameCost;
-        const newTank = createInitialTank(idx, finalName, false);
+        const nextId = Math.max(0, ...gameState.tanks.map(t => t.id)) + 1;
+        const newTank = createInitialTank(nextId, finalName, false);
         gameState.tanks.push(newTank);
         gameState.activeTankIndex = idx;
         playSfx('levelup');
@@ -1748,7 +1773,7 @@
         tank.excessFoodLoad = 0;
       } else {
         const fishLoad = tank.fishes.length;
-        const overCap = Math.max(0, fishLoad - tankMeta.maxFish);
+        const overCap = Math.max(0, getTankLoad(tank) - tankMeta.maxFish);
         const wallAlgaePenalty = (tank.wallAlgae / 100) * 1.4;
         const trumpetSlowFactor = Math.max(0.45, 1 - trumpetCount * 0.14);
         const wasteRate = ((fishLoad * 0.16) + (overCap * 0.65) + wallAlgaePenalty) * trumpetSlowFactor;
@@ -1870,7 +1895,8 @@
         clutch.progress += dayDelta / clutch.hatchDaysReq;
         if (clutch.progress >= 1.0) {
           const survivingEggs = Math.max(1, Math.round(clutch.eggCount * (1 - clutch.spoiledRatio + filterMeta.eggProtect * 0.5)));
-          const spaceLeft = Math.max(2, tankMeta.maxFish + 8 - tank.fishes.length);
+          const eggW = getSpeciesLoadWeight(sp);
+          const spaceLeft = Math.max(2, Math.floor((tankMeta.maxFish + 8 - getTankLoad(tank)) / eggW));
           const actualSpawn = Math.min(survivingEggs, spaceLeft);
 
           let rareBorn = 0;
@@ -1938,11 +1964,12 @@
           if (fish.health > 90) {
             const fastMult = fish.health >= 99.5 ? 2.0 : 1.6;
             fish.fullHealthStreakDays = Number(((fish.fullHealthStreakDays || 0) + dayDelta * fastMult).toFixed(3));
-            const streakRatio = Math.min(1.0, fish.fullHealthStreakDays / reqStreakDays);
+            const ageRatio = Math.min(1.0, fish.ageDays / MIN_MATURE_AGE_DAYS);
+            const streakRatio = Math.min(1.0, fish.fullHealthStreakDays / reqStreakDays, ageRatio);
             fish.sizeCm = Number((sp.maxSizeCm * (0.32 + 0.68 * streakRatio)).toFixed(2));
 
             if (fish.stage === 'fry' && streakRatio >= 0.45) fish.stage = 'juvenile';
-            if (fish.fullHealthStreakDays >= reqStreakDays) {
+            if (fish.fullHealthStreakDays >= reqStreakDays && fish.ageDays >= MIN_MATURE_AGE_DAYS) {
               fish.stage = 'adult';
               fish.sizeCm = sp.maxSizeCm;
               gameState.stats.totalFryMatured++;
@@ -1960,13 +1987,13 @@
           if (fish.pregnancyProgress >= 1.0) {
             fish.isPregnant = false;
             fish.pregnancyProgress = 0;
-            fish.breedCooldown = 0.2;
+            fish.breedCooldown = BREED_REST_DAYS;
             if (!modFlags.immortalFullStats) {
               fish.health = Math.max(5, Number((fish.health - 80).toFixed(1)));
               fish.hunger = Math.max(20, fish.hunger - 30);
             }
 
-            const spaceLeft = Math.max(2, tankMeta.maxFish + 8 - tank.fishes.length);
+            const spaceLeft = Math.max(2, Math.floor((tankMeta.maxFish + 8 - getTankLoad(tank)) / getSpeciesLoadWeight(sp)));
             const rawCount = Math.max(3, Math.round(sp.avgOffspring * (0.65 + (fish.health / 200) + (habitat.breedScore / 150))));
             const spawnCount = Math.min(rawCount, spaceLeft);
 
@@ -2000,7 +2027,7 @@
         renderAllPanels();
       }
 
-      if (!modFlags.disableBreeding && Math.random() < dayDelta * 8.0 && tank.fishes.length < tankMeta.maxFish) {
+      if (!modFlags.disableBreeding && Math.random() < dayDelta * 8.0 && getTankLoad(tank) < tankMeta.maxFish) {
         attemptBreedingInTank(tank, habitat);
       }
 
@@ -2059,7 +2086,7 @@
               female.health = Math.max(5, Number((female.health - 80).toFixed(1)));
             }
             male.breedCooldown = 0.3;
-            female.breedCooldown = 0.35;
+            female.breedCooldown = BREED_REST_DAYS;
             gameState.stats.totalBreedingEvents++;
 
             let eggX = 0.25 + Math.random() * 0.5;
@@ -3746,8 +3773,9 @@
       }
 
       const countNeeded = buyAsBreedingPair ? 2 : 1;
-      if (tank.fishes.length + countNeeded > tankMeta.maxFish) {
-        showToast(`⚠️ Bể đã đạt sức chứa tối đa (${tankMeta.maxFish} cá)!`, 'warn');
+      const loadNeeded = countNeeded * getSpeciesLoadWeight(sp);
+      if (getTankLoad(tank) + loadNeeded > tankMeta.maxFish) {
+        showToast(`⚠️ Bể không đủ sức chứa! Cần ${loadNeeded} điểm (còn ${Math.max(0, tankMeta.maxFish - getTankLoad(tank))}/${tankMeta.maxFish}).`, 'warn');
         return;
       }
 
@@ -4101,13 +4129,19 @@
     function autoSellOvercrowdedFry() {
       const tank = getCurrentTank();
       const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
-      const overCount = tank.fishes.length - tankMeta.maxFish;
+      const overCount = getTankLoad(tank) - tankMeta.maxFish;
       if (overCount <= 0) {
         showToast('✅ Bể hiện tại chưa bị quá tải mật độ cá!', 'info');
         return;
       }
       const eligibleFry = tank.fishes.filter(f => f.stage === 'fry' && (!f.variant || f.variant === 'normal') && !f.locked);
-      const toSell = eligibleFry.slice(0, overCount);
+      const toSell = [];
+      let freed = 0;
+      for (const f of eligibleFry) {
+        if (freed >= overCount) break;
+        toSell.push(f);
+        freed += getFishLoadWeight(f);
+      }
       if (toSell.length === 0) {
         showToast('⚠️ Không có cá con thường để bán giảm tải!', 'warn');
         return;
@@ -4602,8 +4636,8 @@
         return;
       }
       const destMeta = TANK_LEVELS[destTank.tankLevel - 1];
-      if (destTank.fishes.length >= destMeta.maxFish) {
-        showToast(`⚠️ ${destTank.name} đã đầy (${destMeta.maxFish} cá)!`, 'warn');
+      if (getTankLoad(destTank) + getSpeciesLoadWeight(sp) > destMeta.maxFish) {
+        showToast(`⚠️ ${destTank.name} không đủ sức chứa (${getTankLoad(destTank)}/${destMeta.maxFish} điểm)!`, 'warn');
         return;
       }
 
@@ -4667,7 +4701,7 @@
             </div>
             <div class="flex gap-2">
               <button onclick="releaseFishingCast()" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow">
-                🚀 Quăng Câu / Thả Mồi Ngay!
+                🚀 Quăng Câu / Thả Mồi Ngay! (Phím cách)
               </button>
               <button onclick="cancelFishingTrip()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">
                 Hủy
@@ -4708,7 +4742,7 @@
                 <div id="fishReelProgBar" class="h-full bg-cyan-400" style="width: 35%"></div>
               </div>
             </div>
-            <button onpointerdown="fishingState.holdingPull=true" onpointerup="fishingState.holdingPull=false" onpointerleave="fishingState.holdingPull=false" class="w-full py-3 rounded-xl bg-sky-600 active:bg-sky-500 text-white text-xs font-extrabold shadow-lg">
+            <button id="btnHoldPull" oncontextmenu="return false" onpointerdown="fishingState.holdingPull=true" onpointerup="fishingState.holdingPull=false" onpointerleave="fishingState.holdingPull=false" onpointercancel="fishingState.holdingPull=false" class="w-full py-3 rounded-xl bg-sky-600 active:bg-sky-500 text-white text-xs font-extrabold shadow-lg">
               ✊ NHẤN GIỮ ĐỂ KÉO CÁ (THẢ RA ĐỂ GIẢM LỰC)
             </button>
           </div>
@@ -4816,8 +4850,10 @@
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       e.preventDefault();
       if (activeTab === 'fishing') {
-        if (fishingState.phase === 'biting') {
-          hookBitingFish();
+        if (fishingState.phase === 'aiming') {
+          if (!e.repeat) releaseFishingCast();
+        } else if (fishingState.phase === 'biting') {
+          if (!e.repeat) hookBitingFish();
         } else if (fishingState.phase === 'reeling') {
           fishingState.holdingPull = true;
         }
@@ -4825,10 +4861,33 @@
     });
 
     window.addEventListener('keyup', (e) => {
-      if (e.code === 'Space' && fishingState.phase === 'reeling') {
+      if (e.code !== 'Space') return;
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+      if (activeTab === 'fishing' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') e.preventDefault();
+      if (fishingState.phase === 'reeling') {
         fishingState.holdingPull = false;
       }
     });
+
+    // Chống zoom khi bấm nút liên tục / chụm tay trên điện thoại
+    (function preventMobileZoom() {
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+        if (btn && now - lastTouchEnd < 350) {
+          e.preventDefault();
+          if (!btn.disabled && btn.id !== 'btnHoldPull') btn.click();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach(ev => {
+        document.addEventListener(ev, (e) => e.preventDefault(), { passive: false });
+      });
+      document.addEventListener('dblclick', (e) => {
+        if (e.target && e.target.closest && e.target.closest('button')) e.preventDefault();
+      });
+    })();
 
     // =========================================================================
     // 14. HIỂN THỊ GIAO DIỆN & CẬP NHẬT DOM CHO TẤT CẢ 9 TAB
@@ -4867,7 +4926,7 @@
       const tankMeta = TANK_LEVELS[tank.tankLevel - 1] || TANK_LEVELS[0];
 
       document.getElementById('headerMoney').textContent = '$' + gameState.money.toLocaleString('en-US');
-      document.getElementById('headerFishCount').textContent = `${tank.fishes.length} / ${tankMeta.maxFish}`;
+      document.getElementById('headerFishCount').textContent = `${getTankLoad(tank)} / ${tankMeta.maxFish}`;
 
       const curRank = PLAYER_RANKS[gameState.playerLevel - 1] || PLAYER_RANKS[0];
       const nextRank = PLAYER_RANKS[gameState.playerLevel] || null;
@@ -4935,7 +4994,7 @@
           const tCls = getTankActiveSizeClass(t);
           const tag = tHab ? `${tHab === 'marine' ? 'Biển' : 'Ngọt'} • ${SIZE_CLASS_LABELS[tCls]}` : 'Trống';
           return `<button onclick="selectActiveTank(${idx})" class="px-2.5 py-1 rounded-lg text-xs font-bold transition ${active ? 'bg-cyan-600 text-white shadow' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
-            ${t.name} (${tag} • ${t.fishes.length}/${tMeta.maxFish})
+            ${t.name} (${tag} • ${getTankLoad(t)}/${tMeta.maxFish})
           </button>`;
         }).join('');
       }
@@ -4978,7 +5037,7 @@
       vEl.className = `text-[11px] font-bold px-2 py-0.5 rounded-full ${varInfo.badgeClass}`;
 
       const stageMap = { fry: 'Cá Bột', juvenile: 'Cá Nhỡ', adult: 'Trưởng Thành' };
-      document.getElementById('inspFishSub').textContent = `${stageMap[fish.stage]} • Tuổi: ${fish.ageDays.toFixed(1)}/${sp.lifespanDays} ngày • Cỡ: ${fish.sizeCm}cm`;
+      document.getElementById('inspFishSub').textContent = `${stageMap[fish.stage]} • Tuổi: ${fish.ageDays.toFixed(1)}/${sp.lifespanDays} ngày • Cỡ: ${fish.sizeCm}cm${fish.stage !== 'adult' ? ` • Trưởng thành khi ≥${MIN_MATURE_AGE_DAYS} ngày tuổi` : ''}`;
 
       document.getElementById('btnInspFollow').textContent = followFishMode ? '🎥 Đang theo dõi' : '🎥 Theo dõi';
       const lockBtn = document.getElementById('btnInspLock');
@@ -5007,6 +5066,12 @@
       if (fish.isPregnant) {
         breedPct = Math.round(fish.pregnancyProgress * 100);
         breedStatusText = `Mang thai ${breedPct}%`;
+      } else if (fish.stage !== 'adult') {
+        breedPct = Math.min(100, Math.round(fish.ageDays / MIN_MATURE_AGE_DAYS * 100));
+        breedStatusText = `Chưa trưởng thành`;
+      } else if (fish.breedCooldown > 0) {
+        breedPct = Math.max(0, Math.round((1 - fish.breedCooldown / BREED_REST_DAYS) * 100));
+        breedStatusText = `Nghỉ ${fish.breedCooldown.toFixed(1)} ngày`;
       } else if (fish.health < 99.5) {
         breedPct = Math.round(fish.health);
         breedStatusText = `Cần bồi bổ (${breedPct}%)`;
@@ -5061,8 +5126,8 @@
       }
 
       const destMeta = TANK_LEVELS[destTank.tankLevel - 1];
-      if (destTank.fishes.length >= destMeta.maxFish) {
-        showToast(`⚠️ ${destTank.name} đã đầy (${destMeta.maxFish} cá)!`, 'warn');
+      if (getTankLoad(destTank) + getSpeciesLoadWeight(spCheck) > destMeta.maxFish) {
+        showToast(`⚠️ ${destTank.name} không đủ sức chứa (${getTankLoad(destTank)}/${destMeta.maxFish} điểm)!`, 'warn');
         return;
       }
 
@@ -5087,7 +5152,18 @@
       const habitat = calculateTankHabitatStats(tank);
 
       document.getElementById('tankLevelBadge').textContent = tankMeta.name;
-      document.getElementById('tankStatCapacity').textContent = `${tankMeta.liters} Lít • ${tank.fishes.length}/${tankMeta.maxFish} cá`;
+      const tankLoad = getTankLoad(tank);
+      document.getElementById('tankStatCapacity').textContent = `${tankMeta.liters} Lít • ${tankLoad}/${tankMeta.maxFish} điểm (${tank.fishes.length} cá)`;
+      const densEl = document.getElementById('tankStatDensityStatus');
+      if (densEl) {
+        const ratio = tankLoad / tankMeta.maxFish;
+        let densText, densCls;
+        if (ratio > 1) { densText = `Quá tải! (+${tankLoad - tankMeta.maxFish} điểm) • Nhỏ=1 • Trung=3 • Lớn=5`; densCls = 'text-rose-400'; }
+        else if (ratio >= 0.85) { densText = 'Mật độ cao — sắp đầy • Nhỏ=1 • Trung=3 • Lớn=5'; densCls = 'text-amber-400'; }
+        else { densText = 'Mật độ lý tưởng • Nhỏ=1 • Trung=3 • Lớn=5'; densCls = 'text-emerald-400'; }
+        densEl.textContent = densText;
+        densEl.className = 'text-[10px] mt-0.5 ' + densCls;
+      }
       document.getElementById('tankStatFilter').textContent = filterMeta.name;
       document.getElementById('tankStatFilterRate').textContent = `Công suất lọc: x${filterMeta.cleanPower} • Oxy +${filterMeta.oxyBonus}%`;
       document.getElementById('tankStatLight').textContent = `${lightMeta.name} (${tank.lightOn ? 'BẬT' : 'TẮT'})`;
@@ -5418,7 +5494,7 @@
         <div class="p-3 rounded-xl bg-slate-900/90 border border-sky-500/30 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-extrabold text-sky-300">🌊 Cấp Độ Bể: ${curTankMeta.name}</span>
-            <span class="text-xs font-bold text-white">${curTankMeta.liters}L • Tối đa ${curTankMeta.maxFish} cá</span>
+            <span class="text-xs font-bold text-white">${curTankMeta.liters}L • Tối đa ${curTankMeta.maxFish} điểm sức chứa</span>
           </div>
           <p class="text-[11px] text-slate-400">${curTankMeta.desc}</p>
           ${nextTankMeta ? `
@@ -5514,11 +5590,11 @@
       const list = getFilteredManagerFishes();
 
       if (list.length === 0) {
-        container.innerHTML = `<div class="text-center text-slate-500 text-xs py-8">Không có cá thể nào trong mục lọc này tại ${tank.name}.</div>`;
+        setHtmlIfChanged(container, `<div class="text-center text-slate-500 text-xs py-8">Không có cá thể nào trong mục lọc này tại ${tank.name}.</div>`);
         return;
       }
 
-      container.innerHTML = list.map(fish => {
+      setHtmlIfChanged(container, list.map(fish => {
         const sp = getSpeciesById(fish.speciesId);
         const varInfo = GENETIC_VARIANTS[fish.variant] || GENETIC_VARIANTS.normal;
         const val = calculateFishValue(fish);
@@ -5553,7 +5629,7 @@
             </div>
           </div>
         `;
-      }).join('');
+      }).join(''));
     }
 
     function toggleFishLockById(fishId) {
@@ -5740,6 +5816,14 @@
       if (!gs.contest.trophies) gs.contest.trophies = { gold: 0, silver: 0, bronze: 0 };
       if (!Array.isArray(gs.contest.hall)) gs.contest.hall = [];
       if (typeof gs.contest.nextOpenDay !== 'number') gs.contest.nextOpenDay = gs.dayCount + 1;
+      // Vá save cũ: đảm bảo mọi bể có id duy nhất
+      const seenIds = new Set();
+      gs.tanks.forEach(t => {
+        if (typeof t.id !== 'number' || seenIds.has(t.id)) {
+          t.id = Math.max(0, ...gs.tanks.map(x => (typeof x.id === 'number' ? x.id : 0)), ...Array.from(seenIds)) + 1;
+        }
+        seenIds.add(t.id);
+      });
     }
 
     // ------------------------------------------------------------------
@@ -6084,7 +6168,7 @@
       if (tankCls && tankCls !== spCls) return `${tank.name} đang nuôi ${SIZE_CLASS_LABELS[tankCls]}, không thể nuôi chung ${SIZE_CLASS_LABELS[spCls]}!`;
       const minLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
       if (tank.tankLevel < minLv) return `${sp.nameVi} cần bể tối thiểu Level ${minLv}!`;
-      if (tank.fishes.length >= tankMeta.maxFish) return `${tank.name} đã đầy (${tankMeta.maxFish} cá)!`;
+      if (getTankLoad(tank) + getSpeciesLoadWeight(sp) > tankMeta.maxFish) return `${tank.name} không đủ sức chứa (${getTankLoad(tank)}/${tankMeta.maxFish} điểm, ${sp.nameVi} cần ${getSpeciesLoadWeight(sp)})!`;
       return null;
     }
 
@@ -6752,7 +6836,6 @@
         if (!gameState || !gameState.events) return;
         tickEvents();
         if (codexScan() && activeTab === 'codex') renderCodexPanel();
-        updateExtensionBadges();
         if (activeTab === 'contest') renderContestPanel();
         refreshTimers();
       }, 1000);
