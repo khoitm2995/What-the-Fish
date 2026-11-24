@@ -547,6 +547,12 @@
               🐟 Tự Bán Cá Con Quá Tải
             </button>
           </div>
+          <div id="manageBatchMoveBar" class="hidden flex flex-wrap items-center gap-1.5">
+            <select id="manageBatchMoveTank" class="flex-1 min-w-[150px] bg-slate-900 border border-slate-700 rounded-xl px-2 py-1 text-xs text-slate-200"></select>
+            <button onclick="moveSelectedBatchFish()" class="px-2.5 py-1 rounded-xl bg-sky-600/30 hover:bg-sky-600/50 border border-sky-400/40 text-sky-200 text-xs font-bold">
+              ⇄ Chuyển Cá Đã Chọn
+            </button>
+          </div>
         </div>
 
         <div id="fishManagerList" class="flex-1 overflow-y-auto pr-1 pt-2 space-y-1.5"></div>
@@ -5568,10 +5574,108 @@
       `);
     }
 
+    // Kiểm tra cá có thể chuyển sang bể đích không (extraLoad = điểm đã chuyển thêm trong lượt hàng loạt)
+    function getMoveError(fish, destTank, extraLoad = 0) {
+      const sp = getSpeciesById(fish.speciesId);
+      const destMeta = TANK_LEVELS[destTank.tankLevel - 1] || TANK_LEVELS[0];
+      const destHab = getTankActiveHabitat(destTank);
+      if (destHab && destHab !== getSpeciesHabitat(sp)) return 'khác môi trường Biển/Ngọt';
+      const destCls = getTankActiveSizeClass(destTank);
+      if (destCls && destCls !== getSpeciesSizeClass(sp)) return `đang nuôi ${SIZE_CLASS_LABELS[destCls]}`;
+      const minLv = sp.minTankLevel || (sp.maxSizeCm >= 25 ? 4 : (sp.maxSizeCm >= 12 ? 2 : 1));
+      if (destTank.tankLevel < minLv) return `bể cần Level ${minLv}+`;
+      if (getTankLoad(destTank) + extraLoad + getSpeciesLoadWeight(sp) > destMeta.maxFish) return 'không đủ sức chứa';
+      return null;
+    }
+
+    function moveFishToTankById(fishId, destIdxStr) {
+      if (destIdxStr === '') return;
+      const destIdx = parseInt(destIdxStr, 10);
+      const src = getCurrentTank();
+      const dest = gameState.tanks[destIdx];
+      if (!dest || dest === src) return;
+      const idx = src.fishes.findIndex(f => f.id === fishId);
+      if (idx === -1) return;
+      const err = getMoveError(src.fishes[idx], dest);
+      if (err) {
+        showToast(`🚫 Không thể chuyển sang ${dest.name}: ${err}!`, 'warn');
+        renderFishManager();
+        return;
+      }
+      const [fish] = src.fishes.splice(idx, 1);
+      dest.fishes.push(fish);
+      selectedManageFishIds.delete(fish.id);
+      if (selectedFishId === fish.id) selectedFishId = null;
+      playSfx('bubble');
+      showToast(`⇄ Đã chuyển ${getSpeciesById(fish.speciesId).nameVi} (${fish.id}) sang ${dest.name}!`, 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
+    function moveSelectedBatchFish() {
+      const sel = document.getElementById('manageBatchMoveTank');
+      const destIdxStr = sel ? sel.value : '';
+      if (destIdxStr === '') { showToast('⚠️ Hãy chọn hồ đích để chuyển!', 'warn'); return; }
+      const src = getCurrentTank();
+      const dest = gameState.tanks[parseInt(destIdxStr, 10)];
+      if (!dest || dest === src) return;
+      const picked = src.fishes.filter(f => selectedManageFishIds.has(f.id));
+      if (picked.length === 0) { showToast('⚠️ Hãy tích chọn ít nhất 1 cá để chuyển!', 'warn'); return; }
+
+      const moved = [];
+      let extra = 0;
+      let firstErr = null;
+      picked.forEach(f => {
+        const err = getMoveError(f, dest, extra);
+        if (err) { if (!firstErr) firstErr = err; return; }
+        extra += getFishLoadWeight(f);
+        moved.push(f);
+      });
+      if (moved.length === 0) {
+        showToast(`🚫 Không thể chuyển sang ${dest.name}: ${firstErr}!`, 'warn');
+        return;
+      }
+      const movedIds = new Set(moved.map(f => f.id));
+      src.fishes = src.fishes.filter(f => !movedIds.has(f.id));
+      moved.forEach(f => { dest.fishes.push(f); selectedManageFishIds.delete(f.id); });
+      if (movedIds.has(selectedFishId)) selectedFishId = null;
+      playSfx('bubble');
+      const skipped = picked.length - moved.length;
+      showToast(`⇄ Đã chuyển ${moved.length} cá sang ${dest.name}${skipped ? ` (bỏ qua ${skipped} cá: ${firstErr})` : ''}!`, skipped ? 'warn' : 'success');
+      renderAllPanels();
+      saveGameToStorage();
+    }
+
     function renderFishManager() {
       const container = document.getElementById('fishManagerList');
       if (!container) return;
+      // Đang mở dropdown chuyển bể thì không dựng lại để khỏi đóng dropdown
+      const ae = document.activeElement;
+      if (ae && ae.tagName === 'SELECT' && (container.contains(ae) || ae.id === 'manageBatchMoveTank')) return;
       const tank = getCurrentTank();
+
+      const batchBar = document.getElementById('manageBatchMoveBar');
+      const batchSel = document.getElementById('manageBatchMoveTank');
+      if (batchBar && batchSel) {
+        if (gameState.tanks.length > 1) {
+          batchBar.classList.remove('hidden');
+          const keep = batchSel.value;
+          const opts = `<option value="">⇄ Chọn hồ đích...</option>` + gameState.tanks.map((t, i) => {
+            if (i === gameState.activeTankIndex) return '';
+            const hab = getTankActiveHabitat(t);
+            const cls = getTankActiveSizeClass(t);
+            const tag = hab ? `${hab === 'marine' ? 'Biển' : 'Ngọt'} • ${SIZE_CLASS_LABELS[cls]}` : 'Trống';
+            return `<option value="${i}">${escHtml(t.name)} (${tag} • ${getTankLoad(t)}/${(TANK_LEVELS[t.tankLevel - 1] || TANK_LEVELS[0]).maxFish})</option>`;
+          }).join('');
+          if (batchSel.__lastHtml !== opts) {
+            batchSel.innerHTML = opts;
+            batchSel.__lastHtml = opts;
+            if (Array.from(batchSel.options).some(o => o.value === keep)) batchSel.value = keep;
+          }
+        } else {
+          batchBar.classList.add('hidden');
+        }
+      }
 
       const validIds = new Set(tank.fishes.map(f => f.id));
       for (const id of Array.from(selectedManageFishIds)) {
@@ -5620,6 +5724,14 @@
               </div>
             </div>
             <div class="flex items-center gap-1 shrink-0" onclick="event.stopPropagation()">
+              ${gameState.tanks.length > 1 ? `<select onchange="moveFishToTankById('${fish.id}', this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-1 py-1 text-[11px] text-slate-200 max-w-[92px]" title="Chuyển cá sang hồ khác">
+                <option value="">⇄ Chuyển</option>
+                ${gameState.tanks.map((t, i) => {
+                  if (i === gameState.activeTankIndex) return '';
+                  const err = getMoveError(fish, t);
+                  return `<option value="${i}" ${err ? 'disabled' : ''}>${escHtml(t.name)}${err ? ' — ' + err : ''}</option>`;
+                }).join('')}
+              </select>` : ''}
               <button onclick="toggleFishLockById('${fish.id}')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs">
                 ${fish.locked ? '🔒' : '🔓'}
               </button>
