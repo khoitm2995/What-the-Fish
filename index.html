@@ -720,7 +720,7 @@
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
           <div class="font-bold text-emerald-300 mb-1">6. Sự Kiện Hàng Ngày</div>
-          <p>• <b>Sốt giá thị trường:</b> giá bán một nhóm cá ×1.5 hoặc ×2.<br/>• <b>Thời tiết:</b> nắng nóng +3°C (giảm Oxy) hoặc gió mùa lạnh -3°C — chỉnh lại Nhiệt độ mục tiêu / Lọc để cứu cá.<br/>• <b>Thương lái VIP:</b> bán giảm giá 1 cá biến thể hiếm hoặc thu mua 1 loài giá ×2, chỉ ở lại khoảng 1 ngày.</p>
+          <p>• <b>Sốt giá thị trường:</b> giá bán một nhóm cá ×1.5 hoặc ×2.<br/>• <b>Thời tiết:</b> nắng nóng +3°C (giảm Oxy) hoặc gió mùa lạnh -3°C — chỉnh lại Nhiệt độ mục tiêu / Lọc để cứu cá.<br/>• <b>Thương lái VIP:</b> bán 1 cá biến thể hiếm (giá cao hơn cá thường một chút, tăng theo độ hiếm) hoặc thu mua 1 loài giá ×2, chỉ ở lại khoảng 1 ngày.</p>
         </div>
         <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
           <div class="font-bold text-sky-300 mb-1">7. Sức Chứa & Sinh Sản</div>
@@ -6177,6 +6177,13 @@
       if (!('market' in gs.events)) gs.events.market = null;
       if (!('weather' in gs.events)) gs.events.weather = null;
       if (!('vip' in gs.events)) gs.events.vip = null;
+      if (gs.events.vip && gs.events.vip.kind === 'sell' && gs.events.vip.fish && !gs.events.vip.repriced) {
+        try {
+          const vsp = getSpeciesById(gs.events.vip.fish.speciesId);
+          if (gs.events.vip.price < getShopBuyPrice(vsp)) gs.events.vip.price = computeVipRarePrice(gs.events.vip.fish);
+          gs.events.vip.repriced = true;
+        } catch (e) { /* bỏ qua */ }
+      }
       if (!gs.contest || typeof gs.contest !== 'object') {
         gs.contest = { current: null, nextOpenDay: gs.dayCount + 1, last: null, trophies: { gold: 0, silver: 0, bronze: 0 }, hall: [], lastTheme: null };
       }
@@ -6449,6 +6456,17 @@
       showToast(heat ? '🔥 Đợt nắng nóng! Nhiệt độ các bể +3°C, Oxy giảm — chỉnh lại ngay!' : '❄️ Gió mùa lạnh! Nhiệt độ các bể -3°C — chỉnh sưởi ngay!', 'warn');
       logEvent(heat ? 'Sự kiện: Đợt nắng nóng (+3°C, giảm Oxy). Hạ nhiệt độ mục tiêu / nâng cấp Lọc để cứu cá.' : 'Sự kiện: Gió mùa lạnh (-3°C). Tăng nhiệt độ mục tiêu để giữ ấm cho cá.', 'warn');
     }
+    // Giá VIP bán cá hiếm: cao hơn giá cá thường ngoài shop một chút, tăng dần theo độ hiếm
+    const VIP_RARITY_PREMIUM = { golden: 1.25, albino: 1.5, galaxy: 1.9, platinum: 2.5 };
+    function computeVipRarePrice(fish) {
+      const sp = getSpeciesById(fish.speciesId);
+      const normal = getShopBuyPrice(sp);
+      const prem = (VIP_RARITY_PREMIUM[fish.variant] || 1.25) * (0.95 + Math.random() * 0.1);
+      let price = Math.round(normal * prem);
+      price = Math.min(price, Math.round(calculateFishValue(fish) * 0.95));
+      return Math.max(price, Math.round(normal * 1.05), 5);
+    }
+
     function startVipVisit() {
       const unlocked = SPECIES_DB.filter(s => s.unlockLevel <= gameState.playerLevel);
       const name = VIP_NAMES[Math.floor(Math.random() * VIP_NAMES.length)];
@@ -6465,9 +6483,8 @@
         fish.colorQuality = Math.min(100, Math.round(82 + Math.random() * 16));
         fish.health = 95; fish.hunger = 85;
         const marketValue = calculateFishValue(fish);
-        const discount = 0.35 + Math.random() * 0.2;
-        gameState.events.vip = { kind: 'sell', merchant: name, fish, marketValue, discount, price: Math.max(5, Math.round(marketValue * (1 - discount))), endAbs };
-        showToast(`🤵 ${name} ghé thăm, mang theo ${sp.nameVi} ${GENETIC_VARIANTS[variant].name} giảm giá!`, 'success');
+        gameState.events.vip = { kind: 'sell', merchant: name, fish, marketValue, price: computeVipRarePrice(fish), endAbs };
+        showToast(`🤵 ${name} ghé thăm, mang theo ${sp.nameVi} ${GENETIC_VARIANTS[variant].name} với giá ưu đãi cho cá hiếm!`, 'success');
       } else {
         const pool = Math.random() < 0.7 ? ownedFish : null;
         const spId = pool ? pool[Math.floor(Math.random() * pool.length)].speciesId : unlocked[Math.floor(Math.random() * unlocked.length)].id;
@@ -6654,14 +6671,14 @@
           parts.push(`
             <div class="px-2.5 py-2 rounded-xl bg-fuchsia-950/60 border border-fuchsia-400/50 text-xs space-y-1.5">
               <div class="flex items-center justify-between gap-2">
-                <b class="text-fuchsia-300">🤵 ${escHtml(v.merchant)} đang bán giảm giá</b>
+                <b class="text-fuchsia-300">🤵 ${escHtml(v.merchant)} đang bán cá hiếm</b>
                 <span class="text-[10px] text-slate-300">Còn <span data-endabs="${v.endAbs}"></span></span>
               </div>
               <div class="flex items-center gap-2">
                 <div class="w-14 h-10 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">${generateFishSvgMarkup(sp, v.fish.variant, 50, 32)}</div>
                 <div class="flex-1 min-w-0">
                   <div class="font-bold text-white truncate">${sp.nameVi} <span class="text-[10px] px-1.5 py-0.5 rounded-full ${vi.badgeClass}">${vi.name}</span></div>
-                  <div class="text-[10px] text-slate-300">Sắc tố ${Math.round(v.fish.colorQuality)} • Giá thị trường ${fmtMoney(v.marketValue)} • <b class="text-emerald-300">Giảm ${Math.round(v.discount * 100)}%</b></div>
+                  <div class="text-[10px] text-slate-300">Sắc tố ${Math.round(v.fish.colorQuality)} • Cá thường ngoài shop ${fmtMoney(getShopBuyPrice(sp))} → giá VIP <b class="text-fuchsia-300">×${(v.price / getShopBuyPrice(sp)).toFixed(2)}</b> • Bán lại ~${fmtMoney(calculateFishValue(v.fish))}</div>
                   ${(() => { const dst = chooseVipDestination(sp); return dst ? `<div class="text-[10px] text-sky-300">📍 Sẽ thả vào: <b>${escHtml(dst.name)}</b></div>` : `<div class="text-[10px] text-rose-300">🚫 Chưa có bể phù hợp (cần bể cùng loại nước/cỡ, còn chỗ trống)</div>`; })()}
                 </div>
                 <div class="flex flex-col gap-1 shrink-0">
