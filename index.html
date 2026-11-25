@@ -6539,25 +6539,50 @@
       return null;
     }
 
+    // Chọn bể phù hợp nhất: ưu tiên bể đã nuôi đúng loài, rồi bể đang có cá cùng nhóm, rồi bể có môi trường hợp loài, rồi bể đang xem.
+    function chooseVipDestination(sp) {
+      const active = gameState.tanks[gameState.activeTankIndex];
+      const off = getWeatherTempOffset();
+      const ok = gameState.tanks.filter(t => !getPlacementError(sp, t));
+      if (!ok.length) return null;
+      const score = (t) => {
+        let sc = 0;
+        if (t.fishes.some(f => f.speciesId === sp.id)) sc += 100;
+        else if (t.fishes.length > 0) sc += 50;
+        if (envStatusFor(sp, t.targetTemperature + off, t.targetPh).level === 'ok') sc += 30;
+        if (t === active) sc += 20;
+        const meta = TANK_LEVELS[t.tankLevel - 1] || TANK_LEVELS[0];
+        sc += (meta.maxFish - getTankLoad(t)) * 0.01;
+        return sc;
+      };
+      return ok.slice().sort((a, b) => score(b) - score(a))[0];
+    }
+    function describeNoVipDestination(sp) {
+      if (gameState.tanks.length === 1) return getPlacementError(sp, gameState.tanks[0]);
+      const reasons = gameState.tanks.slice(0, 3).map(t => getPlacementError(sp, t)).filter(Boolean);
+      return `Không có bể nào phù hợp để thả ${sp.nameVi}! ${reasons.join(' ')}${gameState.tanks.length > 3 ? ' …' : ''}`;
+    }
+
     function buyVipFish() {
       const vip = gameState.events.vip;
       if (!vip || vip.kind !== 'sell') return;
       if (gameState.money < vip.price) { showToast(`⚠️ Không đủ ngân quỹ! Cần ${fmtMoney(vip.price)}.`, 'warn'); return; }
       const sp = getSpeciesById(vip.fish.speciesId);
-      const order = [gameState.tanks[gameState.activeTankIndex], ...gameState.tanks.filter((t, i) => i !== gameState.activeTankIndex)];
-      const dest = order.find(t => !getPlacementError(sp, t));
-      if (!dest) { showToast('🚫 ' + getPlacementError(sp, order[0]), 'warn'); return; }
+      const dest = chooseVipDestination(sp);
+      if (!dest) { showToast('🚫 ' + describeNoVipDestination(sp), 'warn'); return; }
       gameState.money -= vip.price;
       gameState.stats.totalSpent += vip.price;
       gameState.stats.totalFishBought++;
       autoTuneTankForSpecies(dest, sp);
       dest.fishes.push(vip.fish);
+      const switched = gameState.tanks.indexOf(dest) !== gameState.activeTankIndex;
+      gameState.activeTankIndex = gameState.tanks.indexOf(dest);   // nhảy sang đúng bể để thấy cá vừa mua
       selectedFishId = vip.fish.id;
       gameState.events.vip = null;
       playSfx('cash');
       addPlayerXp(15);
-      showToast(`🤵 Đã mua ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)} thả vào ${dest.name}!`, 'success');
-      logEvent(`Mua của thương lái VIP: ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)}.`, 'success');
+      showToast(`🤵 Đã mua ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)} thả vào ${dest.name}${switched ? ' (đã chuyển sang bể này)' : ''}!`, 'success');
+      logEvent(`Mua của thương lái VIP: ${sp.nameVi} ${GENETIC_VARIANTS[vip.fish.variant].name} giá ${fmtMoney(vip.price)} (thả vào ${dest.name}).`, 'success');
       renderAllPanels();
       saveGameToStorage();
     }
@@ -6637,6 +6662,7 @@
                 <div class="flex-1 min-w-0">
                   <div class="font-bold text-white truncate">${sp.nameVi} <span class="text-[10px] px-1.5 py-0.5 rounded-full ${vi.badgeClass}">${vi.name}</span></div>
                   <div class="text-[10px] text-slate-300">Sắc tố ${Math.round(v.fish.colorQuality)} • Giá thị trường ${fmtMoney(v.marketValue)} • <b class="text-emerald-300">Giảm ${Math.round(v.discount * 100)}%</b></div>
+                  ${(() => { const dst = chooseVipDestination(sp); return dst ? `<div class="text-[10px] text-sky-300">📍 Sẽ thả vào: <b>${escHtml(dst.name)}</b></div>` : `<div class="text-[10px] text-rose-300">🚫 Chưa có bể phù hợp (cần bể cùng loại nước/cỡ, còn chỗ trống)</div>`; })()}
                 </div>
                 <div class="flex flex-col gap-1 shrink-0">
                   <button onclick="buyVipFish()" class="px-2.5 py-1 rounded-lg bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold">Mua ${fmtMoney(v.price)}</button>
