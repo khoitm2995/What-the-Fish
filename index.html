@@ -957,6 +957,8 @@
     let followFishMode = false;
     let decorEditMode = false;
     let draggingDecorInstance = null;
+    let resizingDecorInstance = null;
+    const DECOR_SCALE_MIN = 0.4, DECOR_SCALE_MAX = 2.5;
     let soundEnabled = true;
     let audioCtx = null;
 
@@ -3175,6 +3177,55 @@
       ctx.restore();
     }
 
+    // Khung & ô kéo đổi kích thước của đồ trang trí (toạ độ thế giới, tính theo pixel canvas)
+    function getDecorBox(inst, W, H) {
+      const sprite = getDecorPixelSprite(inst.itemId);
+      if (!sprite) return null;
+      const base = (W / 460) * 1.55;
+      const scale = base * (inst.scale || 1.0);
+      const dw = Math.round(sprite.width * scale);
+      const dh = Math.round(sprite.height * scale);
+      const cx = Math.round(inst.x * W);
+      const cy = Math.round(inst.y * H);
+      return { sprite, base, dw, dh, cx, cy };
+    }
+    function getDecorHandleSize(W) {
+      const z = camera.zoom || 1;
+      const coarse = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
+      const hs = (W * 0.028 * (coarse ? 1.5 : 1)) / z;
+      return Math.max(8, Math.min(48, hs));
+    }
+    // Góc trên-phải của khung là vị trí ô vuông kéo
+    function getDecorHandlePos(inst, W, H) {
+      const b = getDecorBox(inst, W, H);
+      if (!b) return null;
+      return { x: b.cx + b.dw / 2, y: b.cy - b.dh };
+    }
+    function findDecorHandleAt(tank, xNorm, yNorm) {
+      const W = canvas.width, H = canvas.height;
+      const wx = xNorm * W, wy = yNorm * H;
+      const reach = getDecorHandleSize(W) * 0.9;
+      let best = null, bestD = reach;
+      tank.decorItems.forEach(inst => {
+        const hp = getDecorHandlePos(inst, W, H);
+        if (!hp) return;
+        const d = Math.hypot(hp.x - wx, hp.y - wy);
+        if (d <= bestD) { bestD = d; best = inst; }
+      });
+      return best;
+    }
+    function resizeDecorToPointer(inst, xNorm, yNorm) {
+      const W = canvas.width, H = canvas.height;
+      const b = getDecorBox(inst, W, H);
+      if (!b) return;
+      const wx = xNorm * W, wy = yNorm * H;
+      const halfW = Math.max(4, wx - b.cx);
+      const height = Math.max(4, b.cy - wy);
+      const sW = (halfW * 2) / (b.sprite.width * b.base);
+      const sH = height / (b.sprite.height * b.base);
+      inst.scale = Math.round(Math.max(DECOR_SCALE_MIN, Math.min(DECOR_SCALE_MAX, (sW + sH) / 2)) * 100) / 100;
+    }
+
     function drawDecorInstance(inst, W, H, timeSec) {
       const sprite = getDecorPixelSprite(inst.itemId);
       if (!sprite) return;
@@ -3195,6 +3246,29 @@
         ctx.setLineDash([4, 4]);
         ctx.strokeRect(-dw / 2, -dh, dw, dh);
         ctx.setLineDash([]);
+
+        // Ô vuông kéo to/nhỏ ở góc trên-phải
+        const hs = getDecorHandleSize(W);
+        const hx = dw / 2 - hs / 2, hy = -dh - hs / 2;
+        const active = resizingDecorInstance === inst;
+        ctx.fillStyle = active ? 'rgba(52, 211, 153, 0.98)' : 'rgba(251, 191, 36, 0.98)';
+        ctx.fillRect(hx, hy, hs, hs);
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = Math.max(1, hs * 0.1);
+        ctx.strokeRect(hx, hy, hs, hs);
+        ctx.beginPath();
+        ctx.moveTo(hx + hs * 0.28, hy + hs * 0.72);
+        ctx.lineTo(hx + hs * 0.72, hy + hs * 0.28);
+        ctx.moveTo(hx + hs * 0.46, hy + hs * 0.28);
+        ctx.lineTo(hx + hs * 0.72, hy + hs * 0.28);
+        ctx.lineTo(hx + hs * 0.72, hy + hs * 0.54);
+        ctx.stroke();
+        if (active) {
+          ctx.fillStyle = '#ffffff';
+          ctx.font = `bold ${Math.round(hs * 1.1)}px sans-serif`;
+          ctx.textBaseline = 'bottom';
+          ctx.fillText('×' + (inst.scale || 1).toFixed(2), hx + hs + 3, hy);
+        }
       }
 
       ctx.transform(1, 0, sway / Math.max(40, dh), 1, 0, 0);
@@ -3604,6 +3678,12 @@
       }
 
       if (decorEditMode) {
+        const handleHit = findDecorHandleAt(tank, xNorm, yNorm);
+        if (handleHit) {
+          resizingDecorInstance = handleHit;
+          e.preventDefault();
+          return;
+        }
         let bestDecor = null;
         let minDist = 0.09;
         tank.decorItems.forEach(inst => {
@@ -3645,7 +3725,11 @@
     });
 
     window.addEventListener('pointermove', (e) => {
-      if (draggingDecorInstance) {
+      if (resizingDecorInstance) {
+        const { xNorm, yNorm } = screenToTankCoords(e.clientX, e.clientY);
+        resizeDecorToPointer(resizingDecorInstance, xNorm, yNorm);
+        canvas.style.cursor = 'nesw-resize';
+      } else if (draggingDecorInstance) {
         const { xNorm, yNorm } = screenToTankCoords(e.clientX, e.clientY);
         draggingDecorInstance.x = Math.max(0.08, Math.min(0.92, xNorm));
         draggingDecorInstance.y = Math.max(0.75, Math.min(0.92, yNorm));
@@ -3656,6 +3740,11 @@
     });
 
     window.addEventListener('pointerup', () => {
+      if (resizingDecorInstance) {
+        resizingDecorInstance = null;
+        canvas.style.cursor = '';
+        saveGameToStorage();
+      }
       if (draggingDecorInstance) {
         draggingDecorInstance = null;
         saveGameToStorage();
@@ -3699,7 +3788,9 @@
       decorEditMode = !decorEditMode;
       const lbl = document.getElementById('dragDecorLabel');
       if (lbl) lbl.textContent = decorEditMode ? 'Bố Trí: BẬT' : 'Bố Trí: TẮT';
-      showToast(decorEditMode ? '✋ Kéo thả trực tiếp cây thủy sinh, san hô, lũa, đá trong bể!' : 'Đã khóa vị trí trang trí.', 'info');
+      if (!decorEditMode) { resizingDecorInstance = null; draggingDecorInstance = null; }
+      canvas.style.touchAction = decorEditMode ? 'none' : '';
+      showToast(decorEditMode ? '✋ Kéo thả để di chuyển; kéo ô vuông vàng ở góc trên-phải để chỉnh to/nhỏ cây, san hô, lũa, đá!' : 'Đã khóa vị trí & kích thước trang trí.', 'info');
     }
 
     // =========================================================================
